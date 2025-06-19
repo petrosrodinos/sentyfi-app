@@ -1,4 +1,3 @@
-"use client";
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/role-supports-aria-props */
@@ -72,16 +71,7 @@ interface StoreState {
   invalid: boolean;
 }
 
-type StoreAction =
-  | { variant: "ADD_FILES"; files: File[] }
-  | { variant: "SET_FILES"; files: File[] }
-  | { variant: "SET_PROGRESS"; file: File; progress: number }
-  | { variant: "SET_SUCCESS"; file: File }
-  | { variant: "SET_ERROR"; file: File; error: string }
-  | { variant: "REMOVE_FILE"; file: File }
-  | { variant: "SET_DRAG_OVER"; dragOver: boolean }
-  | { variant: "SET_INVALID"; invalid: boolean }
-  | { variant: "CLEAR" };
+type StoreAction = { variant: "ADD_FILES"; files: File[] } | { variant: "SET_FILES"; files: File[] } | { variant: "SET_PROGRESS"; file: File; progress: number } | { variant: "SET_SUCCESS"; file: File } | { variant: "SET_ERROR"; file: File; error: string } | { variant: "REMOVE_FILE"; file: File } | { variant: "SET_DRAG_OVER"; dragOver: boolean } | { variant: "SET_INVALID"; invalid: boolean } | { variant: "CLEAR" };
 
 function createStore(listeners: Set<() => void>, files: Map<File, FileState>, onValueChange?: (files: File[]) => void, invalid?: boolean) {
   const initialState: StoreState = {
@@ -299,30 +289,7 @@ interface FileUploadRootProps extends Omit<React.ComponentPropsWithoutRef<"div">
 }
 
 const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootProps>((props, forwardedRef) => {
-  const {
-    value,
-    defaultValue,
-    onValueChange,
-    onAccept,
-    onFileAccept,
-    onFileReject,
-    onFileValidate,
-    onUpload,
-    accept,
-    maxFiles,
-    maxSize,
-    dir: dirProp,
-    label,
-    name,
-    asChild,
-    disabled = false,
-    invalid = false,
-    multiple = false,
-    required = false,
-    children,
-    className,
-    ...rootProps
-  } = props;
+  const { value, defaultValue, onValueChange, onAccept, onFileAccept, onFileReject, onFileValidate, onUpload, accept, maxFiles, maxSize, dir: dirProp, label, name, asChild, disabled = false, invalid = false, multiple = false, required = false, children, className, ...rootProps } = props;
 
   const inputId = React.useId();
   const dropzoneId = React.useId();
@@ -532,21 +499,7 @@ const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootProps>((pr
         <FileUploadContext.Provider value={contextValue}>
           <RootPrimitive data-disabled={disabled ? "" : undefined} data-slot="file-upload" dir={dir} {...rootProps} ref={forwardedRef} className={cn("relative flex flex-col gap-2", className)}>
             {children}
-            <input
-              type="file"
-              id={inputId}
-              aria-labelledby={labelId}
-              aria-describedby={dropzoneId}
-              ref={inputRef}
-              tabIndex={-1}
-              accept={accept}
-              name={name}
-              disabled={disabled}
-              multiple={multiple}
-              required={required}
-              className="sr-only"
-              onChange={onInputChange}
-            />
+            <input type="file" id={inputId} aria-labelledby={labelId} aria-describedby={dropzoneId} ref={inputRef} tabIndex={-1} accept={accept} name={name} disabled={disabled} multiple={multiple} required={required} className="sr-only" onChange={onInputChange} />
             <span id={labelId} className="sr-only">
               {label ?? "File upload"}
             </span>
@@ -662,33 +615,7 @@ const FileUploadDropzone = React.forwardRef<HTMLDivElement, FileUploadDropzonePr
 
   const DropzonePrimitive = asChild ? Slot : "div";
 
-  return (
-    <DropzonePrimitive
-      role="region"
-      id={context.dropzoneId}
-      aria-controls={`${context.inputId} ${context.listId}`}
-      aria-disabled={context.disabled}
-      aria-invalid={invalid}
-      data-disabled={context.disabled ? "" : undefined}
-      data-dragging={dragOver ? "" : undefined}
-      data-invalid={invalid ? "" : undefined}
-      data-slot="file-upload-dropzone"
-      dir={context.dir}
-      {...dropzoneProps}
-      ref={forwardedRef}
-      tabIndex={context.disabled ? undefined : 0}
-      className={cn(
-        "relative flex select-none flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-6 outline-none transition-colors hover:bg-accent/30 focus-visible:border-ring/50 data-[disabled]:pointer-events-none data-[dragging]:border-primary data-[invalid]:border-destructive data-[invalid]:ring-destructive/20",
-        className
-      )}
-      onClick={onClick}
-      onDragEnter={onDragEnter}
-      onDragLeave={onDragLeave}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
-      onKeyDown={onKeyDown}
-    />
-  );
+  return <DropzonePrimitive role="region" id={context.dropzoneId} aria-controls={`${context.inputId} ${context.listId}`} aria-disabled={context.disabled} aria-invalid={invalid} data-disabled={context.disabled ? "" : undefined} data-dragging={dragOver ? "" : undefined} data-invalid={invalid ? "" : undefined} data-slot="file-upload-dropzone" dir={context.dir} {...dropzoneProps} ref={forwardedRef} tabIndex={context.disabled ? undefined : 0} className={cn("relative flex select-none flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-6 outline-none transition-colors hover:bg-accent/30 focus-visible:border-ring/50 data-[disabled]:pointer-events-none data-[dragging]:border-primary data-[invalid]:border-destructive data-[invalid]:ring-destructive/20", className)} onClick={onClick} onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDragOver={onDragOver} onDrop={onDrop} onKeyDown={onKeyDown} />;
 });
 FileUploadDropzone.displayName = DROPZONE_NAME;
 
@@ -714,18 +641,7 @@ const FileUploadTrigger = React.forwardRef<HTMLButtonElement, FileUploadTriggerP
 
   const TriggerPrimitive = asChild ? Slot : "button";
 
-  return (
-    <TriggerPrimitive
-      type="button"
-      aria-controls={context.inputId}
-      data-disabled={context.disabled ? "" : undefined}
-      data-slot="file-upload-trigger"
-      {...triggerProps}
-      ref={forwardedRef}
-      disabled={context.disabled}
-      onClick={onClick}
-    />
-  );
+  return <TriggerPrimitive type="button" aria-controls={context.inputId} data-disabled={context.disabled ? "" : undefined} data-slot="file-upload-trigger" {...triggerProps} ref={forwardedRef} disabled={context.disabled} onClick={onClick} />;
 });
 FileUploadTrigger.displayName = TRIGGER_NAME;
 
@@ -746,24 +662,7 @@ const FileUploadList = React.forwardRef<HTMLDivElement, FileUploadListProps>((pr
 
   const ListPrimitive = asChild ? Slot : "div";
 
-  return (
-    <ListPrimitive
-      role="list"
-      id={context.listId}
-      aria-orientation={orientation}
-      data-orientation={orientation}
-      data-slot="file-upload-list"
-      data-state={shouldRender ? "active" : "inactive"}
-      dir={context.dir}
-      {...listProps}
-      ref={forwardedRef}
-      className={cn(
-        "data-[state=inactive]:fade-out-0 data-[state=active]:fade-in-0 data-[state=inactive]:slide-out-to-top-2 data-[state=active]:slide-in-from-top-2 flex flex-col gap-2 data-[state=active]:animate-in data-[state=inactive]:animate-out",
-        orientation === "horizontal" && "flex-row overflow-x-auto p-1.5",
-        className
-      )}
-    />
-  );
+  return <ListPrimitive role="list" id={context.listId} aria-orientation={orientation} data-orientation={orientation} data-slot="file-upload-list" data-state={shouldRender ? "active" : "inactive"} dir={context.dir} {...listProps} ref={forwardedRef} className={cn("data-[state=inactive]:fade-out-0 data-[state=active]:fade-in-0 data-[state=inactive]:slide-out-to-top-2 data-[state=active]:slide-in-from-top-2 flex flex-col gap-2 data-[state=active]:animate-in data-[state=inactive]:animate-out", orientation === "horizontal" && "flex-row overflow-x-auto p-1.5", className)} />;
 });
 FileUploadList.displayName = LIST_NAME;
 
@@ -822,31 +721,13 @@ const FileUploadItem = React.forwardRef<HTMLDivElement, FileUploadItemProps>((pr
 
   if (!fileState) return null;
 
-  const statusText = fileState.error
-    ? `Error: ${fileState.error}`
-    : fileState.status === "uploading"
-    ? `Uploading: ${fileState.progress}% complete`
-    : fileState.status === "success"
-    ? "Upload complete"
-    : "Ready to upload";
+  const statusText = fileState.error ? `Error: ${fileState.error}` : fileState.status === "uploading" ? `Uploading: ${fileState.progress}% complete` : fileState.status === "success" ? "Upload complete" : "Ready to upload";
 
   const ItemPrimitive = asChild ? Slot : "div";
 
   return (
     <FileUploadItemContext.Provider value={itemContext}>
-      <ItemPrimitive
-        role="listitem"
-        id={id}
-        aria-setsize={fileCount}
-        aria-posinset={fileIndex}
-        aria-describedby={`${nameId} ${sizeId} ${statusId} ${fileState.error ? messageId : ""}`}
-        aria-labelledby={nameId}
-        data-slot="file-upload-item"
-        dir={context.dir}
-        {...itemProps}
-        ref={forwardedRef}
-        className={cn("relative flex items-center gap-2.5 rounded-md border p-3 has-[_[data-slot=file-upload-progress]]:flex-col has-[_[data-slot=file-upload-progress]]:items-start", className)}
-      >
+      <ItemPrimitive role="listitem" id={id} aria-setsize={fileCount} aria-posinset={fileIndex} aria-describedby={`${nameId} ${sizeId} ${statusId} ${fileState.error ? messageId : ""}`} aria-labelledby={nameId} data-slot="file-upload-item" dir={context.dir} {...itemProps} ref={forwardedRef} className={cn("relative flex items-center gap-2.5 rounded-md border p-3 has-[_[data-slot=file-upload-progress]]:flex-col has-[_[data-slot=file-upload-progress]]:items-start", className)}>
         {props.children}
         <span id={statusId} className="sr-only">
           {statusText}
@@ -935,13 +816,7 @@ const FileUploadItemPreview = React.forwardRef<HTMLDivElement, FileUploadItemPre
   const ItemPreviewPrimitive = asChild ? Slot : "div";
 
   return (
-    <ItemPreviewPrimitive
-      aria-labelledby={itemContext.nameId}
-      data-slot="file-upload-preview"
-      {...previewProps}
-      ref={forwardedRef}
-      className={cn("relative flex size-10 shrink-0 items-center justify-center rounded-md", isImage ? "object-cover" : "bg-accent/50 [&>svg]:size-7", className)}
-    >
+    <ItemPreviewPrimitive aria-labelledby={itemContext.nameId} data-slot="file-upload-preview" {...previewProps} ref={forwardedRef} className={cn("relative flex size-10 shrink-0 items-center justify-center rounded-md", isImage ? "object-cover" : "bg-accent/50 [&>svg]:size-7", className)}>
       {onPreviewRender(itemContext.fileState.file)}
       {children}
     </ItemPreviewPrimitive>
@@ -1007,48 +882,17 @@ const FileUploadItemProgress = React.forwardRef<HTMLDivElement, FileUploadItemPr
     const strokeDashoffset = circumference - (itemContext.fileState.progress / 100) * circumference;
 
     return (
-      <ItemProgressPrimitive
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={itemContext.fileState.progress}
-        aria-valuetext={`${itemContext.fileState.progress}%`}
-        aria-labelledby={itemContext.nameId}
-        data-slot="file-upload-progress"
-        {...progressProps}
-        ref={forwardedRef}
-        className={cn("-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2", className)}
-      >
+      <ItemProgressPrimitive role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={itemContext.fileState.progress} aria-valuetext={`${itemContext.fileState.progress}%`} aria-labelledby={itemContext.nameId} data-slot="file-upload-progress" {...progressProps} ref={forwardedRef} className={cn("-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2", className)}>
         <svg className="rotate-[-90deg] transform" width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" stroke="currentColor">
           <circle className="text-primary/20" strokeWidth="2" cx={size / 2} cy={size / 2} r={(size - 4) / 2} />
-          <circle
-            className="text-primary transition-all"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            cx={size / 2}
-            cy={size / 2}
-            r={(size - 4) / 2}
-          />
+          <circle className="text-primary transition-all" strokeWidth="2" strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} cx={size / 2} cy={size / 2} r={(size - 4) / 2} />
         </svg>
       </ItemProgressPrimitive>
     );
   }
 
   return (
-    <ItemProgressPrimitive
-      role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuenow={itemContext.fileState.progress}
-      aria-valuetext={`${itemContext.fileState.progress}%`}
-      aria-labelledby={itemContext.nameId}
-      data-slot="file-upload-progress"
-      {...progressProps}
-      ref={forwardedRef}
-      className={cn("relative h-1.5 w-full overflow-hidden rounded-full bg-primary/20", className)}
-    >
+    <ItemProgressPrimitive role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={itemContext.fileState.progress} aria-valuetext={`${itemContext.fileState.progress}%`} aria-labelledby={itemContext.nameId} data-slot="file-upload-progress" {...progressProps} ref={forwardedRef} className={cn("relative h-1.5 w-full overflow-hidden rounded-full bg-primary/20", className)}>
       <div
         className="h-full w-full flex-1 bg-primary transition-all"
         style={{
@@ -1089,9 +933,7 @@ const FileUploadItemDelete = React.forwardRef<HTMLButtonElement, FileUploadItemD
 
   const ItemDeletePrimitive = asChild ? Slot : "button";
 
-  return (
-    <ItemDeletePrimitive type="button" aria-controls={itemContext.id} aria-describedby={itemContext.nameId} data-slot="file-upload-item-delete" {...deleteProps} ref={forwardedRef} onClick={onClick} />
-  );
+  return <ItemDeletePrimitive type="button" aria-controls={itemContext.id} aria-describedby={itemContext.nameId} data-slot="file-upload-item-delete" {...deleteProps} ref={forwardedRef} onClick={onClick} />;
 });
 FileUploadItemDelete.displayName = ITEM_DELETE_NAME;
 
@@ -1126,18 +968,7 @@ const FileUploadClear = React.forwardRef<HTMLButtonElement, FileUploadClearProps
 
   const ClearPrimitive = asChild ? Slot : "button";
 
-  return (
-    <ClearPrimitive
-      type="button"
-      aria-controls={context.listId}
-      data-slot="file-upload-clear"
-      data-disabled={isDisabled ? "" : undefined}
-      {...clearProps}
-      ref={forwardedRef}
-      disabled={isDisabled}
-      onClick={onClick}
-    />
-  );
+  return <ClearPrimitive type="button" aria-controls={context.listId} data-slot="file-upload-clear" data-disabled={isDisabled ? "" : undefined} {...clearProps} ref={forwardedRef} disabled={isDisabled} onClick={onClick} />;
 });
 FileUploadClear.displayName = CLEAR_NAME;
 
