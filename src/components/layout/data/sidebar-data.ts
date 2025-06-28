@@ -1,30 +1,19 @@
 import {
-  IconAlignBoxLeftStretch,
-  IconBriefcase,
-  IconBrowserCheck,
+  IconBell,
   IconCalendarDue,
-  IconCreditCard,
-  IconDatabase,
-  IconFileInvoiceFilled,
-  IconFolders,
+  IconChartLine,
   IconHelp,
-  IconLanguage,
   IconLayoutDashboard,
   IconLockPassword,
-  IconMail,
-  IconMessageCircle,
   IconPalette,
-  IconSchool,
-  IconStars,
-  IconTool,
-  IconUser,
+  IconPhoto,
   IconUserCircle,
   IconUserCog,
-  IconUsers,
 } from "@tabler/icons-react";
-import { Command, CreditCard, Share2 } from "lucide-react";
+import { Command, CreditCard } from "lucide-react";
 import { type SidebarData } from "../types";
 import { APP_NAME } from "@/constants/index";
+import { Routes } from "@/routes/routes";
 
 export const sidebarData: SidebarData = {
   teams: [
@@ -35,133 +24,53 @@ export const sidebarData: SidebarData = {
     },
   ],
   navGroups: [
+
     {
-      title: "Admin",
-      access: "admin",
+      title: "Console",
       items: [
         {
           title: "Dashboard",
-          url: "/console/admin/dashboard",
+          url: Routes.dashboard,
           icon: IconLayoutDashboard,
         },
         {
-          title: "Users",
-          url: "/console/admin/users",
-          icon: IconUser,
+          title: "Media",
+          url: Routes.media.x,
+          icon: IconPhoto,
         },
         {
-          title: "Affiliates",
-          url: "/console/admin/affiliates",
-          icon: IconUsers,
+          title: "Tracking",
+          url: Routes.tracking.root,
+          icon: IconChartLine,
         },
         {
-          title: "Feedback",
-          url: "/console/admin/feedback",
-          icon: IconMessageCircle,
+          title: "Notifications",
+          url: Routes.notifications.root,
+          icon: IconBell,
         },
       ],
     },
     {
-      title: "General",
+      title: "Settings",
       items: [
-        {
-          title: "Dashboard",
-          url: "/console/dashboard",
-          icon: IconLayoutDashboard,
-        },
-      ],
-    },
-    {
-      title: "Pages",
-      items: [
-        {
-          title: "Portfolio",
-          icon: IconDatabase,
-          items: [
-            {
-              title: "Profile",
-              url: "/console/portfolio/profile",
-              icon: IconUser,
-            },
-            {
-              title: "Bio",
-              url: "/console/portfolio/bio",
-              icon: IconUserCircle,
-            },
-            {
-              title: "Experience",
-              url: "/console/portfolio/experience",
-              icon: IconBriefcase,
-            },
-            {
-              title: "Projects",
-              url: "/console/portfolio/projects",
-              icon: IconFolders,
-            },
-            {
-              title: "Education",
-              url: "/console/portfolio/education",
-              icon: IconSchool,
-            },
-            {
-              title: "Services",
-              url: "/console/portfolio/services",
-              icon: IconTool,
-            },
-            {
-              title: "Skills",
-              url: "/console/portfolio/skills",
-              icon: IconStars,
-            },
-            {
-              title: "Links",
-              url: "/console/portfolio/links",
-              icon: Share2,
-            },
-            {
-              title: "Languages",
-              url: "/console/portfolio/languages",
-              icon: IconLanguage,
-            },
-            {
-              title: "Appearance",
-              url: "/console/portfolio/appearance",
-              icon: IconPalette,
-            },
-            {
-              title: "Display",
-              url: "/console/portfolio/display",
-              icon: IconBrowserCheck,
-            },
-          ],
-        },
         {
           title: "Account",
           icon: IconUserCircle,
           items: [
             {
               title: "Profile",
-              url: "/console/account/profile",
+              url: "#",
               icon: IconUserCog,
             },
-            // {
-            //   title: 'Business',
-            //   url: '/console/account/business',
-            //   icon: Building2,
-            // },
-            // {
-            //   title: 'Email',
-            //   url: '/console/account/email',
-            //   icon: IconMail,
-            // },
+
             {
               title: "Password",
-              url: "/console/account/password",
+              url: "#",
               icon: IconLockPassword,
             },
             {
               title: "Appearance",
-              url: "/console/account/appearance",
+              url: "#",
               icon: IconPalette,
             },
           ],
@@ -172,33 +81,23 @@ export const sidebarData: SidebarData = {
           items: [
             {
               title: "Subscription",
-              url: "/console/billing/subscription",
+              url: "#",
               icon: IconCalendarDue,
             },
           ],
         },
+
+      ],
+    },
+    {
+      title: "Other",
+      items: [
         {
-          title: "Affiliate",
-          icon: IconUsers,
-          items: [
-            {
-              title: "Affiliate",
-              url: "/console/affiliate",
-              icon: IconUsers,
-            },
-          ],
+          title: "Help Center",
+          url: "#",
+          icon: IconHelp,
         },
       ],
     },
-    // {
-    //   title: "Other",
-    //   items: [
-    //     {
-    //       title: "Help Center",
-    //       url: "/console/help-center",
-    //       icon: IconHelp,
-    //     },
-    //   ],
-    // },
   ],
 };

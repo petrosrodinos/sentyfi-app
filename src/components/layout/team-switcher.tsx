@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import logo from "../../app/favicon.ico";
+import logo from "../../assets/favicon.ico";
 import { useNavigate } from "react-router-dom";
 
 export function TeamSwitcher({
