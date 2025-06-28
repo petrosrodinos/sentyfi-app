@@ -1,24 +1,22 @@
-"use client";
-import { useEffect } from "react";
 import { IconCheck, IconMoon, IconSun } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useTheme } from "next-themes";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useState } from "react";
 
 export function ThemeSwitch() {
-  const { theme, setTheme } = useTheme();
+  const [theme, setTheme] = useState("light");
 
   // useEffect(() => {
   //   const themeColor = theme === "dark" ? "#020817" : "#fff";
   //   const metaThemeColor = document.querySelector("meta[name='theme-color']");
   //   if (metaThemeColor) metaThemeColor.setAttribute("content", themeColor);
   // }, [theme]);
+
+  const handleThemeChange = (theme: string) => {
+    setTheme(theme);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  };
 
   return (
     <DropdownMenu modal={false}>
@@ -30,14 +28,14 @@ export function ThemeSwitch() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={() => handleThemeChange("light")}>
           Light <IconCheck size={14} className={cn("ml-auto", theme !== "light" && "hidden")} />
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => handleThemeChange("dark")}>
           Dark
           <IconCheck size={14} className={cn("ml-auto", theme !== "dark" && "hidden")} />
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => handleThemeChange("system")}>
           System
           <IconCheck size={14} className={cn("ml-auto", theme !== "system" && "hidden")} />
         </DropdownMenuItem>

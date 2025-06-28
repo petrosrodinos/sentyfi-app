@@ -1,7 +1,6 @@
+import type { AuthUser } from "@/pages/auth/interfaces/auth";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import type { AuthUser } from "@/interfaces/auth";
-import { signOut } from "@/services/auth";
 
 interface UserStore extends AuthUser {
     login(user: any): void;
@@ -13,6 +12,7 @@ const initialValues: UserStore = {
     isLoggedIn: false,
     isNewUser: true,
     user_id: null,
+    full_name: "",
     email: null,
     access_token: null,
     expires_at: null,
@@ -35,7 +35,6 @@ export const useAuthStore = create<UserStore>()(
                 logout: () => {
                     set(initialValues);
                     localStorage.removeItem(STORE_KEY);
-                    signOut();
                     window.location.href = "/auth/sign-in";
                 },
                 updateUser: async (user: Partial<AuthUser>) => {

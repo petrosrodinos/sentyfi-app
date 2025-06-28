@@ -1,66 +1,69 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
+import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { signUp } from "../../services/auth";
-import type { SignUpUser } from "../../interfaces/auth";
-import { useAuthStore } from "@/stores/auth";
-import { useParams, useNavigate } from "react-router-dom";
+import { signIn } from "../../services/auth";
 import { toast } from "@/hooks/use-toast";
-import { SignUpSchema, type SignUpFormValues } from "../../validation-schemas/auth";
-import Cookies from "js-cookie";
-import { CookieKeys } from "@/constants/cookies";
-interface SignUpFormProps {
+import { type AuthUser, type SignInUser } from "../../interfaces/auth";
+import { useAuthStore } from "@/stores/auth";
+import { SignInSchema, type SignInFormValues } from "../../validation-schemas/auth";
+import { useNavigate } from "react-router-dom";
+
+interface UserAuthFormProps {
   className?: string;
   props?: any;
 }
 
-export function SignUpForm({ className, ...props }: SignUpFormProps) {
-  const params = useParams();
-  const referral_code = params.referral_code;
+export function SignInForm({ className, ...props }: UserAuthFormProps) {
   const { login } = useAuthStore((state) => state);
   const navigate = useNavigate();
-  const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(SignUpSchema),
+  const form = useForm<SignInFormValues>({
+    resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: "",
       password: "",
-      confirm_password: "",
     },
   });
 
   const {
     mutate,
     isPending,
-    data: signUpData,
+    data: signInData,
   } = useMutation({
-    mutationFn: (data: SignUpUser) => signUp(data),
-    onSuccess: (data) => {
-      login(data);
-      toast({
-        title: "Register successful",
-        description: "You have successfully registered in",
-        duration: 1000,
-      });
-      navigate("/auth/create-user");
+    mutationFn: (data: SignInUser) => signIn(data),
+    onSuccess: (data: AuthUser) => {
+      if (data.isNewUser) {
+        login({
+          ...data,
+        });
+        navigate("/auth/create-user");
+      } else {
+        login({
+          ...data,
+          isLoggedIn: true,
+        });
+        toast({
+          title: "Login successful",
+          description: "You have successfully logged in",
+          duration: 1000,
+        });
+        navigate("/console/dashboard");
+      }
     },
     onError: (error) => {
       toast({
-        title: "Could not sign up",
+        title: "Could not sign in",
         description: error.message,
         duration: 3000,
       });
     },
   });
 
-  function onSubmit(data: SignUpFormValues) {
-    if (referral_code) {
-      Cookies.set(CookieKeys.referral_code, referral_code);
-    }
+  function onSubmit(data: SignInFormValues) {
     mutate({ email: data.email, password: data.password });
   }
 
@@ -87,7 +90,9 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               name="password"
               render={({ field }) => (
                 <FormItem className="space-y-1">
-                  <FormLabel>Password</FormLabel>
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Password</FormLabel>
+                  </div>
                   <FormControl>
                     <PasswordInput placeholder="********" {...field} />
                   </FormControl>
@@ -95,21 +100,8 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="confirm_password"
-              render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <PasswordInput placeholder="********" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button className="mt-2" disabled={isPending} loading={isPending}>
-              Create Account
+            <Button loading={isPending} className="mt-2" disabled={isPending}>
+              Login
             </Button>
 
             {/* <div className="relative my-2">

@@ -1,4 +1,4 @@
-import { type AuthUser, type SignInUser, type SignUpUser } from "@/interfaces/auth";
+import { type AuthUser, type SignInUser, type SignUpUser } from "../interfaces/auth";
 
 export const signIn = async (
     { email, password }: SignInUser,

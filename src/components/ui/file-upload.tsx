@@ -4,7 +4,6 @@
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { FileArchiveIcon, FileAudioIcon, FileCodeIcon, FileCogIcon, FileIcon, FileTextIcon, FileVideoIcon } from "lucide-react";
-import Image from "next/image";
 import * as React from "react";
 
 const ROOT_NAME = "FileUpload";
@@ -794,7 +793,7 @@ const FileUploadItemPreview = React.forwardRef<HTMLDivElement, FileUploadItemPre
 
       if (isImage) {
         return (
-          <Image
+          <img
             src={URL.createObjectURL(file)}
             alt={file.name}
             className="size-full rounded object-cover"

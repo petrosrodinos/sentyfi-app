@@ -3,15 +3,8 @@ import { useState, type JSX } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -22,13 +15,13 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export default function SidebarNav({ className, items, ...props }: SidebarNavProps) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const [val, setVal] = useState(pathname ?? "/settings");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [val, setVal] = useState(location.pathname ?? "/settings");
 
   const handleSelect = (e: string) => {
     setVal(e);
-    router.push(e);
+    navigate(e);
   };
 
   return (
@@ -51,27 +44,10 @@ export default function SidebarNav({ className, items, ...props }: SidebarNavPro
         </Select>
       </div>
 
-      <ScrollArea
-        orientation="horizontal"
-        type="always"
-        className="hidden w-full min-w-40 bg-background px-1 py-2 md:block"
-      >
-        <nav
-          className={cn("flex space-x-2 py-1 lg:flex-col lg:space-x-0 lg:space-y-1", className)}
-          {...props}
-        >
+      <ScrollArea orientation="horizontal" type="always" className="hidden w-full min-w-40 bg-background px-1 py-2 md:block">
+        <nav className={cn("flex space-x-2 py-1 lg:flex-col lg:space-x-0 lg:space-y-1", className)} {...props}>
           {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                pathname === item.href
-                  ? "bg-muted hover:bg-muted"
-                  : "hover:bg-transparent hover:underline",
-                "justify-start"
-              )}
-            >
+            <Link key={item.href} to={item.href} className={cn(buttonVariants({ variant: "ghost" }), location.pathname === item.href ? "bg-muted hover:bg-muted" : "hover:bg-transparent hover:underline", "justify-start")}>
               <span className="mr-2">{item.icon}</span>
               {item.title}
             </Link>

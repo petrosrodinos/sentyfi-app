@@ -1,21 +1,20 @@
-"use client";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useAuthStore } from "stores/auth";
+import { useAuthStore } from "@/stores/auth";
 import { generateInitials } from "@/lib/utils";
 
 export function ProfileDropdown() {
-  const { full_name, avatar, email, logout } = useAuthStore((state) => state);
+  const { full_name, avatar, email, logout } = useAuthStore();
 
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={avatar} alt="@shadcn" />
-            <AvatarFallback>{generateInitials(full_name)}</AvatarFallback>
+            <AvatarImage src={avatar || ""} alt="@shadcn" />
+            <AvatarFallback>{generateInitials(full_name || "")}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -29,19 +28,19 @@ export function ProfileDropdown() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/console/account/profile">
+            <Link to="/console/account/profile">
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/console/billing/subscription">
+            <Link to="/console/billing/subscription">
               Billing
               <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/console/portfolio/profile">
+            <Link to="/console/portfolio/profile">
               Settings
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </Link>

@@ -1,22 +1,16 @@
-"use client";
-
-import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { useAuthStore } from "stores/auth";
+import { useAuthStore } from "@/stores/auth";
 import { ThemeSwitch } from "@/components/theme-switch";
-import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
 import { PUBLIC_SITE_URL, APP_NAME } from "@/constants/index";
-import { createClient } from "@/lib/supabase/client";
-import Logo from "../../app/favicon.ico";
+import Logo from "../../assets/favicon.ico";
 import { useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
 import { CookieKeys } from "@/constants/cookies";
-const supabase = createClient();
+import { useLocation } from "react-router-dom";
 
 interface MenuItem {
   title: string;
@@ -120,19 +114,9 @@ const NavbarContent = ({
     dashboard: { title: "Dashboard", url: "/console/dashboard" },
   },
 }: Navbar1Props) => {
-  const searchParams = useSearchParams();
-  const referral_code = searchParams.get("ref");
-  const { user_id } = useAuthStore();
-
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    enabled: !!user_id,
-    retry: false,
-    queryFn: async () => {
-      const user = await supabase.auth.getUser();
-      return user;
-    },
-  });
+  const location = useLocation();
+  const referral_code = new URLSearchParams(location.search).get("ref");
+  const { isLoggedIn } = useAuthStore();
 
   useEffect(() => {
     if (referral_code) {
@@ -146,7 +130,7 @@ const NavbarContent = ({
         <nav className="hidden justify-between items-center h-16 lg:flex">
           <div className="flex items-center">
             <a href={logo.url} className="flex items-center gap-2">
-              <Image src={logo.src} className="size-7" alt="logo" />
+              <img src={logo.src} className="size-7" alt="logo" />
 
               <span className="text-lg font-semibold tracking-tighter">{logo.title}</span>
             </a>
@@ -160,7 +144,7 @@ const NavbarContent = ({
 
           <div className="flex items-center gap-2">
             <ThemeSwitch />
-            {user?.data?.user ? (
+            {isLoggedIn ? (
               <Button asChild size="sm">
                 <a href={auth.dashboard?.url}>{auth.dashboard?.title}</a>
               </Button>
@@ -181,7 +165,7 @@ const NavbarContent = ({
         <div className="block lg:hidden">
           <div className="flex items-center justify-between h-16">
             <a href={logo.url} className="flex items-center gap-2">
-              <Image src={logo.src} width={32} height={32} className="max-h-8" alt={logo.alt} />
+              <img src={logo.src} width={32} height={32} className="max-h-8" alt={logo.alt} />
             </a>
             <div className="flex items-center gap-2">
               <ThemeSwitch />
@@ -195,7 +179,7 @@ const NavbarContent = ({
                   <SheetHeader>
                     <SheetTitle>
                       <a href={logo.url} className="flex items-center gap-2">
-                        <Image src={logo.src} width={32} height={32} className="max-h-8" alt={logo.alt} />
+                        <img src={logo.src} width={32} height={32} className="max-h-8" alt={logo.alt} />
                       </a>
                     </SheetTitle>
                   </SheetHeader>
@@ -205,7 +189,7 @@ const NavbarContent = ({
                     </Accordion>
 
                     <div className="flex flex-col gap-3">
-                      {user?.data?.user ? (
+                      {isLoggedIn ? (
                         <Button asChild>
                           <a href={auth.dashboard?.url}>{auth.dashboard?.title}</a>
                         </Button>
