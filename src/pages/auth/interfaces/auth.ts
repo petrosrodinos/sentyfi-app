@@ -10,7 +10,7 @@ export interface SignUpUser {
 }
 
 export interface AuthUser {
-    user_id: string | null;
+    user_uuid: string | null;
     email: string | null;
     access_token: string | null;
     expires_at: number | null;

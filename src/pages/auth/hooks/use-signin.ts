@@ -34,7 +34,7 @@ export function useSignin() {
             toast({
                 title: "Could not sign in",
                 description: error?.message || "An unexpected error occurred",
-                duration: 5000,
+                duration: 3000,
                 variant: "destructive",
             });
         },

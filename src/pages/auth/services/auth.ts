@@ -1,3 +1,4 @@
+import { formatAuthUser } from "@/lib/utils";
 import { type AuthUser, type SignInUser, type SignUpUser } from "../interfaces/auth";
 import axiosInstance from "@/config/axios";
 
@@ -11,14 +12,8 @@ export const signIn = async (
         });
 
         const auth_response = response.data;
-        return {
-            user_id: auth_response.user.uuid,
-            email: auth_response.user.email,
-            access_token: auth_response.access_token,
-            expires_at: null,
-            isLoggedIn: true,
-            isNewUser: false,
-        };
+        return formatAuthUser(auth_response);
+
     } catch (error) {
         throw new Error("Failed to sign in. Please try again.");
     }
@@ -32,14 +27,7 @@ export const signUp = async ({ email, password }: SignUpUser): Promise<AuthUser>
         });
 
         const auth_response = response.data;
-        return {
-            user_id: auth_response.user.uuid,
-            email: auth_response.user.email,
-            access_token: auth_response.access_token,
-            expires_at: null,
-            isLoggedIn: true,
-            isNewUser: true,
-        };
+        return formatAuthUser(auth_response);
     } catch (error) {
         throw new Error("Failed to sign up. Please try again.");
     }

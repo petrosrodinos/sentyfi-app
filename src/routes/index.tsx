@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import ConsoleDashboard from "@/pages/console/page";
+import Dashboard from "@/pages/dashboard";
 import SignUp from "@/pages/auth/pages/sign-up";
 import SignIn from "@/pages/auth/pages/sign-in";
 
@@ -14,8 +14,8 @@ export default function AppRoutes() {
       </Route>
 
       {/* Console routes */}
-      <Route path="/console">
-        <Route index element={<ConsoleDashboard />} />
+      <Route path="/dashboard">
+        <Route index element={<Dashboard />} />
       </Route>
 
       {/* Default redirect */}

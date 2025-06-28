@@ -1,4 +1,4 @@
-import type { AuthUser } from "@/interfaces/auth";
+import type { AuthUser } from "@/pages/auth/interfaces/auth";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -16,11 +16,11 @@ export const generateInitials = (value: string) => {
 
 export const formatAuthUser = (data: any): AuthUser => {
   return {
-    user_id: data.user.id,
+    user_uuid: data.user.uuid,
     email: data.user.email,
-    access_token: data.session.access_token,
-    expires_at: data.session.expires_at,
-    avatar: data?.avatar?.url ?? null,
-    full_name: data?.full_name ?? "A/N",
+    access_token: data.access_token,
+    expires_at: data.session?.expires_at ?? null,
+    avatar: data?.user?.avatar?.url ?? null,
+    full_name: data?.user?.full_name ?? "A/N",
   };
 };
