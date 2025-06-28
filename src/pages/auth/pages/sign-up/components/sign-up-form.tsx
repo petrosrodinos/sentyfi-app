@@ -1,59 +1,26 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
-import { useMutation } from "@tanstack/react-query";
-import { signUp } from "../../../services/auth";
-import type { SignUpUser } from "../../../interfaces/auth";
-import { useAuthStore } from "@/stores/auth";
-import { useParams, useNavigate } from "react-router-dom";
-import { toast } from "@/hooks/use-toast";
+import { useParams } from "react-router-dom";
 import { SignUpSchema, type SignUpFormValues } from "../../../validation-schemas/auth";
 import Cookies from "js-cookie";
 import { CookieKeys } from "@/constants/cookies";
-interface SignUpFormProps {
-  className?: string;
-  props?: any;
-}
+import { useSignup } from "../../../hooks/use-signup";
 
-export function SignUpForm({ className, ...props }: SignUpFormProps) {
+export function SignUpForm() {
   const params = useParams();
   const referral_code = params.referral_code;
-  const { login } = useAuthStore((state) => state);
-  const navigate = useNavigate();
+  const { mutate, isPending } = useSignup();
+
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
       email: "",
       password: "",
       confirm_password: "",
-    },
-  });
-
-  const {
-    mutate,
-    isPending,
-    data: signUpData,
-  } = useMutation({
-    mutationFn: (data: SignUpUser) => signUp(data),
-    onSuccess: (data) => {
-      login(data);
-      toast({
-        title: "Register successful",
-        description: "You have successfully registered in",
-        duration: 1000,
-      });
-      navigate("/auth/create-user");
-    },
-    onError: (error) => {
-      toast({
-        title: "Could not sign up",
-        description: error.message,
-        duration: 3000,
-      });
     },
   });
 
@@ -65,7 +32,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
+    <div className="grid gap-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-2">

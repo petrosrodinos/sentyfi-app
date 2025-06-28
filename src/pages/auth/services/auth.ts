@@ -1,32 +1,47 @@
 import { type AuthUser, type SignInUser, type SignUpUser } from "../interfaces/auth";
+import axiosInstance from "@/config/axios";
 
 export const signIn = async (
     { email, password }: SignInUser,
-): Promise<AuthUser | any> => {
+): Promise<AuthUser> => {
     try {
+        const response = await axiosInstance.post('/auth/email/login', {
+            email,
+            password,
+        });
 
+        const auth_response = response.data;
         return {
-            user_id: "1",
-            email: email,
-            access_token: "1",
-            expires_at: 1,
+            user_id: auth_response.user.uuid,
+            email: auth_response.user.email,
+            access_token: auth_response.access_token,
+            expires_at: null,
             isLoggedIn: true,
-            password: password,
-        }
-
-
+            isNewUser: false,
+        };
     } catch (error) {
-        console.error("Error signing in:", error);
-        throw new Error("User not found");
+        throw new Error("Failed to sign in. Please try again.");
     }
 };
 
-export const signUp = async ({ email, password }: SignUpUser) => {
+export const signUp = async ({ email, password }: SignUpUser): Promise<AuthUser> => {
     try {
+        const response = await axiosInstance.post('/auth/email/register', {
+            email,
+            password,
+        });
 
+        const auth_response = response.data;
+        return {
+            user_id: auth_response.user.uuid,
+            email: auth_response.user.email,
+            access_token: auth_response.access_token,
+            expires_at: null,
+            isLoggedIn: true,
+            isNewUser: true,
+        };
     } catch (error) {
-        console.error("Error signing in:", error);
-        throw error;
+        throw new Error("Failed to sign up. Please try again.");
     }
 };
 

@@ -5,13 +5,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
-import { signIn } from "../../../services/auth";
-import { toast } from "@/hooks/use-toast";
-import { type AuthUser, type SignInUser } from "../../../interfaces/auth";
-import { useAuthStore } from "@/stores/auth";
 import { SignInSchema, type SignInFormValues } from "../../../validation-schemas/auth";
-import { useNavigate } from "react-router-dom";
+import { useSignin } from "../../../hooks/use-signin";
 
 interface UserAuthFormProps {
   className?: string;
@@ -19,47 +14,13 @@ interface UserAuthFormProps {
 }
 
 export function SignInForm({ className, ...props }: UserAuthFormProps) {
-  const { login } = useAuthStore((state) => state);
-  const navigate = useNavigate();
+  const { mutate, isPending } = useSignin();
+
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: "",
       password: "",
-    },
-  });
-
-  const {
-    mutate,
-    isPending,
-    data: signInData,
-  } = useMutation({
-    mutationFn: (data: SignInUser) => signIn(data),
-    onSuccess: (data: AuthUser) => {
-      if (data.isNewUser) {
-        login({
-          ...data,
-        });
-        navigate("/auth/create-user");
-      } else {
-        login({
-          ...data,
-          isLoggedIn: true,
-        });
-        toast({
-          title: "Login successful",
-          description: "You have successfully logged in",
-          duration: 1000,
-        });
-        navigate("/console/dashboard");
-      }
-    },
-    onError: (error) => {
-      toast({
-        title: "Could not sign in",
-        description: error.message,
-        duration: 3000,
-      });
     },
   });
 
