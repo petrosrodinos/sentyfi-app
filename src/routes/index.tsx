@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import SignUp from "@/pages/auth/sign-up/page";
-import SignIn from "@/pages/auth/sign-in/page";
 import ConsoleDashboard from "@/pages/console/page";
+import SignUp from "@/pages/auth/pages/sign-up/page";
+import SignIn from "@/pages/auth/pages/sign-in/page";
 
 export default function AppRoutes() {
   return (

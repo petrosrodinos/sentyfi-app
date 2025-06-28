@@ -6,12 +6,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useMutation } from "@tanstack/react-query";
-import { signUp } from "../../services/auth";
-import type { SignUpUser } from "../../interfaces/auth";
+import { signUp } from "../../../services/auth";
+import type { SignUpUser } from "../../../interfaces/auth";
 import { useAuthStore } from "@/stores/auth";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import { SignUpSchema, type SignUpFormValues } from "../../validation-schemas/auth";
+import { SignUpSchema, type SignUpFormValues } from "../../../validation-schemas/auth";
 import Cookies from "js-cookie";
 import { CookieKeys } from "@/constants/cookies";
 interface SignUpFormProps {

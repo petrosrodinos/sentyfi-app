@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { signIn } from "../../services/auth";
+import { signIn } from "../../../services/auth";
 import { toast } from "@/hooks/use-toast";
-import { type AuthUser, type SignInUser } from "../../interfaces/auth";
+import { type AuthUser, type SignInUser } from "../../../interfaces/auth";
 import { useAuthStore } from "@/stores/auth";
-import { SignInSchema, type SignInFormValues } from "../../validation-schemas/auth";
+import { SignInSchema, type SignInFormValues } from "../../../validation-schemas/auth";
 import { useNavigate } from "react-router-dom";
 
 interface UserAuthFormProps {

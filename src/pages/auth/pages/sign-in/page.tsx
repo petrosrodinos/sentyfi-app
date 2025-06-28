@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { Card } from "@/components/ui/card";
 import { SignInForm } from "./components/sign-in-form";
-import AuthLayout from "../layout";
+import AuthLayout from "../../layout";
 import { Link } from "react-router-dom";
 
 const Login: FC = () => {
