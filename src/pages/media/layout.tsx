@@ -4,12 +4,14 @@ import { Main } from "@/components/layout/main";
 import SidebarNav from "@/components/sidebar-nav";
 import { Routes } from "@/routes/routes";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 interface MediaLayoutProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-export default function MediaLayout({ children }: MediaLayoutProps) {
+export default function MediaLayout({ children, className }: MediaLayoutProps) {
   return (
     <>
       <Main fixed>
@@ -22,7 +24,7 @@ export default function MediaLayout({ children }: MediaLayoutProps) {
           <aside className="top-0 lg:sticky lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex w-full overflow-y-hidden p-1 pr-2">
+          <div className={cn("flex w-full overflow-y-hidden p-1 pr-2", className)}>
             <ScrollArea>{children}</ScrollArea>
           </div>
         </div>
