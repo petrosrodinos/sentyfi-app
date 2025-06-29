@@ -1,0 +1,50 @@
+import axiosInstance from "@/config/axios";
+import type {
+    TwitterUser,
+} from "../interfaces/twitter";
+
+export const getFollowingsByUsername = async (username: string): Promise<{ user: TwitterUser, followings: TwitterUser[] }> => {
+    try {
+        const user = await getTwitterUser(username);
+
+        const followings = await getTwitterUserFollowings(user.id);
+
+        return {
+            user,
+            followings
+        }
+    } catch (error) {
+        throw new Error("Failed to fetch following list. Please try again.");
+    }
+};
+
+
+export const getTwitterUserFollowings = async (
+    user_id: string,
+): Promise<TwitterUser[]> => {
+    try {
+        const response = await axiosInstance.get(`/twitter/${user_id}/followings`);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to fetch following list. Please try again.");
+    }
+};
+
+export const getTwitterUser = async (user_name: string): Promise<TwitterUser> => {
+    try {
+        const response = await axiosInstance.get(`/twitter/${user_name}`);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to fetch user details. Please try again.");
+    }
+};
+
+
+export const searchTwitterUsers = async (username: string): Promise<TwitterUser[]> => {
+    try {
+        const response = await axiosInstance.get(`/twitter/search/${username}`);
+        return response.data.users;
+    } catch (error) {
+        throw new Error("Failed to search users. Please try again.");
+    }
+}; 
