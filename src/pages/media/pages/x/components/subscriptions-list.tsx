@@ -4,12 +4,12 @@ import { Plus, Users } from "lucide-react";
 import { UserCard } from "./user-card";
 import type { MediaSubscription } from "@/pages/media/interfaces/media-subscriptions";
 
-interface SubscriptionsDisplayProps {
+interface SubscriptionsListProps {
   subscriptions: MediaSubscription[];
   onAddNew: () => void;
 }
 
-export function SubscriptionsDisplay({ subscriptions, onAddNew }: SubscriptionsDisplayProps) {
+export function SubscriptionsList({ subscriptions, onAddNew }: SubscriptionsListProps) {
   return (
     <div className="container mx-auto p-3 space-y-3 w-full">
       <div className="flex items-center justify-between">

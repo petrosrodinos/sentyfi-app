@@ -1,6 +1,5 @@
 import axiosInstance from "@/config/axios";
-import type { MediaSubscription, MediaSubscriptionQuery } from "../interfaces/media-subscriptions";
-import type { CreateMediaSubscription } from "../interfaces/media-subscriptions";
+import type { MediaSubscription, MediaSubscriptionQuery, CreateMediaSubscription } from "../interfaces/media-subscriptions";
 
 export const createMediaSubscription = async (payload: CreateMediaSubscription): Promise<MediaSubscription> => {
     try {

@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/stores/auth";
 import { useMediaSubscriptions } from "../../hooks/use-media-subscriptions";
 import MediaLayout from "../../layout";
-import { SubscriptionsDisplay } from "./components/subscriptions-display";
+import { SubscriptionsList } from "./components/subscriptions-list";
 import { CreateSubscriptions } from "./components/create-subscriptions";
 import { MediaSubscriptionPlatformTypes } from "../../interfaces/media-subscriptions";
 import { useState } from "react";
@@ -15,5 +15,5 @@ export default function Twitter() {
     platform_type: MediaSubscriptionPlatformTypes.twitter,
   });
 
-  return <MediaLayout>{show_create ? <CreateSubscriptions subscriptions={subscriptions || []} onBack={() => setShowCreate(false)} /> : <SubscriptionsDisplay subscriptions={subscriptions || []} onAddNew={() => setShowCreate(true)} />}</MediaLayout>;
+  return <MediaLayout>{show_create ? <CreateSubscriptions subscriptions={subscriptions || []} onBack={() => setShowCreate(false)} /> : <SubscriptionsList subscriptions={subscriptions || []} onAddNew={() => setShowCreate(true)} />}</MediaLayout>;
 }
