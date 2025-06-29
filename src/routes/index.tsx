@@ -4,11 +4,12 @@ import SignUp from "@/pages/auth/pages/sign-up";
 import SignIn from "@/pages/auth/pages/sign-in";
 import AppLayout from "@/pages/layout";
 import Notifications from "@/pages/notifications";
-import Tracking from "@/pages/tracking";
 import Twitter from "@/pages/media/pages/x";
 import News from "@/pages/media/pages/news";
 import Youtube from "@/pages/media/pages/youtube";
 import Reddit from "@/pages/media/pages/reddit";
+import Stocks from "@/pages/tracking/pages/stocks";
+import Crypto from "@/pages/tracking/pages/crypto";
 
 export default function AppRoutes() {
   return (
@@ -33,7 +34,10 @@ export default function AppRoutes() {
         </Route>
 
         {/* Tracking routes */}
-        <Route path="tracking" element={<Tracking />}></Route>
+        <Route path="tracking">
+          <Route path="stocks" element={<Stocks />} />
+          <Route path="crypto" element={<Crypto />} />
+        </Route>
 
         <Route path="notifications" element={<Notifications />}></Route>
       </Route>

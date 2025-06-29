@@ -40,7 +40,7 @@ export const sidebarData: SidebarData = {
         },
         {
           title: "Tracking",
-          url: Routes.tracking.root,
+          url: Routes.tracking.stocks,
           icon: IconChartLine,
         },
         {
