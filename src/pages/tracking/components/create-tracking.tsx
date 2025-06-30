@@ -3,17 +3,23 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, ArrowLeft, TrendingUp } from "lucide-react";
-import { useTickers } from "../../../hooks/use-tickers";
-import type { Ticker } from "../../../interfaces/tickers";
-import type { TrackedItem } from "../../../interfaces/tracked-items";
+import { useTickers } from "../hooks/use-tickers";
+import type { Ticker } from "../interfaces/tickers";
+import { TrackedItemTypes, type TrackedItem, type TrackedItemType } from "../interfaces/tracked-items";
 import TickerCard from "./ticker-card";
+
+const MarketLabels = {
+  [TrackedItemTypes.stock]: "Stock",
+  [TrackedItemTypes.crypto]: "Crypto",
+} as const;
 
 interface CreateTrackingProps {
   trackedItems: TrackedItem[];
   onBack?: () => void;
+  market: TrackedItemType;
 }
 
-export function CreateTracking({ trackedItems, onBack }: CreateTrackingProps) {
+export function CreateTracking({ trackedItems, onBack, market = "stock" }: CreateTrackingProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -22,7 +28,7 @@ export function CreateTracking({ trackedItems, onBack }: CreateTrackingProps) {
     isLoading,
     refetch,
   } = useTickers({
-    market: "stocks",
+    market,
     ticker: searchQuery.trim(),
   });
 
@@ -54,8 +60,8 @@ export function CreateTracking({ trackedItems, onBack }: CreateTrackingProps) {
           </Button>
         )}
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Add Stock Ticker</h1>
-          <p className="text-muted-foreground">Search for stock tickers to add to your tracking list</p>
+          <h1 className="text-3xl font-bold">Add {MarketLabels[market]} Ticker</h1>
+          <p className="text-muted-foreground">Search for {MarketLabels[market]} tickers to add to your tracking list</p>
         </div>
       </div>
 
@@ -63,7 +69,7 @@ export function CreateTracking({ trackedItems, onBack }: CreateTrackingProps) {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Search className="w-5 h-5" />
-            <span>Search Stock Tickers</span>
+            <span>Search {MarketLabels[market]} Tickers</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -123,8 +129,8 @@ export function CreateTracking({ trackedItems, onBack }: CreateTrackingProps) {
         <Card className="w-full">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <TrendingUp className="w-16 h-16 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Ready to track stocks?</h3>
-            <p className="text-muted-foreground text-center max-w-md">Enter a stock ticker symbol above to search for companies and add them to your tracking list.</p>
+            <h3 className="text-lg font-semibold mb-2">Ready to track {MarketLabels[market]}?</h3>
+            <p className="text-muted-foreground text-center max-w-md">Enter a {MarketLabels[market]} ticker symbol above to search for companies and add them to your tracking list.</p>
           </CardContent>
         </Card>
       )}

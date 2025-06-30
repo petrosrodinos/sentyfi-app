@@ -1,10 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { Ticker } from "../../../interfaces/tickers";
-import { type CreateTrackedItem, type TrackedItem, TrackedItemTypes } from "../../../interfaces/tracked-items";
+import type { Ticker } from "../interfaces/tickers";
+import { type CreateTrackedItem, type TrackedItem } from "../interfaces/tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCreateTrackedItem, useDeleteTrackedItem } from "../../../hooks/use-tracked-items";
+import { useCreateTrackedItem, useDeleteTrackedItem } from "../hooks/use-tracked-items";
 import { useEffect, useState } from "react";
 
 interface TickerCardProps {
@@ -31,7 +31,7 @@ export default function TickerCard({ ticker, trackedItems }: TickerCardProps) {
     try {
       if (checked) {
         const trackedItem_data: CreateTrackedItem = {
-          item_type: TrackedItemTypes.stock,
+          item_type: ticker.market!,
           item_identifier: ticker.ticker,
           enabled: true,
           meta: {

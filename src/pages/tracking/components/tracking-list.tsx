@@ -2,19 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import TickerCard from "./ticker-card";
-import { type TrackedItem } from "@/pages/tracking/interfaces/tracked-items";
+import { type TrackedItem } from "../interfaces/tracked-items";
 import { Plus, Users } from "lucide-react";
-import type { Ticker } from "../../../interfaces/tickers";
+import type { Ticker } from "../interfaces/tickers";
 
 interface TrackingListProps {
   tickers: TrackedItem[];
   isLoading: boolean;
   error: Error | null;
-  refetch: () => void;
   onAddNew: () => void;
 }
 
-export default function TrackingList({ tickers, isLoading, error, refetch, onAddNew }: TrackingListProps) {
+export default function TrackingList({ tickers, isLoading, error, onAddNew }: TrackingListProps) {
   if (isLoading) {
     return (
       <div className="space-y-4">

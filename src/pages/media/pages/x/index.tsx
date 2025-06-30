@@ -8,12 +8,12 @@ import { useState } from "react";
 
 export default function Twitter() {
   const { user_uuid } = useAuthStore();
-  const [show_create, setShowCreate] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
   const { data: subscriptions } = useMediaSubscriptions({
     user_uuid: user_uuid!,
     platform_type: MediaSubscriptionPlatformTypes.twitter,
   });
 
-  return <MediaLayout>{show_create ? <CreateSubscriptions subscriptions={subscriptions || []} onBack={() => setShowCreate(false)} /> : <SubscriptionsList subscriptions={subscriptions || []} onAddNew={() => setShowCreate(true)} />}</MediaLayout>;
+  return <MediaLayout>{isCreating ? <CreateSubscriptions subscriptions={subscriptions || []} onBack={() => setIsCreating(false)} /> : <SubscriptionsList subscriptions={subscriptions || []} onAddNew={() => setIsCreating(true)} />}</MediaLayout>;
 }

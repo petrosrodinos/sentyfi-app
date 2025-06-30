@@ -6,7 +6,7 @@ import type { CreateTrackedItem, TrackedItemQuery } from "../interfaces/tracked-
 
 export function useTrackedItems(query: TrackedItemQuery) {
     return useQuery({
-        queryKey: ["tracked-items"],
+        queryKey: ["tracked-items", query.item_type],
         queryFn: () => getTrackedItems(query),
         retry: false,
     });

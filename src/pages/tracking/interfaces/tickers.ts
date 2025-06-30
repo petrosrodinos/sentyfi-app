@@ -1,12 +1,11 @@
+import type { TrackedItemType } from "./tracked-items";
+
 export interface Ticker {
     ticker: string;
     name: string;
-    logo_url?: string;
     icon_url?: string;
-    description?: string;
-    industry?: string;
     market_cap?: number;
-    market?: string;
+    market?: TrackedItemType;
 }
 
 export interface TickersResponse {
