@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { IconAlertCircle, IconRefresh } from "@tabler/icons-react";
 import TickerCard from "./ticker-card";
 import { type TrackedItem } from "@/pages/tracking/interfaces/tracked-items";
 import { Plus, Users } from "lucide-react";
+import type { Ticker } from "../../../interfaces/tickers";
 
 interface TrackingListProps {
   tickers: TrackedItem[];
@@ -48,21 +48,17 @@ export default function TrackingList({ tickers, isLoading, error, refetch, onAdd
     );
   }
 
-  if (error) {
+  if (error || !tickers?.length) {
     return (
-      <Card className="border-destructive/20">
-        <CardContent className="pt-8 pb-8">
-          <div className="text-center max-w-md mx-auto">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-destructive/10 mb-4">
-              <IconAlertCircle size={32} className="text-destructive" />
-            </div>
-            <h3 className="text-lg font-semibold text-destructive mb-2">Failed to Load Tickers</h3>
-            <p className="text-muted-foreground mb-6 leading-relaxed">{error.message}</p>
-            <Button onClick={() => refetch?.()} variant="outline" className="border-destructive/20 hover:bg-destructive/10 hover:border-destructive/30">
-              <IconRefresh size={16} className="mr-2" />
-              Try Again
-            </Button>
-          </div>
+      <Card className="w-full">
+        <CardContent className="flex flex-col items-center justify-center py-12">
+          <Users className="w-16 h-16 text-muted-foreground mb-4" />
+          <h3 className="text-lg font-semibold mb-2">No tickers yet</h3>
+          <p className="text-muted-foreground text-center max-w-md mb-4">You haven't added any tickers to track yet. Click the button below to start adding tickers.</p>
+          <Button onClick={onAddNew} className="flex items-center space-x-2">
+            <Plus className="w-4 h-4" />
+            <span>Add Your First Ticker</span>
+          </Button>
         </CardContent>
       </Card>
     );
@@ -80,19 +76,7 @@ export default function TrackingList({ tickers, isLoading, error, refetch, onAdd
           <span>Add Ticker</span>
         </Button>
       </div>
-      {tickers?.length === 0 ? (
-        <Card className="w-full">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Users className="w-16 h-16 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No tickers yet</h3>
-            <p className="text-muted-foreground text-center max-w-md mb-4">You haven't added any tickers to track yet. Click the button above to start adding tickers.</p>
-            <Button onClick={onAddNew} className="flex items-center space-x-2">
-              <Plus className="w-4 h-4" />
-              <span>Add Your First Ticker</span>
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
+      {tickers?.length && (
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
@@ -104,7 +88,7 @@ export default function TrackingList({ tickers, isLoading, error, refetch, onAdd
             <div className="space-y-3">
               <div className="space-y-4 w-full">
                 {tickers?.map((ticker: TrackedItem) => (
-                  <TickerCard key={ticker.uuid} ticker={ticker} />
+                  <TickerCard key={ticker.uuid} ticker={ticker.meta as Ticker} trackedItems={tickers} />
                 ))}
               </div>
             </div>

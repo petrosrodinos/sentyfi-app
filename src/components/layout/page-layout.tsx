@@ -31,7 +31,7 @@ export default function PageLayout({ title, description, children, className, si
             <SidebarNav items={sidebarNavItems} />
           </aside>
           <div className={cn("flex w-full overflow-y-hidden p-1 pr-2", className)}>
-            <ScrollArea>{children}</ScrollArea>
+            <ScrollArea className={cn("max-w-[700px] w-full", className)}>{children}</ScrollArea>
           </div>
         </div>
       </Main>

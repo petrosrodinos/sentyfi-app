@@ -1,7 +1,7 @@
 import axiosInstance from "@/config/axios";
-import type { Ticker, TickerQuery } from "../interfaces/tickers";
+import type { TickerQuery, TickersResponse } from "../interfaces/tickers";
 
-export const getTickers = async (query: TickerQuery): Promise<Ticker[]> => {
+export const getTickers = async (query: TickerQuery): Promise<TickersResponse> => {
     try {
         const response = await axiosInstance.get("/market-data/tickers", { params: query });
         return response.data;

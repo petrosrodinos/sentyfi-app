@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { TrackedItemTypes } from "../../interfaces/tracked-items";
 import TrackingLayout from "../../layout";
 import TrackingList from "./components/tracking-list";
+import { CreateTracking } from "./components/create-tracking";
 import { useTrackedItems } from "../../hooks/use-tracked-items";
 import { useAuthStore } from "@/stores/auth";
 
 export default function Stocks() {
+  const [isCreating, setIsCreating] = useState(false);
   const { user_uuid } = useAuthStore();
+
   const {
     data: tickers,
     isLoading,
@@ -17,13 +21,12 @@ export default function Stocks() {
   });
 
   const handleAddNew = () => {
-    // TODO: Implement add new ticker functionality
-    console.log("Add new ticker");
+    setIsCreating(true);
   };
 
-  return (
-    <TrackingLayout>
-      <TrackingList tickers={tickers || []} isLoading={isLoading} error={error} refetch={refetch} onAddNew={handleAddNew} />
-    </TrackingLayout>
-  );
+  const handleBack = () => {
+    setIsCreating(false);
+  };
+
+  return <TrackingLayout>{isCreating ? <CreateTracking trackedItems={tickers || []} onBack={handleBack} /> : <TrackingList tickers={tickers || []} isLoading={isLoading} error={error} refetch={refetch} onAddNew={handleAddNew} />}</TrackingLayout>;
 }
