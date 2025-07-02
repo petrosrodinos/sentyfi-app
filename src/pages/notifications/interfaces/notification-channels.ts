@@ -9,6 +9,15 @@ export interface NotificationChannelData {
     setup_status: "not_setup" | "partially_setup" | "fully_setup";
 }
 
+export interface NotificationChannel {
+    id: string;
+    uuid: string;
+    user_uuid: string;
+    channel: NotificationChannelType;
+    enabled: boolean;
+    verified: boolean;
+}
+
 export interface NotificationChannelQuery {
     user_uuid?: string;
     channel?: NotificationChannelType;
@@ -18,13 +27,13 @@ export interface NotificationChannelQuery {
 
 export const NotificationChannelTypes = {
     email: "email",
-    phone: "phone",
+    phone_call: "phone_call",
     push: "push",
     web: "web",
     telegram: "telegram",
     whatsapp: "whatsapp",
-    slack: "slack",
     discord: "discord",
+    sms: "sms",
 } as const;
 
 export type NotificationChannelType = (typeof NotificationChannelTypes)[keyof typeof NotificationChannelTypes];

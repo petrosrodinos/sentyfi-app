@@ -1,4 +1,4 @@
-import { IconBrandTelegram } from "@tabler/icons-react";
+import { IconBell, IconBrandDiscord, IconBrandTelegram, IconBrandWhatsapp, IconMail, IconMessageCircle, IconPhone } from "@tabler/icons-react";
 import { NotificationChannelTypes, type NotificationChannelData } from "../../../interfaces/notification-channels";
 
 export const NotificationChannelsData: NotificationChannelData[] = [
@@ -18,9 +18,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
   //   description: "Receive instant notifications on your device",
   //   icon: <IconBell size={20} />,
   //   enabled: false,
-  //   requirements: ["Download mobile app", "Accept push notification permissions"],
-  //   requirements_met: false,
-  //   action_required: "Download app and enable notifications",
+  //   verified: false,
   //   setup_status: "not_setup",
   // },
   // {
@@ -29,12 +27,8 @@ export const NotificationChannelsData: NotificationChannelData[] = [
   //   description: "Get browser notifications when you're online",
   //   icon: <IconBell size={20} />,
   //   enabled: true,
-  //   requirements: ["Enable browser notifications", "Stay on website"],
-  //   requirements_met: true,
-  //   action_required: null,
+  //   verified: true,
   //   setup_status: "fully_setup",
-  //   last_used: "2 hours ago",
-  //   notification_count: 12,
   // },
   // {
   //   id: "email",
@@ -42,12 +36,8 @@ export const NotificationChannelsData: NotificationChannelData[] = [
   //   description: "Receive detailed notifications via email",
   //   icon: <IconMail size={20} />,
   //   enabled: true,
-  //   requirements: ["Verify email address", "Check spam folder"],
-  //   requirements_met: true,
-  //   action_required: null,
+  //   verified: true,
   //   setup_status: "fully_setup",
-  //   last_used: "1 day ago",
-  //   notification_count: 5,
   // },
   // {
   //   id: "sms",
@@ -55,9 +45,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
   //   description: "Get text message alerts on your phone",
   //   icon: <IconMessageCircle size={20} />,
   //   enabled: false,
-  //   requirements: ["Verify phone number", "Standard SMS rates apply"],
-  //   requirements_met: true,
-  //   action_required: null,
+  //   verified: false,
   //   setup_status: "partially_setup",
   // },
   // {
@@ -66,9 +54,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
   //   description: "Receive notifications via WhatsApp",
   //   icon: <IconBrandWhatsapp size={20} />,
   //   enabled: false,
-  //   requirements: ["Verify phone number", "Have WhatsApp installed"],
-  //   requirements_met: false,
-  //   action_required: "Verify phone and connect WhatsApp",
+  //   verified: false,
   //   setup_status: "not_setup",
   // },
 
@@ -78,9 +64,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
   //   description: "Receive alerts in your Discord server",
   //   icon: <IconBrandDiscord size={20} />,
   //   enabled: false,
-  //   requirements: ["Join our Discord server", "Configure webhook"],
-  //   requirements_met: false,
-  //   action_required: "Join Discord server and configure",
+  //   verified: false,
   //   setup_status: "not_setup",
   // },
   // {
@@ -89,9 +73,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
   //   description: "Get urgent notifications via phone calls",
   //   icon: <IconPhone size={20} />,
   //   enabled: false,
-  //   requirements: ["Verify phone number", "Premium feature"],
-  //   requirements_met: false,
-  //   action_required: "Upgrade to premium and verify phone",
+  //   verified: false,
   //   setup_status: "not_setup",
   // },
 ];

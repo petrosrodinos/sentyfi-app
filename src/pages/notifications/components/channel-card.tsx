@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { IconCheck, IconX, IconSettings } from "@tabler/icons-react";
-import { NotificationChannelTypes, type NotificationChannelData } from "../interfaces/notification-channels";
+import { NotificationChannelTypes, type NotificationChannelData, type NotificationChannelType } from "../interfaces/notification-channels";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "@/routes/routes";
 
@@ -15,14 +15,25 @@ interface ChannelCardProps {
 export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
   const navigate = useNavigate();
 
+  const channelsToSetup: Record<NotificationChannelType, string> = {
+    [NotificationChannelTypes.telegram]: Routes.notifications.telegram,
+    [NotificationChannelTypes.email]: Routes.notifications.email,
+    [NotificationChannelTypes.phone_call]: Routes.notifications.phone_call,
+    [NotificationChannelTypes.push]: Routes.notifications.push,
+    [NotificationChannelTypes.sms]: Routes.notifications.sms,
+    [NotificationChannelTypes.discord]: Routes.notifications.discord,
+    [NotificationChannelTypes.web]: Routes.notifications.root,
+    [NotificationChannelTypes.whatsapp]: Routes.notifications.whatsapp,
+  };
+
   const handle_toggle_channel = () => {
     const updated_channel = { ...channel, enabled: !channel.enabled };
     on_channel_update(updated_channel);
   };
 
   const handle_setup_channel = () => {
-    if (channel.channel === NotificationChannelTypes.telegram) {
-      navigate(Routes.notifications.telegram);
+    if (channelsToSetup[channel.channel!]) {
+      navigate(channelsToSetup[channel.channel!]);
       return;
     }
 
@@ -92,7 +103,7 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
               {!channel.verified && <p className="text-xs text-muted-foreground mt-1">Setup required</p>}
             </div>
 
-            <Button variant="outline" size="sm" onClick={handle_setup_channel} disabled={channel.verified}>
+            <Button variant="outline" size="sm" onClick={handle_setup_channel}>
               <IconSettings size={16} className="mr-2" />
               {channel.verified ? "Configure" : "Setup"}
             </Button>
