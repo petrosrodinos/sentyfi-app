@@ -18,12 +18,15 @@ import PushNotifications from "@/pages/notifications/pages/push";
 import PhoneCallNotifications from "@/pages/notifications/pages/phone-call";
 import NotificationsLayout from "@/pages/notifications/layout";
 import NotificationsList from "@/pages/notifications";
+import TrackingLayout from "@/pages/tracking/layout";
+import MediaLayout from "@/pages/media/layout";
+import AuthLayout from "@/pages/auth/layout";
 
 export default function AppRoutes() {
   return (
     <Routes>
       {/* Auth routes */}
-      <Route path="/auth">
+      <Route path="/auth" element={<AuthLayout />}>
         <Route path="sign-up" element={<SignUp />} />
         <Route path="sign-in" element={<SignIn />} />
         <Route index element={<Navigate to="/auth/sign-in" replace />} />
@@ -34,7 +37,7 @@ export default function AppRoutes() {
         <Route index element={<Dashboard />} />
 
         {/* Media routes */}
-        <Route path="media">
+        <Route path="media" element={<MediaLayout />}>
           <Route path="x" element={<Twitter />} />
           <Route path="youtube" element={<Youtube />} />
           <Route path="reddit" element={<Reddit />} />
@@ -42,7 +45,7 @@ export default function AppRoutes() {
         </Route>
 
         {/* Tracking routes */}
-        <Route path="tracking">
+        <Route path="tracking" element={<TrackingLayout />}>
           <Route path="stocks" element={<Stocks />} />
           <Route path="crypto" element={<Crypto />} />
         </Route>

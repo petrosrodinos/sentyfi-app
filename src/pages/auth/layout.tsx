@@ -1,11 +1,8 @@
 import Navbar from "@/components/layout/navbar";
 import { APP_NAME } from "@/constants";
+import { Outlet } from "react-router-dom";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export default function AuthLayout({ children }: Props) {
+export default function AuthLayout() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -18,7 +15,7 @@ export default function AuthLayout({ children }: Props) {
               </svg>
               <h2 className="text-xl font-medium">{APP_NAME}</h2>
             </div>
-            {children}
+            <Outlet />
           </div>
         </div>
       </main>

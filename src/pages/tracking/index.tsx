@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { type TrackedItemType } from "./interfaces/tracked-items";
-import TrackingLayout from "./layout";
 import TrackingList from "./components/tracking-list";
 import { CreateTracking } from "./components/create-tracking";
 import { useTrackedItems } from "./hooks/use-tracked-items";
@@ -31,5 +30,5 @@ export default function Tracking({ market }: TrackingProps) {
     setIsCreating(false);
   };
 
-  return <TrackingLayout>{isCreating ? <CreateTracking trackedItems={tickers || []} onBack={handleBack} market={market} /> : <TrackingList tickers={tickers || []} isLoading={isLoading} error={error} onAddNew={handleAddNew} />}</TrackingLayout>;
+  return <>{isCreating ? <CreateTracking trackedItems={tickers || []} onBack={handleBack} market={market} /> : <TrackingList tickers={tickers || []} isLoading={isLoading} error={error} onAddNew={handleAddNew} />}</>;
 }

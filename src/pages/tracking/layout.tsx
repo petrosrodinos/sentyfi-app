@@ -1,17 +1,13 @@
 import { IconChartCandle, IconCurrencyDollar } from "@tabler/icons-react";
 import { Routes } from "@/routes/routes";
 import PageLayout from "@/components/layout/page-layout";
+import { Outlet } from "react-router-dom";
 
-interface TrackingLayoutProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-export default function TrackingLayout({ children, className }: TrackingLayoutProps) {
+export default function TrackingLayout() {
   return (
     <>
-      <PageLayout title="Tracking" description="Manage which stocks, crypto, and other assets you want to track." sidebarNavItems={sidebarNavItems} className={className}>
-        {children}
+      <PageLayout title="Tracking" description="Manage which stocks, crypto, and other assets you want to track." sidebarNavItems={sidebarNavItems}>
+        <Outlet />
       </PageLayout>
     </>
   );
