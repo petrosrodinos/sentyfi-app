@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getTickers } from "../services/tickers";
 import type { TickerQuery } from "../interfaces/tickers";
 
-export const useTickers = (query: TickerQuery) => {
+export function useTickers(query: TickerQuery) {
     return useQuery({
         queryKey: ["tickers", query],
         queryFn: () => getTickers(query),

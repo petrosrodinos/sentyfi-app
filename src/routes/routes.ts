@@ -30,8 +30,8 @@ export const Routes = {
         options: "/dashboard/tracking/options",
     },
     notifications: {
-        root: "/dashboard/notifications/list",
-        list: "/dashboard/notifications/list",
+        root: "/dashboard/notifications/channels",
+        channels: "/dashboard/notifications/channels",
         push: "/dashboard/notifications/push",
         email: "/dashboard/notifications/email",
         sms: "/dashboard/notifications/sms",

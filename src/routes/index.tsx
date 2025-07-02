@@ -18,7 +18,7 @@ import DiscordNotifications from "@/pages/notifications/pages/discord";
 import PushNotifications from "@/pages/notifications/pages/push";
 import PhoneCallNotifications from "@/pages/notifications/pages/phone-call";
 import NotificationsLayout from "@/pages/notifications/layout";
-import NotificationsList from "@/pages/notifications";
+import NotificationChannels from "@/pages/notifications/pages/channels";
 import TrackingLayout from "@/pages/tracking/layout";
 import MediaLayout from "@/pages/media/layout";
 import AuthLayout from "@/pages/auth/layout";
@@ -53,7 +53,7 @@ export default function AppRoutes() {
         </Route>
 
         <Route path="notifications" element={<NotificationsLayout />}>
-          <Route path="list" element={<NotificationsList />} />
+          <Route path="channels" element={<NotificationChannels />} />
           <Route path="push" element={<PushNotifications />} />
           <Route path="email" element={<EmailNotifications />} />
           <Route path="sms" element={<SMSNotifications />} />

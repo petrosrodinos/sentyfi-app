@@ -15,7 +15,7 @@ const sidebarNavItems = [
   {
     title: "All Channels",
     icon: <IconList size={18} />,
-    href: Routes.notifications.list,
+    href: Routes.notifications.channels,
   },
   {
     title: "Push Notifications",
