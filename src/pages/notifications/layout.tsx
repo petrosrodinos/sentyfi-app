@@ -32,11 +32,11 @@ const sidebarNavItems = [
     icon: <IconMessageCircle size={18} />,
     href: Routes.notifications.sms,
   },
-  {
-    title: "WhatsApp",
-    icon: <IconBrandWhatsapp size={18} />,
-    href: Routes.notifications.whatsapp,
-  },
+  // {
+  //   title: "WhatsApp",
+  //   icon: <IconBrandWhatsapp size={18} />,
+  //   href: Routes.notifications.whatsapp,
+  // },
   {
     title: "Telegram",
     icon: <IconBrandTelegram size={18} />,

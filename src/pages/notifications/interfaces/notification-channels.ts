@@ -1,21 +1,17 @@
 export interface NotificationChannelData {
     id: string;
-    type?: NotificationChannelType;
+    channel?: NotificationChannelType;
     title: string;
     description: string;
     icon: React.ReactNode;
     enabled: boolean;
-    requirements: string[];
-    requirements_met: boolean;
-    action_required: string | null;
+    verified: boolean;
     setup_status: "not_setup" | "partially_setup" | "fully_setup";
-    last_used?: string;
-    notification_count?: number;
 }
 
 export interface NotificationChannelQuery {
     user_uuid?: string;
-    channel?: string;
+    channel?: NotificationChannelType;
     verified?: boolean;
     enabled?: boolean;
 }

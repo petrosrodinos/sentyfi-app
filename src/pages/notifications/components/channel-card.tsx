@@ -21,7 +21,7 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
   };
 
   const handle_setup_channel = () => {
-    if (channel.type === NotificationChannelTypes.telegram) {
+    if (channel.channel === NotificationChannelTypes.telegram) {
       navigate(Routes.notifications.telegram);
       return;
     }
@@ -63,19 +63,6 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
     }
   };
 
-  const get_status_color = (status: string) => {
-    switch (status) {
-      case "fully_setup":
-        return "text-green-600";
-      case "partially_setup":
-        return "text-yellow-600";
-      case "not_setup":
-        return "text-red-600";
-      default:
-        return "text-muted-foreground";
-    }
-  };
-
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-6">
@@ -91,59 +78,26 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
 
               <p className="text-sm text-muted-foreground mb-2">{channel.description}</p>
 
-              <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                {channel.last_used && <span>Last used: {channel.last_used}</span>}
-                {channel.notification_count !== undefined && <span>{channel.notification_count} notifications sent</span>}
-                {!channel.requirements_met && <span className={get_status_color(channel.setup_status)}>{channel.requirements.length} requirements pending</span>}
-              </div>
+              <div className="flex items-center space-x-4 text-xs text-muted-foreground">{channel.verified && <span>Verified</span>}</div>
             </div>
           </div>
 
           <div className="flex items-center space-x-3">
             <div className="text-right">
               <div className="flex items-center space-x-2">
-                <Switch checked={channel.enabled} onCheckedChange={handle_toggle_channel} disabled={!channel.requirements_met} />
+                <Switch checked={channel.enabled} onCheckedChange={handle_toggle_channel} disabled={!channel.verified} />
                 <span className="text-sm font-medium">{channel.enabled ? "Enabled" : "Disabled"}</span>
               </div>
 
-              {!channel.requirements_met && <p className="text-xs text-muted-foreground mt-1">Setup required</p>}
+              {!channel.verified && <p className="text-xs text-muted-foreground mt-1">Setup required</p>}
             </div>
 
-            <Button variant="outline" size="sm" onClick={handle_setup_channel} disabled={channel.requirements_met}>
+            <Button variant="outline" size="sm" onClick={handle_setup_channel} disabled={channel.verified}>
               <IconSettings size={16} className="mr-2" />
-              {channel.requirements_met ? "Configure" : "Setup"}
+              {channel.verified ? "Configure" : "Setup"}
             </Button>
           </div>
         </div>
-
-        {!channel.requirements_met && (
-          <div className="mt-4 pt-4 border-t">
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Badge variant="destructive" className="text-xs">
-                  Setup Required
-                </Badge>
-              </div>
-
-              <ul className="text-sm text-muted-foreground space-y-1">
-                {channel.requirements.map((requirement, index) => (
-                  <li key={index} className="flex items-center space-x-2">
-                    <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full" />
-                    <span>{requirement}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {channel.action_required && (
-                <div className="pt-2">
-                  <Button size="sm" onClick={handle_setup_channel} className="w-full">
-                    {channel.action_required}
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

@@ -4,14 +4,12 @@ import { NotificationChannelTypes, type NotificationChannelData } from "../../..
 export const NotificationChannelsData: NotificationChannelData[] = [
   {
     id: "telegram",
-    type: NotificationChannelTypes.telegram,
+    channel: NotificationChannelTypes.telegram,
     title: "Telegram Notifications",
     description: "Get notifications through Telegram bot",
     icon: <IconBrandTelegram size={20} />,
     enabled: false,
-    requirements: ["Start bot conversation", "Enter correct pin code"],
-    requirements_met: false,
-    action_required: "Setup Telegram bot",
+    verified: false,
     setup_status: "not_setup",
   },
   // {

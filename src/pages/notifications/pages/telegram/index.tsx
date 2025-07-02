@@ -4,15 +4,63 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { IconBrandTelegram, IconCheck, IconExternalLink, IconQrcode, IconBolt } from "@tabler/icons-react";
+import { IconBrandTelegram, IconCheck, IconBolt, IconCopy, IconRefresh } from "@tabler/icons-react";
+import { toast } from "@/hooks/use-toast";
 
 export default function TelegramNotifications() {
   const [bot_connected, set_bot_connected] = useState(false);
   const [telegram_enabled, set_telegram_enabled] = useState(false);
+  const [generated_code, set_generated_code] = useState<string | null>(null);
+  const [is_generating, set_is_generating] = useState(false);
+
+  const generate_code = async () => {
+    set_is_generating(true);
+    try {
+      // Simulate API call to generate code
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+      set_generated_code(code);
+      toast({
+        title: "Code generated",
+        description: "Copy the code and enter it in the Telegram bot",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate code. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      set_is_generating(false);
+    }
+  };
+
+  const copy_code = async () => {
+    if (generated_code) {
+      try {
+        await navigator.clipboard.writeText(generated_code);
+        toast({
+          title: "Code copied",
+          description: "Code copied to clipboard",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to copy code",
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   const connect_bot = () => {
     set_bot_connected(true);
     set_telegram_enabled(true);
+    set_generated_code(null);
+    toast({
+      title: "Bot connected",
+      description: "Your Telegram bot is now connected",
+    });
   };
 
   return (
@@ -28,7 +76,7 @@ export default function TelegramNotifications() {
             <IconBrandTelegram size={20} className="text-primary" />
             <CardTitle>Telegram Bot Setup</CardTitle>
           </div>
-          <CardDescription>Connect to our Telegram bot to receive notifications</CardDescription>
+          <CardDescription>Generate a code to connect to our Telegram bot</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {!bot_connected ? (
@@ -36,24 +84,65 @@ export default function TelegramNotifications() {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <h4 className="font-medium text-blue-800 mb-2">How to connect:</h4>
                 <ol className="text-sm text-blue-700 space-y-1">
-                  <li>1. Open Telegram on your phone or desktop</li>
-                  <li>2. Search for our bot: @SentyfiBot</li>
-                  <li>3. Click "Start" to begin the conversation</li>
-                  <li>4. Follow the setup instructions in the chat</li>
-                  <li>5. Use the command /connect to link your account</li>
+                  <li>1. Click "Generate Code" below</li>
+                  <li>2. Copy the generated code</li>
+                  <li>3. Open Telegram and search for @SentyfiBot</li>
+                  <li>4. Start a conversation with the bot</li>
+                  <li>5. Enter the code when prompted</li>
+                  <li>6. Click "I've Connected" once done</li>
                 </ol>
               </div>
 
-              <div className="flex space-x-2">
-                <Button onClick={connect_bot} className="flex-1">
-                  <IconBolt size={16} className="mr-2" />
-                  I've Connected the Bot
+              {!generated_code ? (
+                <Button onClick={generate_code} disabled={is_generating} className="w-full">
+                  {is_generating ? (
+                    <>
+                      <IconRefresh size={16} className="mr-2 animate-spin" />
+                      Generating Code...
+                    </>
+                  ) : (
+                    <>
+                      <IconBolt size={16} className="mr-2" />
+                      Generate Code
+                    </>
+                  )}
                 </Button>
-                <Button variant="outline" className="flex-1">
-                  <IconExternalLink size={16} className="mr-2" />
-                  Open Telegram
-                </Button>
-              </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="bg-muted border rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground mb-1">Your connection code:</p>
+                        <p className="text-2xl font-mono font-bold tracking-wider">{generated_code}</p>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={copy_code} className="ml-2">
+                        <IconCopy size={16} className="mr-1" />
+                        Copy
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-2">
+                    <Button onClick={connect_bot} className="flex-1">
+                      <IconCheck size={16} className="mr-2" />
+                      I've Connected the Bot
+                    </Button>
+                    <Button variant="outline" onClick={generate_code} disabled={is_generating} className="flex-1">
+                      {is_generating ? (
+                        <>
+                          <IconRefresh size={16} className="mr-2 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <IconRefresh size={16} className="mr-2" />
+                          Generate New Code
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-3">

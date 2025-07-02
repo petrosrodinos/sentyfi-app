@@ -16,7 +16,7 @@ export default function NotificationChannels() {
   useEffect(() => {
     if (data?.length) {
       const channels = data.map((channel) => {
-        const channel_data = NotificationChannelsData.find((c) => c.type === channel.type);
+        const channel_data = NotificationChannelsData.find((c) => c.channel === channel.channel);
         return { ...channel_data, ...channel };
       });
       setNotificationChannels(channels);
@@ -46,11 +46,11 @@ export default function NotificationChannels() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div>
             <span className="text-muted-foreground">Active channels:</span>
-            <span className="ml-2 font-medium">{notificationChannels?.filter((c) => c.enabled && c.requirements_met).length || 0}</span>
+            <span className="ml-2 font-medium">{notificationChannels?.filter((c) => c.enabled && c.verified).length || 0}</span>
           </div>
           <div>
             <span className="text-muted-foreground">Setup required:</span>
-            <span className="ml-2 font-medium">{notificationChannels?.filter((c) => !c.requirements_met).length || 0}</span>
+            <span className="ml-2 font-medium">{notificationChannels?.filter((c) => !c.verified).length || 0}</span>
           </div>
           <div>
             <span className="text-muted-foreground">Total channels:</span>
