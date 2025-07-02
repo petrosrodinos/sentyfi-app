@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "@/pages/dashboard";
+import Alerts from "@/pages/alerts";
 import SignUp from "@/pages/auth/pages/sign-up";
 import SignIn from "@/pages/auth/pages/sign-in";
 import AppLayout from "@/pages/layout";
@@ -35,6 +36,7 @@ export default function AppRoutes() {
       {/* Console routes with layout */}
       <Route path="/dashboard" element={<AppLayout />}>
         <Route index element={<Dashboard />} />
+        <Route path="alerts" element={<Alerts />} />
 
         {/* Media routes */}
         <Route path="media" element={<MediaLayout />}>
@@ -60,6 +62,9 @@ export default function AppRoutes() {
           <Route path="discord" element={<DiscordNotifications />} />
           <Route path="phone-call" element={<PhoneCallNotifications />} />
         </Route>
+
+        {/* Catch all route */}
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
 
       {/* Default redirect */}

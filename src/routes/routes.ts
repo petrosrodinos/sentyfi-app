@@ -10,6 +10,7 @@ export const Routes = {
         verify_phone_otp: "/auth/verify-phone-otp",
     },
     dashboard: "/dashboard",
+    alerts: "/dashboard/alerts",
     media: {
         root: "/dashboard/media",
         x: "/dashboard/media/x",

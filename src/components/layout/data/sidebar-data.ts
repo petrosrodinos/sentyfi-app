@@ -9,6 +9,7 @@ import {
   IconPhoto,
   IconUserCircle,
   IconUserCog,
+  IconAlertTriangle,
 } from "@tabler/icons-react";
 import { Command, CreditCard } from "lucide-react";
 import { type SidebarData } from "../types";
@@ -47,6 +48,11 @@ export const sidebarData: SidebarData = {
           title: "Notifications",
           url: Routes.notifications.root,
           icon: IconBell,
+        },
+        {
+          title: "Alerts",
+          url: Routes.alerts,
+          icon: IconAlertTriangle,
         },
       ],
     },
