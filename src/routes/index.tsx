@@ -3,13 +3,21 @@ import Dashboard from "@/pages/dashboard";
 import SignUp from "@/pages/auth/pages/sign-up";
 import SignIn from "@/pages/auth/pages/sign-in";
 import AppLayout from "@/pages/layout";
-import Notifications from "@/pages/notifications";
 import Twitter from "@/pages/media/pages/x";
 import News from "@/pages/media/pages/news";
 import Youtube from "@/pages/media/pages/youtube";
 import Reddit from "@/pages/media/pages/reddit";
 import Stocks from "@/pages/tracking/pages/stocks";
 import Crypto from "@/pages/tracking/pages/crypto";
+import EmailNotifications from "@/pages/notifications/pages/email";
+import SMSNotifications from "@/pages/notifications/pages/sms";
+import WhatsAppNotifications from "@/pages/notifications/pages/whatsapp";
+import TelegramNotifications from "@/pages/notifications/pages/telegram";
+import DiscordNotifications from "@/pages/notifications/pages/discord";
+import PushNotifications from "@/pages/notifications/pages/push";
+import PhoneCallNotifications from "@/pages/notifications/pages/phone-call";
+import NotificationsLayout from "@/pages/notifications/layout";
+import NotificationsList from "@/pages/notifications";
 
 export default function AppRoutes() {
   return (
@@ -39,7 +47,16 @@ export default function AppRoutes() {
           <Route path="crypto" element={<Crypto />} />
         </Route>
 
-        <Route path="notifications" element={<Notifications />}></Route>
+        <Route path="notifications" element={<NotificationsLayout />}>
+          <Route path="list" element={<NotificationsList />} />
+          <Route path="push" element={<PushNotifications />} />
+          <Route path="email" element={<EmailNotifications />} />
+          <Route path="sms" element={<SMSNotifications />} />
+          <Route path="whatsapp" element={<WhatsAppNotifications />} />
+          <Route path="telegram" element={<TelegramNotifications />} />
+          <Route path="discord" element={<DiscordNotifications />} />
+          <Route path="phone-call" element={<PhoneCallNotifications />} />
+        </Route>
       </Route>
 
       {/* Default redirect */}

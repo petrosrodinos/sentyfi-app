@@ -1,50 +1,32 @@
-import { IconMail, IconMessageCircle, IconBrandWhatsapp, IconBrandTelegram, IconBrandDiscord, IconBell } from "@tabler/icons-react";
-import { Separator } from "@/components/ui/separator";
-import { Main } from "@/components/layout/main";
-import SidebarNav from "@/components/sidebar-nav";
+import { IconMail, IconMessageCircle, IconBrandWhatsapp, IconBrandTelegram, IconBrandDiscord, IconBell, IconPhone, IconList } from "@tabler/icons-react";
 import { Routes } from "@/routes/routes";
+import PageLayout from "@/components/layout/page-layout";
+import { Outlet } from "react-router-dom";
 
-interface NotificationsLayoutProps {
-  children: React.ReactNode;
-}
-
-export default function NotificationsLayout({ children }: NotificationsLayoutProps) {
+export default function NotificationsLayout() {
   return (
-    <>
-      <Main fixed>
-        <div className="space-y-0.5">
-          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Notifications</h1>
-          <p className="text-muted-foreground">Manage which notifications you want to receive.</p>
-        </div>
-        <Separator className="my-4 lg:my-6" />
-        <div className="flex flex-1 flex-col space-y-2 overflow-hidden md:space-y-2 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <aside className="top-0 lg:sticky lg:w-1/5">
-            <SidebarNav items={sidebarNavItems} />
-          </aside>
-          <div className="flex w-full overflow-y-hidden p-1 pr-4">{children}</div>
-        </div>
-      </Main>
-    </>
+    <PageLayout title="Notifications" description="Manage which notifications you want to receive." sidebarNavItems={sidebarNavItems}>
+      <Outlet />
+    </PageLayout>
   );
 }
 
 const sidebarNavItems = [
+  {
+    title: "All Channels",
+    icon: <IconList size={18} />,
+    href: Routes.notifications.list,
+  },
   {
     title: "Push Notifications",
     icon: <IconBell size={18} />,
     href: Routes.notifications.push,
   },
   {
-    title: "Web Notifications",
-    icon: <IconBell size={18} />,
-    href: Routes.notifications.web,
-  },
-  {
     title: "Email",
     icon: <IconMail size={18} />,
     href: Routes.notifications.email,
   },
-
   {
     title: "SMS",
     icon: <IconMessageCircle size={18} />,
@@ -64,5 +46,10 @@ const sidebarNavItems = [
     title: "Discord",
     icon: <IconBrandDiscord size={18} />,
     href: Routes.notifications.discord,
+  },
+  {
+    title: "Phone Call",
+    icon: <IconPhone size={18} />,
+    href: Routes.notifications.phone_call,
   },
 ];

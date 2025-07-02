@@ -29,14 +29,15 @@ export const Routes = {
         options: "/dashboard/tracking/options",
     },
     notifications: {
-        root: "/dashboard/notifications",
+        root: "/dashboard/notifications/list",
+        list: "/dashboard/notifications/list",
         push: "/dashboard/notifications/push",
-        web: "/dashboard/notifications/web",
         email: "/dashboard/notifications/email",
         sms: "/dashboard/notifications/sms",
         whatsapp: "/dashboard/notifications/whatsapp",
         telegram: "/dashboard/notifications/telegram",
         discord: "/dashboard/notifications/discord",
+        phone_call: "/dashboard/notifications/phone-call",
     },
     account: {
         profile: "/dashboard/account/profile",

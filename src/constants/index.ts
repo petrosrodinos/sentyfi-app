@@ -9,4 +9,4 @@ export const AFFILIATE_COMMISSION_PERCENTAGE = 0.1; // 10%
 
 export const SUPPORT_EMAIL = "rodinosonline@yahoo.com";
 
-export const APP_NAME = "Nestify";
+export const APP_NAME = "Sentify";
