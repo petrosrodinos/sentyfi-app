@@ -1,8 +1,8 @@
 import axiosInstance from "@/config/axios";
-import type { NotificationChannelData, NotificationChannelQuery } from "../interfaces/notification-channels";
+import type { CreateNotificationChannel, NotificationChannel, NotificationChannelData, NotificationChannelQuery, UpdateNotificationChannel } from "../interfaces/notification-channels";
 
 
-export const getNotificationChannels = async (query: NotificationChannelQuery): Promise<NotificationChannelData[]> => {
+export const getNotificationChannels = async (query: NotificationChannelQuery): Promise<NotificationChannel[]> => {
     try {
         const response = await axiosInstance.get("/notification-channels", { params: query });
         return response.data;
@@ -11,7 +11,7 @@ export const getNotificationChannels = async (query: NotificationChannelQuery): 
     }
 };
 
-export const createNotificationChannel = async (payload: NotificationChannelData): Promise<NotificationChannelData> => {
+export const createNotificationChannel = async (payload: CreateNotificationChannel): Promise<NotificationChannelData> => {
     try {
         const response = await axiosInstance.post("/notification-channels", payload);
         return response.data;
@@ -20,9 +20,9 @@ export const createNotificationChannel = async (payload: NotificationChannelData
     }
 };
 
-export const updateNotificationChannel = async (id: string, payload: NotificationChannelData): Promise<NotificationChannelData> => {
+export const updateNotificationChannel = async (payload: UpdateNotificationChannel): Promise<NotificationChannel> => {
     try {
-        const response = await axiosInstance.put(`/notification-channels/${id}`, payload);
+        const response = await axiosInstance.patch(`/notification-channels/${payload.id}`, payload);
         return response.data;
     } catch (error) {
         throw new Error("Failed to update notification channel. Please try again.");

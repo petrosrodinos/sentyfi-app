@@ -38,7 +38,7 @@ export const Routes = {
         whatsapp: "/dashboard/notifications/whatsapp",
         telegram: "/dashboard/notifications/telegram",
         discord: "/dashboard/notifications/discord",
-        phone_call: "/dashboard/notifications/phone-call",
+        phone: "/dashboard/notifications/phone",
     },
     account: {
         profile: "/dashboard/account/profile",

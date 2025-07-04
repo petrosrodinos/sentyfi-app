@@ -5,6 +5,7 @@ import { type NotificationChannelData } from "../../interfaces/notification-chan
 import { useNotificationChannels } from "../../hooks/use-notification-channels";
 import { useAuthStore } from "@/stores/auth";
 import { NotificationChannelsData } from "./data";
+import SkeletonLoader from "../../components/skeleton-loader";
 
 export default function NotificationChannels() {
   const [notificationChannels, setNotificationChannels] = useState<NotificationChannelData[]>(NotificationChannelsData);
@@ -17,14 +18,19 @@ export default function NotificationChannels() {
     if (data?.length) {
       const channels = data.map((channel) => {
         const channel_data = NotificationChannelsData.find((c) => c.channel === channel.channel);
-        return { ...channel_data, ...channel };
+        return {
+          ...channel_data,
+          enabled: channel.enabled,
+          verified: channel.verified,
+          setup_status: channel.verified ? "fully_setup" : "not_setup",
+        };
       });
-      setNotificationChannels(channels);
+      setNotificationChannels(channels as NotificationChannelData[]);
       console.log(channels);
     }
   }, [data]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <SkeletonLoader className="h-full" />;
 
   return (
     <div className="space-y-6">

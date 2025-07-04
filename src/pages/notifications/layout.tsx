@@ -50,6 +50,6 @@ const sidebarNavItems = [
   {
     title: "Phone Call",
     icon: <IconPhone size={18} />,
-    href: Routes.notifications.phone_call,
+    href: Routes.notifications.phone,
   },
 ];

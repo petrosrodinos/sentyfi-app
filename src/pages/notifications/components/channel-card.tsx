@@ -18,7 +18,7 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
   const channelsToSetup: Record<NotificationChannelType, string> = {
     [NotificationChannelTypes.telegram]: Routes.notifications.telegram,
     [NotificationChannelTypes.email]: Routes.notifications.email,
-    [NotificationChannelTypes.phone_call]: Routes.notifications.phone_call,
+    [NotificationChannelTypes.phone]: Routes.notifications.phone,
     [NotificationChannelTypes.push]: Routes.notifications.push,
     [NotificationChannelTypes.sms]: Routes.notifications.sms,
     [NotificationChannelTypes.discord]: Routes.notifications.discord,
@@ -26,12 +26,12 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
     [NotificationChannelTypes.whatsapp]: Routes.notifications.whatsapp,
   };
 
-  const handle_toggle_channel = () => {
+  const handleToggleChannel = () => {
     const updated_channel = { ...channel, enabled: !channel.enabled };
     on_channel_update(updated_channel);
   };
 
-  const handle_setup_channel = () => {
+  const handleSetupChannel = () => {
     if (channelsToSetup[channel.channel!]) {
       navigate(channelsToSetup[channel.channel!]);
       return;
@@ -46,7 +46,7 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
     on_channel_update(updated_channel);
   };
 
-  const get_setup_status_badge = (status: string) => {
+  const getSetupStatusBadge = (status: string) => {
     switch (status) {
       case "fully_setup":
         return (
@@ -84,7 +84,7 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-3 mb-1">
                 <h3 className="font-semibold text-lg truncate">{channel.title}</h3>
-                {get_setup_status_badge(channel.setup_status)}
+                {getSetupStatusBadge(channel.setup_status)}
               </div>
 
               <p className="text-sm text-muted-foreground mb-2">{channel.description}</p>
@@ -96,14 +96,14 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
           <div className="flex items-center space-x-3">
             <div className="text-right">
               <div className="flex items-center space-x-2">
-                <Switch checked={channel.enabled} onCheckedChange={handle_toggle_channel} disabled={!channel.verified} />
+                <Switch checked={channel.enabled} onCheckedChange={handleToggleChannel} disabled={!channel.verified} />
                 <span className="text-sm font-medium">{channel.enabled ? "Enabled" : "Disabled"}</span>
               </div>
 
               {!channel.verified && <p className="text-xs text-muted-foreground mt-1">Setup required</p>}
             </div>
 
-            <Button variant="outline" size="sm" onClick={handle_setup_channel}>
+            <Button variant="outline" size="sm" onClick={handleSetupChannel}>
               <IconSettings size={16} className="mr-2" />
               {channel.verified ? "Configure" : "Setup"}
             </Button>

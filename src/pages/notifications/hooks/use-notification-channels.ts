@@ -1,20 +1,33 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { getNotificationChannels, createNotificationChannel, updateNotificationChannel, deleteNotificationChannel } from "../services/notification-channels";
-import type { NotificationChannelData, NotificationChannelQuery } from "../interfaces/notification-channels";
+import type { CreateNotificationChannel, NotificationChannelQuery, UpdateNotificationChannel } from "../interfaces/notification-channels";
 
 export function useNotificationChannels(query: NotificationChannelQuery) {
     return useQuery({
-        queryKey: ["notification-channels"],
+        queryKey: ["notification-channels", query],
         queryFn: () => getNotificationChannels(query),
         enabled: !!query,
         retry: false,
     });
 }
 
+export function useGetNotificationChannels() {
+    return useMutation({
+        mutationFn: (query: NotificationChannelQuery) => getNotificationChannels(query),
+        onError: () => {
+            toast({
+                title: "Failed to fetch notification channels",
+                description: "Please try again",
+                duration: 3000,
+            });
+        },
+    });
+}
+
 export function useCreateNotificationChannel() {
     return useMutation({
-        mutationFn: createNotificationChannel,
+        mutationFn: (payload: CreateNotificationChannel) => createNotificationChannel(payload),
         onSuccess: () => {
             toast({
                 title: "Notification channel created successfully",
@@ -35,7 +48,7 @@ export function useCreateNotificationChannel() {
 
 export function useUpdateNotificationChannel() {
     return useMutation({
-        mutationFn: (payload: NotificationChannelData) => updateNotificationChannel(payload.id, payload),
+        mutationFn: (payload: UpdateNotificationChannel) => updateNotificationChannel(payload),
         onSuccess: () => {
             toast({
                 title: "Notification channel updated successfully",

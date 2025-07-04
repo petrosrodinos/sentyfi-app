@@ -2,66 +2,101 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { IconBrandTelegram, IconCheck, IconBolt, IconCopy, IconRefresh } from "@tabler/icons-react";
 import { toast } from "@/hooks/use-toast";
+import { useCreateVerificationToken } from "../../hooks/verification-tokens";
+import { useAuthStore } from "@/stores/auth";
+import { VerificationTokenType } from "../../interfaces/verification-tokens";
+import { NotificationChannelTypes, type NotificationChannel } from "../../interfaces/notification-channels";
+import { useNotificationChannels, useGetNotificationChannels, useUpdateNotificationChannel } from "../../hooks/use-notification-channels";
+import { useEffect } from "react";
+import SkeletonLoader from "../../components/skeleton-loader";
+import { Loader, Loader2, LoaderIcon } from "lucide-react";
 
 export default function TelegramNotifications() {
-  const [bot_connected, set_bot_connected] = useState(false);
-  const [telegram_enabled, set_telegram_enabled] = useState(false);
-  const [generated_code, set_generated_code] = useState<string | null>(null);
-  const [is_generating, set_is_generating] = useState(false);
+  const { user_uuid } = useAuthStore();
+  const [botConnected, setBotConnected] = useState(false);
+  const [telegramEnabled, setTelegramEnabled] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState<string | null>(null);
 
-  const generate_code = async () => {
-    set_is_generating(true);
-    try {
-      // Simulate API call to generate code
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-      set_generated_code(code);
-      toast({
-        title: "Code generated",
-        description: "Copy the code and enter it in the Telegram bot",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to generate code. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      set_is_generating(false);
+  const { data: telegramChannel, isLoading: isLoadingTelegramChannel } = useNotificationChannels({ user_uuid: user_uuid!, channel: NotificationChannelTypes.telegram });
+
+  const { mutate: createVerificationToken, isPending: isCreatingVerificationToken } = useCreateVerificationToken();
+
+  const { mutate: getNotificationChannels, isPending: isLoadingNotificationChannels } = useGetNotificationChannels();
+
+  const { mutate: updateNotificationChannelMutation, isPending: isUpdatingNotificationChannel } = useUpdateNotificationChannel();
+
+  useEffect(() => {
+    if (telegramChannel) {
+      setBotConnected(telegramChannel[0].verified);
+      setTelegramEnabled(telegramChannel[0].enabled);
     }
-  };
+  }, [telegramChannel]);
 
-  const copy_code = async () => {
-    if (generated_code) {
-      try {
-        await navigator.clipboard.writeText(generated_code);
-        toast({
-          title: "Code copied",
-          description: "Code copied to clipboard",
-        });
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to copy code",
-          variant: "destructive",
-        });
+  const generateCode = async () => {
+    createVerificationToken(
+      {
+        type: VerificationTokenType.telegram,
+        user_uuid: user_uuid!,
+      },
+      {
+        onSuccess: (data) => {
+          setGeneratedCode(data.token!);
+        },
       }
+    );
+  };
+
+  const connectBot = async () => {
+    getNotificationChannels(
+      { user_uuid: user_uuid!, channel: NotificationChannelTypes.telegram },
+      {
+        onSuccess: (data: NotificationChannel[]) => {
+          toast({
+            title: "Bot connected",
+            description: "You have successfully connected the bot",
+          });
+          setBotConnected(data[0].verified);
+          setTelegramEnabled(data[0].enabled);
+        },
+        onError: () => {
+          toast({
+            title: "Failed to connect bot",
+            description: "Please try again",
+          });
+        },
+      }
+    );
+  };
+
+  const updateNotificationChannel = async (enabled: boolean) => {
+    if (telegramChannel) {
+      updateNotificationChannelMutation(
+        { id: telegramChannel[0].id, enabled: enabled },
+        {
+          onSuccess: () => {
+            setTelegramEnabled(enabled);
+          },
+        }
+      );
     }
   };
 
-  const connect_bot = () => {
-    set_bot_connected(true);
-    set_telegram_enabled(true);
-    set_generated_code(null);
-    toast({
-      title: "Bot connected",
-      description: "Your Telegram bot is now connected",
-    });
+  const copyCode = async () => {
+    if (generatedCode) {
+      await navigator.clipboard.writeText(generatedCode);
+      toast({
+        title: "Code copied",
+        description: "Code copied to clipboard",
+      });
+    }
   };
+
+  if (isLoadingTelegramChannel) {
+    return <SkeletonLoader className="h-full" />;
+  }
 
   return (
     <div className="space-y-6">
@@ -76,10 +111,10 @@ export default function TelegramNotifications() {
             <IconBrandTelegram size={20} className="text-primary" />
             <CardTitle>Telegram Bot Setup</CardTitle>
           </div>
-          <CardDescription>Generate a code to connect to our Telegram bot</CardDescription>
+          {botConnected ? <CardDescription>You can now start receiving notifications</CardDescription> : <CardDescription>Generate a code to connect to our Telegram bot</CardDescription>}
         </CardHeader>
         <CardContent className="space-y-4">
-          {!bot_connected ? (
+          {!botConnected ? (
             <div className="space-y-4">
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <h4 className="font-medium text-blue-800 mb-2">How to connect:</h4>
@@ -88,14 +123,16 @@ export default function TelegramNotifications() {
                   <li>2. Copy the generated code</li>
                   <li>3. Open Telegram and search for @SentyfiBot</li>
                   <li>4. Start a conversation with the bot</li>
-                  <li>5. Enter the code when prompted</li>
-                  <li>6. Click "I've Connected" once done</li>
+                  <li>
+                    5. Enter <code className="text-sm bg-muted px-2 py-1 rounded">/start {generatedCode}</code>
+                  </li>
+                  <li>6. Click "I've Connected the Bot" once done</li>
                 </ol>
               </div>
 
-              {!generated_code ? (
-                <Button onClick={generate_code} disabled={is_generating} className="w-full">
-                  {is_generating ? (
+              {!generatedCode ? (
+                <Button onClick={generateCode} disabled={isCreatingVerificationToken} className="w-full">
+                  {isCreatingVerificationToken ? (
                     <>
                       <IconRefresh size={16} className="mr-2 animate-spin" />
                       Generating Code...
@@ -113,9 +150,9 @@ export default function TelegramNotifications() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm font-medium text-muted-foreground mb-1">Your connection code:</p>
-                        <p className="text-2xl font-mono font-bold tracking-wider">{generated_code}</p>
+                        <p className="text-2xl font-mono font-bold tracking-wider">{generatedCode}</p>
                       </div>
-                      <Button variant="outline" size="sm" onClick={copy_code} className="ml-2">
+                      <Button variant="outline" size="sm" onClick={copyCode} className="ml-2">
                         <IconCopy size={16} className="mr-1" />
                         Copy
                       </Button>
@@ -123,22 +160,9 @@ export default function TelegramNotifications() {
                   </div>
 
                   <div className="flex space-x-2">
-                    <Button onClick={connect_bot} className="flex-1">
+                    <Button onClick={connectBot} className="flex-1" disabled={isLoadingNotificationChannels} loading={isLoadingNotificationChannels}>
                       <IconCheck size={16} className="mr-2" />
                       I've Connected the Bot
-                    </Button>
-                    <Button variant="outline" onClick={generate_code} disabled={is_generating} className="flex-1">
-                      {is_generating ? (
-                        <>
-                          <IconRefresh size={16} className="mr-2 animate-spin" />
-                          Generating...
-                        </>
-                      ) : (
-                        <>
-                          <IconRefresh size={16} className="mr-2" />
-                          Generate New Code
-                        </>
-                      )}
                     </Button>
                   </div>
                 </div>
@@ -148,12 +172,12 @@ export default function TelegramNotifications() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Telegram notifications</span>
-                <Switch checked={telegram_enabled} onCheckedChange={set_telegram_enabled} />
+                {isUpdatingNotificationChannel ? <Loader2 className="h-4 w-4 animate-spin" /> : <Switch checked={telegramEnabled} onCheckedChange={(enabled) => updateNotificationChannel(enabled)} />}
               </div>
-              <Badge variant="default" className="flex items-center space-x-1 bg-blue-100 text-blue-800">
+              <div className="inline-flex items-center space-x-1 px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-sm">
                 <IconCheck size={12} />
                 <span>Bot connected</span>
-              </Badge>
+              </div>
             </div>
           )}
         </CardContent>
@@ -161,7 +185,7 @@ export default function TelegramNotifications() {
 
       <Separator />
 
-      {bot_connected && (
+      {botConnected && (
         <>
           <Card>
             <CardHeader>
@@ -174,7 +198,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Portfolio updates</p>
                   <p className="text-sm text-muted-foreground">Real-time portfolio performance updates</p>
                 </div>
-                <Switch defaultChecked disabled={!telegram_enabled} />
+                <Switch defaultChecked disabled={!telegramEnabled} />
               </div>
 
               <div className="flex items-center justify-between">
@@ -182,7 +206,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Price alerts</p>
                   <p className="text-sm text-muted-foreground">Significant price movements and trends</p>
                 </div>
-                <Switch defaultChecked disabled={!telegram_enabled} />
+                <Switch defaultChecked disabled={!telegramEnabled} />
               </div>
 
               <div className="flex items-center justify-between">
@@ -190,7 +214,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Market news</p>
                   <p className="text-sm text-muted-foreground">Breaking news and market events</p>
                 </div>
-                <Switch disabled={!telegram_enabled} />
+                <Switch disabled={!telegramEnabled} />
               </div>
 
               <div className="flex items-center justify-between">
@@ -198,7 +222,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Social sentiment</p>
                   <p className="text-sm text-muted-foreground">Social media sentiment analysis</p>
                 </div>
-                <Switch disabled={!telegram_enabled} />
+                <Switch disabled={!telegramEnabled} />
               </div>
 
               <div className="flex items-center justify-between">
@@ -206,7 +230,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Trading signals</p>
                   <p className="text-sm text-muted-foreground">AI-generated trading recommendations</p>
                 </div>
-                <Switch disabled={!telegram_enabled} />
+                <Switch disabled={!telegramEnabled} />
               </div>
 
               <div className="flex items-center justify-between">
@@ -214,7 +238,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Weekly reports</p>
                   <p className="text-sm text-muted-foreground">Comprehensive weekly market analysis</p>
                 </div>
-                <Switch disabled={!telegram_enabled} />
+                <Switch disabled={!telegramEnabled} />
               </div>
             </CardContent>
           </Card>
@@ -261,7 +285,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Real-time alerts</p>
                   <p className="text-sm text-muted-foreground">Messages sent immediately when events occur</p>
                 </div>
-                <Switch defaultChecked disabled={!telegram_enabled} />
+                <Switch defaultChecked disabled={!telegramEnabled} />
               </div>
 
               <div className="flex items-center justify-between">
@@ -269,7 +293,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Hourly summaries</p>
                   <p className="text-sm text-muted-foreground">Consolidated updates every hour</p>
                 </div>
-                <Switch disabled={!telegram_enabled} />
+                <Switch disabled={!telegramEnabled} />
               </div>
 
               <div className="flex items-center justify-between">
@@ -277,7 +301,7 @@ export default function TelegramNotifications() {
                   <p className="font-medium">Daily digest</p>
                   <p className="text-sm text-muted-foreground">One message with all daily activity</p>
                 </div>
-                <Switch disabled={!telegram_enabled} />
+                <Switch disabled={!telegramEnabled} />
               </div>
             </CardContent>
           </Card>
