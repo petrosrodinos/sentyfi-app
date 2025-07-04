@@ -3,22 +3,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { IconBrandTelegram, IconCheck, IconBolt, IconCopy, IconRefresh } from "@tabler/icons-react";
+import { IconBrandTelegram, IconCheck, IconBolt, IconCopy, IconRefresh, IconTrash } from "@tabler/icons-react";
 import { toast } from "@/hooks/use-toast";
 import { useCreateVerificationToken } from "../../hooks/verification-tokens";
 import { useAuthStore } from "@/stores/auth";
 import { VerificationTokenType } from "../../interfaces/verification-tokens";
 import { NotificationChannelTypes, type NotificationChannel } from "../../interfaces/notification-channels";
-import { useNotificationChannels, useGetNotificationChannels, useUpdateNotificationChannel } from "../../hooks/use-notification-channels";
+import { useNotificationChannels, useGetNotificationChannels, useUpdateNotificationChannel, useDeleteNotificationChannel } from "../../hooks/use-notification-channels";
 import { useEffect } from "react";
 import SkeletonLoader from "../../components/skeleton-loader";
-import { Loader, Loader2, LoaderIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 export default function TelegramNotifications() {
   const { user_uuid } = useAuthStore();
   const [botConnected, setBotConnected] = useState(false);
   const [telegramEnabled, setTelegramEnabled] = useState(false);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const { data: telegramChannel, isLoading: isLoadingTelegramChannel } = useNotificationChannels({ user_uuid: user_uuid!, channel: NotificationChannelTypes.telegram });
 
@@ -27,6 +29,8 @@ export default function TelegramNotifications() {
   const { mutate: getNotificationChannels, isPending: isLoadingNotificationChannels } = useGetNotificationChannels();
 
   const { mutate: updateNotificationChannelMutation, isPending: isUpdatingNotificationChannel } = useUpdateNotificationChannel();
+
+  const { mutate: deleteNotificationChannelMutation, isPending: isDeletingNotificationChannel } = useDeleteNotificationChannel();
 
   useEffect(() => {
     if (telegramChannel) {
@@ -90,6 +94,18 @@ export default function TelegramNotifications() {
       toast({
         title: "Code copied",
         description: "Code copied to clipboard",
+      });
+    }
+  };
+
+  const handleDeleteChannel = () => {
+    if (telegramChannel && telegramChannel[0]) {
+      deleteNotificationChannelMutation(telegramChannel[0].id.toString(), {
+        onSuccess: () => {
+          setBotConnected(false);
+          setTelegramEnabled(false);
+          setShowDeleteDialog(false);
+        },
       });
     }
   };
@@ -322,6 +338,33 @@ export default function TelegramNotifications() {
           </ul>
         </CardContent>
       </Card>
+
+      {botConnected && (
+        <Card className="border-red-200">
+          <CardHeader>
+            <CardTitle className="text-red-800">Danger Zone</CardTitle>
+            <CardDescription>Remove Telegram notification channel</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">This will permanently remove your Telegram notification channel. You will no longer receive notifications through Telegram.</p>
+            <Button variant="destructive" onClick={() => setShowDeleteDialog(true)} disabled={isDeletingNotificationChannel}>
+              {isDeletingNotificationChannel ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Removing...
+                </>
+              ) : (
+                <>
+                  <IconTrash className="h-4 w-4 mr-2" />
+                  Remove Telegram Channel
+                </>
+              )}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      <ConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog} title="Remove Telegram Channel" desc="Are you sure you want to remove your Telegram notification channel? This action cannot be undone and you will no longer receive notifications through Telegram." confirmText="Remove Channel" destructive isLoading={isDeletingNotificationChannel} handleConfirm={handleDeleteChannel} />
     </div>
   );
 }

@@ -23,7 +23,7 @@ export interface NotificationChannelQuery {
 }
 
 export interface NotificationChannelData {
-    id: string;
+    id: string | null;
     channel?: NotificationChannelType;
     title: string;
     description: string;

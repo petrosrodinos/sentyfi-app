@@ -3,7 +3,7 @@ import { NotificationChannelTypes, type NotificationChannelData } from "../../..
 
 export const NotificationChannelsData: NotificationChannelData[] = [
   {
-    id: "telegram",
+    id: null,
     channel: NotificationChannelTypes.telegram,
     title: "Telegram Notifications",
     description: "Get notifications through Telegram bot",

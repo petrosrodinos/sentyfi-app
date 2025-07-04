@@ -6,6 +6,8 @@ import { IconCheck, IconX, IconSettings } from "@tabler/icons-react";
 import { NotificationChannelTypes, type NotificationChannelData, type NotificationChannelType } from "../interfaces/notification-channels";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "@/routes/routes";
+import { useUpdateNotificationChannel } from "../hooks/use-notification-channels";
+import { Loader2 } from "lucide-react";
 
 interface ChannelCardProps {
   channel: NotificationChannelData;
@@ -14,6 +16,8 @@ interface ChannelCardProps {
 
 export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
   const navigate = useNavigate();
+
+  const { mutate: updateNotificationChannelMutation, isPending: isUpdatingNotificationChannel } = useUpdateNotificationChannel();
 
   const channelsToSetup: Record<NotificationChannelType, string> = {
     [NotificationChannelTypes.telegram]: Routes.notifications.telegram,
@@ -27,8 +31,14 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
   };
 
   const handleToggleChannel = () => {
-    const updated_channel = { ...channel, enabled: !channel.enabled };
-    on_channel_update(updated_channel);
+    updateNotificationChannelMutation(
+      { id: channel.id!, enabled: !channel.enabled },
+      {
+        onSuccess: () => {
+          on_channel_update({ ...channel, enabled: !channel.enabled });
+        },
+      }
+    );
   };
 
   const handleSetupChannel = () => {
@@ -96,7 +106,8 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
           <div className="flex items-center space-x-3">
             <div className="text-right">
               <div className="flex items-center space-x-2">
-                <Switch checked={channel.enabled} onCheckedChange={handleToggleChannel} disabled={!channel.verified} />
+                {isUpdatingNotificationChannel ? <Loader2 className="h-4 w-4 animate-spin" /> : <Switch checked={channel.enabled} onCheckedChange={handleToggleChannel} disabled={!channel.verified} />}
+
                 <span className="text-sm font-medium">{channel.enabled ? "Enabled" : "Disabled"}</span>
               </div>
 

@@ -20,12 +20,13 @@ export default function NotificationChannels() {
         const channel_data = NotificationChannelsData.find((c) => c.channel === channel.channel);
         return {
           ...channel_data,
+          id: channel.id,
           enabled: channel.enabled,
           verified: channel.verified,
           setup_status: channel.verified ? "fully_setup" : "not_setup",
         };
       });
-      setNotificationChannels(channels as NotificationChannelData[]);
+      setNotificationChannels(channels as unknown as NotificationChannelData[]);
       console.log(channels);
     }
   }, [data]);
