@@ -22,6 +22,7 @@ import NotificationChannels from "@/pages/notifications/pages/channels";
 import TrackingLayout from "@/pages/tracking/layout";
 import MediaLayout from "@/pages/media/layout";
 import AuthLayout from "@/pages/auth/layout";
+import Keywords from "@/pages/tracking/pages/keyword";
 
 export default function AppRoutes() {
   return (
@@ -50,6 +51,7 @@ export default function AppRoutes() {
         <Route path="tracking" element={<TrackingLayout />}>
           <Route path="stocks" element={<Stocks />} />
           <Route path="crypto" element={<Crypto />} />
+          <Route path="keywords" element={<Keywords />} />
         </Route>
 
         <Route path="notifications" element={<NotificationsLayout />}>

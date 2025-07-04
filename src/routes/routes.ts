@@ -22,12 +22,7 @@ export const Routes = {
         root: "/dashboard/tracking",
         stocks: "/dashboard/tracking/stocks",
         crypto: "/dashboard/tracking/crypto",
-        forex: "/dashboard/tracking/forex",
-        commodities: "/dashboard/tracking/commodities",
-        bonds: "/dashboard/tracking/bonds",
-        etfs: "/dashboard/tracking/etfs",
-        mutual_funds: "/dashboard/tracking/mutual-funds",
-        options: "/dashboard/tracking/options",
+        keywords: "/dashboard/tracking/keywords",
     },
     notifications: {
         root: "/dashboard/notifications/channels",

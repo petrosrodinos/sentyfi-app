@@ -1,4 +1,4 @@
-import { IconChartCandle, IconCurrencyDollar } from "@tabler/icons-react";
+import { IconChartCandle, IconCurrencyDollar, IconSearch } from "@tabler/icons-react";
 import { Routes } from "@/routes/routes";
 import PageLayout from "@/components/layout/page-layout";
 import { Outlet } from "react-router-dom";
@@ -23,5 +23,10 @@ const sidebarNavItems = [
     title: "Crypto",
     icon: <IconCurrencyDollar size={18} />,
     href: Routes.tracking.crypto,
+  },
+  {
+    title: "Keywords",
+    icon: <IconSearch size={18} />,
+    href: Routes.tracking.keywords,
   },
 ];
