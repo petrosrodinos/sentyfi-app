@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Ticker } from "../interfaces/tickers";
 import { type CreateTrackedItem, type TrackedItem } from "../interfaces/tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCreateTrackedItem, useDeleteTrackedItem } from "../hooks/use-tracked-items";
+import { useCreateTrackedItem, useUpdateTrackedItem } from "../hooks/use-tracked-items";
 import { useEffect, useState } from "react";
 
 interface TickerCardProps {
@@ -15,7 +15,7 @@ interface TickerCardProps {
 export default function TickerCard({ ticker, trackedItems }: TickerCardProps) {
   const queryClient = useQueryClient();
   const createTrackedItem = useCreateTrackedItem();
-  const deleteTrackedItem = useDeleteTrackedItem();
+  const updateTrackedItem = useUpdateTrackedItem();
 
   const [enabledSubscriptionIds, setEnabledSubscriptionIds] = useState<string[]>([]);
 
@@ -47,11 +47,19 @@ export default function TickerCard({ ticker, trackedItems }: TickerCardProps) {
       } else {
         const trackedItem = trackedItems.find((subscription) => subscription.item_identifier === ticker.ticker);
 
-        await deleteTrackedItem.mutateAsync(trackedItem?.id || "", {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["tracked-items"] });
-          },
-        });
+        if (trackedItem) {
+          await updateTrackedItem.mutateAsync(
+            {
+              id: trackedItem.id,
+              enabled: false,
+            },
+            {
+              onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ["tracked-items"] });
+              },
+            }
+          );
+        }
       }
     } catch (error) {
       console.error("Failed to toggle subscription:", error);

@@ -1,5 +1,5 @@
 import axiosInstance from "@/config/axios";
-import type { CreateTrackedItem, TrackedItem, TrackedItemQuery } from "../interfaces/tracked-items";
+import type { CreateTrackedItem, TrackedItem, TrackedItemQuery, UpdateTrackedItem } from "../interfaces/tracked-items";
 
 export const getTrackedItems = async (query: TrackedItemQuery): Promise<TrackedItem[]> => {
     try {
@@ -16,6 +16,15 @@ export const createTrackedItem = async (trackedItem: CreateTrackedItem): Promise
         return response.data;
     } catch (error) {
         throw new Error("Failed to create tracked item. Please try again.");
+    }
+};
+
+export const updateTrackedItem = async (trackedItem: UpdateTrackedItem): Promise<TrackedItem> => {
+    try {
+        const response = await axiosInstance.patch(`/tracked-items/${trackedItem.id}`, trackedItem);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to update tracked item. Please try again.");
     }
 };
 

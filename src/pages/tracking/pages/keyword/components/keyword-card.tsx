@@ -3,7 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { useDeleteTrackedItem } from "@/pages/tracking/hooks/use-tracked-items";
+import { Switch } from "@/components/ui/switch";
+import { useDeleteTrackedItem, useUpdateTrackedItem } from "@/pages/tracking/hooks/use-tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
 import { TrackedItemTypes, type TrackedItem } from "@/pages/tracking/interfaces/tracked-items";
 
@@ -13,8 +14,10 @@ interface KeywordCardProps {
 
 export default function KeywordCard({ keyword }: KeywordCardProps) {
   const queryClient = useQueryClient();
-  const { mutate: deleteTrackedItem, isPending } = useDeleteTrackedItem();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const { mutate: deleteTrackedItem, isPending: isDeletePending } = useDeleteTrackedItem();
+  const { mutate: updateTrackedItem, isPending: isUpdatePending } = useUpdateTrackedItem();
 
   const handleDelete = () => {
     try {
@@ -29,6 +32,21 @@ export default function KeywordCard({ keyword }: KeywordCardProps) {
     }
   };
 
+  const handleToggle = (enabled: boolean) => {
+    try {
+      updateTrackedItem(
+        { id: keyword.id, enabled },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["tracked-items", TrackedItemTypes.keyword] });
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Failed to update keyword:", error);
+    }
+  };
+
   return (
     <Card className="group hover:shadow-md transition-shadow relative">
       <CardContent className="p-4">
@@ -38,26 +56,30 @@ export default function KeywordCard({ keyword }: KeywordCardProps) {
             <p className="text-xs text-muted-foreground mt-1">{keyword.enabled ? "Active" : "Inactive"}</p>
           </div>
 
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-            <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-              <AlertDialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Delete Keyword</AlertDialogTitle>
-                  <AlertDialogDescription>Are you sure you want to delete the keyword "{keyword.item_identifier}"? This action cannot be undone.</AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90" disabled={isPending}>
-                    {isPending ? "Deleting..." : "Delete"}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+          <div className="flex items-center gap-2">
+            <Switch checked={keyword.enabled} onCheckedChange={handleToggle} disabled={isUpdatePending} />
+
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+              <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Keyword</AlertDialogTitle>
+                    <AlertDialogDescription>Are you sure you want to delete the keyword "{keyword.item_identifier}"? This action cannot be undone.</AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90" disabled={isDeletePending}>
+                      {isDeletePending ? "Deleting..." : "Delete"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
           </div>
         </div>
       </CardContent>

@@ -1,6 +1,6 @@
 import { TrackedItemTypes } from "../../interfaces/tracked-items";
-import Tracking from "../../index";
+import Tickers from "../../components/tickers";
 
 export default function Crypto() {
-  return <Tracking market={TrackedItemTypes.crypto} />;
+  return <Tickers market={TrackedItemTypes.crypto} />;
 }

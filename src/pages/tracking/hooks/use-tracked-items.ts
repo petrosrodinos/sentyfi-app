@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
-import { createTrackedItem, deleteTrackedItem, getTrackedItems } from "../services/tracked-items";
-import type { CreateTrackedItem, TrackedItemQuery } from "../interfaces/tracked-items";
+import { createTrackedItem, deleteTrackedItem, getTrackedItems, updateTrackedItem } from "../services/tracked-items";
+import type { CreateTrackedItem, TrackedItemQuery, UpdateTrackedItem } from "../interfaces/tracked-items";
 
 
 export function useTrackedItems(query: TrackedItemQuery) {
@@ -24,6 +24,24 @@ export function useCreateTrackedItem() {
         onError: () => {
             toast({
                 title: "Failed to create tracked item",
+                description: "Please try again",
+            });
+        },
+    });
+}
+
+export function useUpdateTrackedItem() {
+    return useMutation({
+        mutationFn: (trackedItem: UpdateTrackedItem) => updateTrackedItem(trackedItem),
+        onSuccess: () => {
+            toast({
+                title: "Tracked item updated successfully",
+                description: "You have successfully updated a tracked item",
+            });
+        },
+        onError: () => {
+            toast({
+                title: "Failed to update tracked item",
                 description: "Please try again",
             });
         },

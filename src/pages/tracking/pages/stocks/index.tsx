@@ -1,6 +1,6 @@
 import { TrackedItemTypes } from "../../interfaces/tracked-items";
-import Tracking from "../../index";
+import Tickers from "../../components/tickers";
 
 export default function Stocks() {
-  return <Tracking market={TrackedItemTypes.stock} />;
+  return <Tickers market={TrackedItemTypes.stock} />;
 }

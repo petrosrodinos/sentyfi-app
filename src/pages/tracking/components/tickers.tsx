@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { type TrackedItemType } from "./interfaces/tracked-items";
-import TrackingList from "./components/tracking-list";
-import { CreateTracking } from "./components/create-tracking";
-import { useTrackedItems } from "./hooks/use-tracked-items";
+
 import { useAuthStore } from "@/stores/auth";
+import type { TrackedItemType } from "../interfaces/tracked-items";
+import { useTrackedItems } from "../hooks/use-tracked-items";
+import TrackingList from "./tracking-list";
+import { CreateTracking } from "./create-tracking";
 
 interface TrackingProps {
   market: TrackedItemType;
 }
 
-export default function Tracking({ market }: TrackingProps) {
+export default function Tickers({ market }: TrackingProps) {
   const [isCreating, setIsCreating] = useState(false);
   const { user_uuid } = useAuthStore();
 

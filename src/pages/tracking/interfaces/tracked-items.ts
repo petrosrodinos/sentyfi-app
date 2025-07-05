@@ -14,6 +14,11 @@ export interface CreateTrackedItem {
     meta?: Ticker;
 }
 
+export interface UpdateTrackedItem {
+    id: string;
+    enabled: boolean;
+}
+
 export interface TrackedItemQuery {
     user_uuid?: string;
     item_type?: TrackedItemType;
