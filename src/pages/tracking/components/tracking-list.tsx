@@ -2,18 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import TickerCard from "./ticker-card";
-import { type TrackedItem } from "../interfaces/tracked-items";
+import { type TrackedItem, type TrackedItemType } from "../interfaces/tracked-items";
 import { Plus, Users } from "lucide-react";
 import type { Ticker } from "../interfaces/tickers";
+import { MarketLabels } from "../constants";
 
 interface TrackingListProps {
   tickers: TrackedItem[];
   isLoading: boolean;
   error: Error | null;
   onAddNew: () => void;
+  market: TrackedItemType;
 }
 
-export default function TrackingList({ tickers, isLoading, error, onAddNew }: TrackingListProps) {
+export default function TrackingList({ tickers, isLoading, onAddNew, market }: TrackingListProps) {
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -47,40 +49,39 @@ export default function TrackingList({ tickers, isLoading, error, onAddNew }: Tr
     );
   }
 
-  if (error || !tickers?.length) {
-    return (
-      <Card className="w-full">
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <Users className="w-16 h-16 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-semibold mb-2">No tickers yet</h3>
-          <p className="text-muted-foreground text-center max-w-md mb-4">You haven't added any tickers to track yet. Click the button below to start adding tickers.</p>
-          <Button onClick={onAddNew} className="flex items-center space-x-2">
-            <Plus className="w-4 h-4" />
-            <span>Add Your First Ticker</span>
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <div className="container mx-auto p-3 space-y-3 w-full">
       <div className="flex items-center justify-between">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Stocks</h1>
-          <p className="text-muted-foreground">Manage your stocks and track their activities</p>
+          <h1 className="text-3xl font-bold">{MarketLabels[market]}</h1>
+          <p className="text-muted-foreground">Manage your {MarketLabels[market]} and track their activities</p>
         </div>
         <Button onClick={onAddNew} className="flex items-center space-x-2">
           <Plus className="w-4 h-4" />
-          <span>Add Ticker</span>
+          <span>Add {MarketLabels[market]}</span>
         </Button>
       </div>
+      {!tickers?.length && (
+        <Card className="w-full">
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <Users className="w-16 h-16 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold mb-2">No tickers yet</h3>
+            <p className="text-muted-foreground text-center max-w-md mb-4">You haven't added any tickers to track yet. Click the button below to start adding tickers.</p>
+            <Button onClick={onAddNew} className="flex items-center space-x-2">
+              <Plus className="w-4 h-4" />
+              <span>Add Your First Ticker</span>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
       {tickers?.length && (
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Users className="w-5 h-5" />
-              <span>Your Stocks ({tickers.length})</span>
+              <span>
+                Your {MarketLabels[market]} ({tickers.length})
+              </span>
             </CardTitle>
           </CardHeader>
           <CardContent>

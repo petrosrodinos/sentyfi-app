@@ -10,12 +10,13 @@ import { TrackedItemTypes } from "@/pages/tracking/interfaces/tracked-items";
 
 interface AddKeywordModalProps {
   children?: React.ReactNode;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-export default function AddKeywordModal({ children }: AddKeywordModalProps) {
+export default function AddKeywordModal({ children, open, setOpen }: AddKeywordModalProps) {
   const queryClient = useQueryClient();
   const { mutateAsync: createTrackedItem, isPending } = useCreateTrackedItem();
-  const [open, setOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {

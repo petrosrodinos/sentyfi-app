@@ -5,13 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, ArrowLeft, TrendingUp } from "lucide-react";
 import { useTickers } from "../hooks/use-tickers";
 import type { Ticker } from "../interfaces/tickers";
-import { TrackedItemTypes, type TrackedItem, type TrackedItemType } from "../interfaces/tracked-items";
+import { type TrackedItem, type TrackedItemType } from "../interfaces/tracked-items";
 import TickerCard from "./ticker-card";
-
-const MarketLabels = {
-  [TrackedItemTypes.stock]: "Stock",
-  [TrackedItemTypes.crypto]: "Crypto",
-} as const;
+import { MarketLabels } from "../constants";
 
 interface CreateTrackingProps {
   trackedItems: TrackedItem[];

@@ -30,5 +30,5 @@ export default function Tracking({ market }: TrackingProps) {
     setIsCreating(false);
   };
 
-  return <>{isCreating ? <CreateTracking trackedItems={tickers || []} onBack={handleBack} market={market} /> : <TrackingList tickers={tickers || []} isLoading={isLoading} error={error} onAddNew={handleAddNew} />}</>;
+  return <>{isCreating ? <CreateTracking trackedItems={tickers || []} onBack={handleBack} market={market} /> : <TrackingList tickers={tickers || []} isLoading={isLoading} error={error} onAddNew={handleAddNew} market={market} />}</>;
 }

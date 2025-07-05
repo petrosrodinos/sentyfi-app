@@ -1,13 +1,17 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import KeywordCard from "./keyword-card";
 import type { TrackedItem } from "@/pages/tracking/interfaces/tracked-items";
+import { Card, CardContent } from "@/components/ui/card";
+import { Plus, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface KeywordsListProps {
   keywords: TrackedItem[];
   isLoading: boolean;
+  onAddNew: (open: boolean) => void;
 }
 
-export default function KeywordsList({ keywords, isLoading }: KeywordsListProps) {
+export default function KeywordsList({ keywords, isLoading, onAddNew }: KeywordsListProps) {
   if (isLoading) {
     return (
       <div className="grid gap-4">
@@ -24,14 +28,19 @@ export default function KeywordsList({ keywords, isLoading }: KeywordsListProps)
     );
   }
 
-  if (!keywords || keywords.length === 0) {
+  if (!keywords.length) {
     return (
-      <div className="text-center py-8">
-        <div className="text-muted-foreground mb-4">
-          <p className="text-lg font-medium">No keywords found</p>
-          <p className="text-sm">Start by adding your first keyword to track mentions and sentiment.</p>
-        </div>
-      </div>
+      <Card className="w-full">
+        <CardContent className="flex flex-col items-center justify-center py-12">
+          <Search className="w-16 h-16 text-muted-foreground mb-4" />
+          <h3 className="text-lg font-semibold mb-2">No keywords yet</h3>
+          <p className="text-muted-foreground text-center max-w-md mb-4">You haven't added any keywords to track yet. Click the button below to start adding keywords.</p>
+          <Button onClick={() => onAddNew(true)} className="flex items-center space-x-2">
+            <Plus className="w-4 h-4" />
+            <span>Add Your First Keyword</span>
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 

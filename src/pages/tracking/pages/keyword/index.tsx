@@ -2,8 +2,10 @@ import { useTrackedItems } from "@/pages/tracking/hooks/use-tracked-items";
 import { TrackedItemTypes } from "@/pages/tracking/interfaces/tracked-items";
 import { KeywordsList, AddKeywordModal } from "./components";
 import { useAuthStore } from "@/stores/auth";
+import { useState } from "react";
 
 export default function Keywords() {
+  const [open, setOpen] = useState(false);
   const { user_uuid } = useAuthStore();
   const { data: trackedItems, isLoading } = useTrackedItems({ item_type: TrackedItemTypes.keyword, user_uuid: user_uuid || "" });
 
@@ -14,10 +16,10 @@ export default function Keywords() {
           <h1 className="text-2xl font-bold tracking-tight">Keywords</h1>
           <p className="text-muted-foreground">Track keywords to monitor mentions and sentiment analysis across social media.</p>
         </div>
-        <AddKeywordModal />
+        <AddKeywordModal open={open} setOpen={setOpen} />
       </div>
 
-      <KeywordsList keywords={trackedItems || []} isLoading={isLoading} />
+      <KeywordsList keywords={trackedItems || []} isLoading={isLoading} onAddNew={setOpen} />
     </div>
   );
 }
