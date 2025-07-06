@@ -8,14 +8,14 @@ import type { Ticker } from "../interfaces/tickers";
 import { MarketLabels } from "../constants";
 
 interface TrackingListProps {
-  tickers: TrackedItem[];
+  trackedItems: TrackedItem[];
   isLoading: boolean;
   error: Error | null;
   onAddNew: () => void;
   market: TrackedItemType;
 }
 
-export default function TrackingList({ tickers, isLoading, onAddNew, market }: TrackingListProps) {
+export default function TrackingList({ trackedItems, isLoading, onAddNew, market }: TrackingListProps) {
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -61,7 +61,7 @@ export default function TrackingList({ tickers, isLoading, onAddNew, market }: T
           <span>Add {MarketLabels[market]}</span>
         </Button>
       </div>
-      {!tickers?.length && (
+      {!trackedItems?.length && (
         <Card className="w-full">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Users className="w-16 h-16 text-muted-foreground mb-4" />
@@ -74,21 +74,21 @@ export default function TrackingList({ tickers, isLoading, onAddNew, market }: T
           </CardContent>
         </Card>
       )}
-      {tickers?.length && (
+      {trackedItems?.length && (
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Users className="w-5 h-5" />
               <span>
-                Your {MarketLabels[market]} ({tickers.length})
+                Your {MarketLabels[market]} ({trackedItems.length})
               </span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div className="space-y-4 w-full">
-                {tickers?.map((ticker: TrackedItem) => (
-                  <TickerCard key={ticker.uuid} ticker={ticker.meta as Ticker} trackedItems={tickers} />
+                {trackedItems?.map((ticker: TrackedItem) => (
+                  <TickerCard key={ticker.uuid} ticker={ticker.meta as Ticker} enabled={ticker.enabled} />
                 ))}
               </div>
             </div>

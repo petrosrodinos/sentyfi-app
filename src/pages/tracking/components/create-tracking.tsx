@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +18,7 @@ interface CreateTrackingProps {
 export function CreateTracking({ trackedItems, onBack, market = "stock" }: CreateTrackingProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [tickersData, setTickersData] = useState<Ticker[]>([]);
 
   const {
     data: searchResults,
@@ -28,16 +29,19 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
     ticker: searchQuery.trim(),
   });
 
+  useEffect(() => {
+    if (!searchResults?.results?.length) return;
+    const items = searchResults?.results?.map((ticker) => {
+      const isEnabled = trackedItems.find((item) => item.item_identifier === ticker.ticker);
+      return { ...ticker, enabled: isEnabled ? isEnabled.enabled : false };
+    });
+    setTickersData(items || []);
+  }, [searchResults, trackedItems]);
+
   const handleSearch = () => {
     if (searchQuery.trim()) {
       setIsSearching(true);
       refetch();
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSearch();
     }
   };
 
@@ -70,7 +74,7 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
         </CardHeader>
         <CardContent>
           <div className="flex space-x-2">
-            <Input placeholder="Enter ticker symbol (e.g., AAPL, GOOGL)" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyPress={handleKeyPress} className="flex-1" />
+            <Input placeholder="Enter ticker symbol (e.g., AAPL, GOOGL)" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="flex-1" />
             <Button onClick={handleSearch} disabled={!searchQuery.trim() || isLoading}>
               {isLoading ? "Searching..." : "Search"}
             </Button>
@@ -107,8 +111,8 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
               </div>
             ) : searchResults && searchResults.results?.length > 0 ? (
               <div className="space-y-3">
-                {searchResults?.results?.map((ticker: Ticker) => (
-                  <TickerCard key={ticker.ticker} ticker={ticker} trackedItems={trackedItems} />
+                {tickersData?.map((ticker: Ticker) => (
+                  <TickerCard key={ticker.ticker} ticker={ticker} enabled={ticker.enabled || false} />
                 ))}
               </div>
             ) : (

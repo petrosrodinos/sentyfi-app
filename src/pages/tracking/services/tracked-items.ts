@@ -28,6 +28,15 @@ export const updateTrackedItem = async (trackedItem: UpdateTrackedItem): Promise
     }
 };
 
+export const upsertTrackedItem = async (trackedItem: CreateTrackedItem): Promise<TrackedItem> => {
+    try {
+        const response = await axiosInstance.post(`/tracked-items/upsert`, trackedItem);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to update tracked item. Please try again.");
+    }
+};
+
 export const deleteTrackedItem = async (id: string): Promise<void> => {
     try {
         await axiosInstance.delete(`/tracked-items/${id}`);

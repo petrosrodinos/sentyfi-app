@@ -6,6 +6,7 @@ export interface Ticker {
     icon_url?: string;
     market_cap?: number;
     market?: TrackedItemType;
+    enabled?: boolean;
 }
 
 export interface TickersResponse {
