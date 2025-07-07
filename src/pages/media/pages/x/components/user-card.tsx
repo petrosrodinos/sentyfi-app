@@ -1,56 +1,37 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { useCreateMediaSubscription, useDeleteMediaSubscription } from "../../../hooks/use-media-subscriptions";
-import { useEffect, useState } from "react";
+import { useUpsertMediaSubscription } from "../../../hooks/use-media-subscriptions";
 import { useQueryClient } from "@tanstack/react-query";
 import type { TwitterUser } from "../interfaces/twitter";
-import type { CreateMediaSubscription, MediaSubscription } from "../../../interfaces/media-subscriptions";
+import type { CreateMediaSubscription } from "../../../interfaces/media-subscriptions";
 import { MediaSubscriptionPlatformTypes } from "../../../interfaces/media-subscriptions";
 import { LoaderCircle } from "lucide-react";
 
 interface UserCardProps {
   user: TwitterUser;
-  subscriptions: MediaSubscription[];
+  enabled: boolean;
 }
 
-export function UserCard({ user, subscriptions }: UserCardProps) {
-  const [enabledSubscriptionIds, setEnabledSubscriptionIds] = useState<string[]>([]);
-  const createSubscription = useCreateMediaSubscription();
-  const deleteSubscription = useDeleteMediaSubscription();
+export function UserCard({ user, enabled }: UserCardProps) {
+  const { mutate: upsertSubscription, isPending: isUpsertingSubscription } = useUpsertMediaSubscription();
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    setEnabledSubscriptionIds(subscriptions.map((subscription) => subscription.account_identifier));
-  }, [subscriptions]);
 
   const handleToggle = async (checked: boolean) => {
     try {
-      if (checked) {
-        const subscription_data: CreateMediaSubscription = {
-          platform_type: MediaSubscriptionPlatformTypes.twitter,
-          account_identifier: user.id,
-          enabled: true,
-          meta: {
-            ...user,
-          },
-        };
+      const subscription_data: CreateMediaSubscription = {
+        platform_type: MediaSubscriptionPlatformTypes.twitter,
+        account_identifier: user.id,
+        enabled: checked,
+        meta: {
+          ...user,
+        },
+      };
 
-        await createSubscription.mutateAsync(subscription_data, {
-          onSuccess: () => {
-            setEnabledSubscriptionIds([...enabledSubscriptionIds, user.id]);
-            queryClient.invalidateQueries({ queryKey: ["media-subscriptions"] });
-          },
-        });
-      } else {
-        const subscription = subscriptions.find((subscription) => subscription.account_identifier === user.id);
-
-        await deleteSubscription.mutateAsync(subscription?.id || 0, {
-          onSuccess: () => {
-            setEnabledSubscriptionIds(enabledSubscriptionIds.filter((id) => id !== user.id));
-            queryClient.invalidateQueries({ queryKey: ["media-subscriptions"] });
-          },
-        });
-      }
+      upsertSubscription(subscription_data, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["media-subscriptions", MediaSubscriptionPlatformTypes.twitter] });
+        },
+      });
     } catch (error) {
       console.error("Failed to toggle subscription:", error);
     }
@@ -76,7 +57,7 @@ export function UserCard({ user, subscriptions }: UserCardProps) {
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 ml-4">{createSubscription.isPending || deleteSubscription.isPending ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Switch checked={enabledSubscriptionIds.includes(user.id)} onCheckedChange={handleToggle} />}</div>
+          <div className="flex items-center space-x-2 ml-4">{isUpsertingSubscription ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Switch checked={enabled} onCheckedChange={handleToggle} />}</div>
         </div>
       </CardContent>
     </Card>

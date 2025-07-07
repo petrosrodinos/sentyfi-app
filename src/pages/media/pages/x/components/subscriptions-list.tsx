@@ -53,7 +53,7 @@ export function SubscriptionsList({ subscriptions, onAddNew }: SubscriptionsList
                   profile_image_url: subscription.meta?.profile_image_url || "",
                   description: subscription.meta?.description || "",
                 };
-                return <UserCard key={subscription.id} user={user_data} subscriptions={subscriptions} />;
+                return <UserCard key={subscription.id} user={user_data} subscriptions={subscriptions} enabled={subscription.enabled} />;
               })}
             </div>
           </CardContent>

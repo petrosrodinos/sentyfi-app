@@ -10,7 +10,7 @@ export interface CreateMediaSubscription {
     account_identifier: string;
     enabled: boolean;
     meta?: {
-        [key: string]: string;
+        [key: string]: any;
     }
 }
 

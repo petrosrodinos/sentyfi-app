@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Users, RefreshCw } from "lucide-react";
 import { useTwitterUser } from "../hooks/use-twitter";
 import { UserCard } from "./user-card";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FollowingList } from "./following-list";
 import type { MediaSubscription } from "../../../interfaces/media-subscriptions";
 
@@ -21,6 +21,10 @@ export function UserResult({ username, subscriptions }: UserResultProps) {
   const handleGetFollowings = () => {
     setGetFollowings(true);
   };
+
+  const isUserEnabled = useMemo(() => {
+    return subscriptions.find((subscription) => subscription.account_identifier === user?.id)?.enabled;
+  }, [subscriptions, user]);
 
   if (isLoadingUser) {
     return (
@@ -89,7 +93,7 @@ export function UserResult({ username, subscriptions }: UserResultProps) {
             </div>
           ) : (
             <>
-              <UserCard user={user!} subscriptions={subscriptions} />
+              <UserCard user={user!} enabled={isUserEnabled || false} />
 
               <Button disabled={getFollowings} onClick={handleGetFollowings} variant="outline" className="mt-4">
                 <Users className="w-4 h-4 mr-2" />

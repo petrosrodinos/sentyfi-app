@@ -46,3 +46,11 @@ export const deleteMediaSubscription = async (id: number): Promise<void> => {
     }
 };
 
+export const upsertMediaSubscription = async (payload: CreateMediaSubscription): Promise<MediaSubscription> => {
+    try {
+        const response = await axiosInstance.post("/media-subscriptions/upsert", payload);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to upsert media subscription. Please try again.");
+    }
+};

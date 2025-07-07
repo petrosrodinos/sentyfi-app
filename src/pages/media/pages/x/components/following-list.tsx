@@ -7,6 +7,7 @@ import { useTwitterFollowings } from "../hooks/use-twitter";
 import { UserCard } from "./user-card";
 import type { TwitterUser } from "../interfaces/twitter";
 import type { MediaSubscription } from "@/pages/media/interfaces/media-subscriptions";
+import { useEffect, useState } from "react";
 
 interface FollowingListProps {
   username: string;
@@ -14,7 +15,18 @@ interface FollowingListProps {
 }
 
 export function FollowingList({ username, subscriptions }: FollowingListProps) {
+  const [twitterData, setTwitterData] = useState<TwitterUser[]>([]);
+
   const { data: followings, isLoading: isLoadingFollowings, isError: isErrorFollowings, error: errorFollowings, refetch: refetchFollowings } = useTwitterFollowings(username);
+
+  useEffect(() => {
+    if (!followings?.length) return;
+    const items = followings?.map((user) => {
+      const isEnabled = subscriptions.find((subscription) => subscription.account_identifier === user.id);
+      return { ...user, enabled: isEnabled ? isEnabled.enabled : false };
+    });
+    setTwitterData(items || []);
+  }, [followings, subscriptions]);
 
   if (isLoadingFollowings) {
     return (
@@ -87,8 +99,8 @@ export function FollowingList({ username, subscriptions }: FollowingListProps) {
             </div>
           ) : (
             <div className="space-y-3">
-              {followings?.map((user: TwitterUser) => (
-                <UserCard key={user.id} user={user} subscriptions={subscriptions} />
+              {twitterData?.map((user: TwitterUser) => (
+                <UserCard key={user.id} user={user} enabled={user.enabled || false} />
               ))}
             </div>
           )}

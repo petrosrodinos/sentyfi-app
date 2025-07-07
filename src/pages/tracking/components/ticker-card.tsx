@@ -15,7 +15,7 @@ export default function TickerCard({ ticker, enabled }: TickerCardProps) {
   const queryClient = useQueryClient();
   const { mutate: upsertTrackedItem } = useUpsertTrackedItem();
 
-  const get_ticker_fallback = () => {
+  const getTickerFallback = () => {
     return ticker.ticker.substring(0, 2).toUpperCase();
   };
 
@@ -48,7 +48,7 @@ export default function TickerCard({ ticker, enabled }: TickerCardProps) {
             <div className="relative">
               <Avatar className="w-12 h-12">
                 <AvatarImage src={ticker.icon_url} alt={ticker.ticker} />
-                <AvatarFallback className="bg-primary/10 text-primary font-semibold">{get_ticker_fallback()}</AvatarFallback>
+                <AvatarFallback className="bg-primary/10 text-primary font-semibold">{getTickerFallback()}</AvatarFallback>
               </Avatar>
             </div>
 
