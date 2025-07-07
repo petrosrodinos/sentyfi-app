@@ -93,7 +93,7 @@ export function UserResult({ username, subscriptions }: UserResultProps) {
             </div>
           ) : (
             <>
-              <UserCard user={user!} enabled={isUserEnabled || false} />
+              <UserCard user={user!} enabled={isUserEnabled || false} mode="create" />
 
               <Button disabled={getFollowings} onClick={handleGetFollowings} variant="outline" className="mt-4">
                 <Users className="w-4 h-4 mr-2" />

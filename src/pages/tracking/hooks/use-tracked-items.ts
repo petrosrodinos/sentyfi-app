@@ -68,7 +68,7 @@ export function useUpsertTrackedItem() {
 
 export function useDeleteTrackedItem() {
     return useMutation({
-        mutationFn: (id: string) => deleteTrackedItem(id),
+        mutationFn: (id: number) => deleteTrackedItem(id),
         onSuccess: () => {
             toast({
                 title: "Tracked item deleted successfully",

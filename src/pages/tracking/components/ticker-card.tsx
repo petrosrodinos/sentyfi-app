@@ -4,16 +4,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Ticker } from "../interfaces/tickers";
 import { type CreateTrackedItem } from "../interfaces/tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
-import { useUpsertTrackedItem } from "../hooks/use-tracked-items";
+import { useDeleteTrackedItem, useUpsertTrackedItem } from "../hooks/use-tracked-items";
+import { LoaderCircle, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface TickerCardProps {
   ticker: Ticker;
   enabled: boolean;
+  mode?: "create" | "view";
+  trackedItemId?: number;
 }
 
-export default function TickerCard({ ticker, enabled }: TickerCardProps) {
+export default function TickerCard({ ticker, enabled, mode = "view", trackedItemId }: TickerCardProps) {
   const queryClient = useQueryClient();
-  const { mutate: upsertTrackedItem } = useUpsertTrackedItem();
+  const { mutate: upsertTrackedItem, isPending: isUpsertingTrackedItem } = useUpsertTrackedItem();
+  const { mutate: deleteTrackedItem, isPending: isDeletingTrackedItem } = useDeleteTrackedItem();
 
   const getTickerFallback = () => {
     return ticker.ticker.substring(0, 2).toUpperCase();
@@ -40,6 +45,15 @@ export default function TickerCard({ ticker, enabled }: TickerCardProps) {
     }
   };
 
+  const handleDelete = async () => {
+    if (!trackedItemId) return;
+    deleteTrackedItem(trackedItemId, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["tracked-items", ticker.market] });
+      },
+    });
+  };
+
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-4">
@@ -59,7 +73,18 @@ export default function TickerCard({ ticker, enabled }: TickerCardProps) {
           </div>
 
           <div className="flex items-center space-x-2 ml-4">
-            <Switch checked={enabled} onCheckedChange={handleToggle} />
+            {isUpsertingTrackedItem || isDeletingTrackedItem ? (
+              <LoaderCircle className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                <Switch checked={enabled} onCheckedChange={handleToggle} />
+                {mode === "view" && trackedItemId && (
+                  <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive" onClick={handleDelete}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                )}
+              </>
+            )}
           </div>
         </div>
       </CardContent>

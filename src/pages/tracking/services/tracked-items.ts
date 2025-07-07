@@ -37,7 +37,7 @@ export const upsertTrackedItem = async (trackedItem: CreateTrackedItem): Promise
     }
 };
 
-export const deleteTrackedItem = async (id: string): Promise<void> => {
+export const deleteTrackedItem = async (id: number): Promise<void> => {
     try {
         await axiosInstance.delete(`/tracked-items/${id}`);
     } catch (error) {

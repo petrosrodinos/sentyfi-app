@@ -112,7 +112,7 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
             ) : searchResults && searchResults.results?.length > 0 ? (
               <div className="space-y-3">
                 {tickersData?.map((ticker: Ticker) => (
-                  <TickerCard key={ticker.ticker} ticker={ticker} enabled={ticker.enabled || false} />
+                  <TickerCard key={ticker.ticker} ticker={ticker} enabled={ticker.enabled || false} mode="create" />
                 ))}
               </div>
             ) : (

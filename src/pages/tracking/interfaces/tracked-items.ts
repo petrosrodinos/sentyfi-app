@@ -1,7 +1,7 @@
 import type { Ticker } from "./tickers";
 
 export interface TrackedItem extends CreateTrackedItem {
-    id: string;
+    id: number;
     uuid: string;
     user_uuid: string;
 }

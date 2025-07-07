@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import TickerCard from "./ticker-card";
 import { type TrackedItem, type TrackedItemType } from "../interfaces/tracked-items";
 import { Plus, Users } from "lucide-react";
 import type { Ticker } from "../interfaces/tickers";
 import { MarketLabels } from "../constants";
+import Loader from "@/components/ui/loader";
 
 interface TrackingListProps {
   trackedItems: TrackedItem[];
@@ -17,36 +17,7 @@ interface TrackingListProps {
 
 export default function TrackingList({ trackedItems, isLoading, onAddNew, market }: TrackingListProps) {
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        {Array.from({ length: 8 }).map((_, index) => (
-          <Card key={index} className="cursor-pointer transition-all duration-200">
-            <CardContent className="pt-6">
-              <div className="flex items-center space-x-4">
-                <Skeleton className="h-12 w-12 rounded-full flex-shrink-0" />
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Skeleton className="h-5 w-20" />
-                    <Skeleton className="h-6 w-16 rounded-full" />
-                  </div>
-                  <Skeleton className="h-4 w-32" />
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-2">
-                      <Skeleton className="h-4 w-4" />
-                      <Skeleton className="h-4 w-16" />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Skeleton className="h-4 w-4" />
-                      <Skeleton className="h-4 w-20" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    );
+    return <Loader length={8} />;
   }
 
   return (
@@ -88,7 +59,7 @@ export default function TrackingList({ trackedItems, isLoading, onAddNew, market
             <div className="space-y-3">
               <div className="space-y-4 w-full">
                 {trackedItems?.map((ticker: TrackedItem) => (
-                  <TickerCard key={ticker.uuid} ticker={ticker.meta as Ticker} enabled={ticker.enabled} />
+                  <TickerCard key={ticker.uuid} ticker={ticker.meta as Ticker} enabled={ticker.enabled} trackedItemId={ticker.id} />
                 ))}
               </div>
             </div>

@@ -9,10 +9,10 @@ export default function Twitter() {
   const { user_uuid } = useAuthStore();
   const [isCreating, setIsCreating] = useState(false);
 
-  const { data: subscriptions } = useMediaSubscriptions({
+  const { data: subscriptions, isLoading: isLoadingSubscriptions } = useMediaSubscriptions({
     user_uuid: user_uuid!,
     platform_type: MediaSubscriptionPlatformTypes.twitter,
   });
 
-  return <>{isCreating ? <CreateSubscriptions subscriptions={subscriptions || []} onBack={() => setIsCreating(false)} /> : <SubscriptionsList subscriptions={subscriptions || []} onAddNew={() => setIsCreating(true)} />}</>;
+  return <>{isCreating ? <CreateSubscriptions subscriptions={subscriptions || []} onBack={() => setIsCreating(false)} /> : <SubscriptionsList subscriptions={subscriptions || []} isLoading={isLoadingSubscriptions} onAddNew={() => setIsCreating(true)} />}</>;
 }

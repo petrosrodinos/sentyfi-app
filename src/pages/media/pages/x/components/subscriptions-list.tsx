@@ -3,13 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Users } from "lucide-react";
 import { UserCard } from "./user-card";
 import type { MediaSubscription } from "@/pages/media/interfaces/media-subscriptions";
+import Loader from "@/components/ui/loader";
 
 interface SubscriptionsListProps {
   subscriptions: MediaSubscription[];
+  isLoading: boolean;
   onAddNew: () => void;
 }
 
-export function SubscriptionsList({ subscriptions, onAddNew }: SubscriptionsListProps) {
+export function SubscriptionsList({ subscriptions, isLoading, onAddNew }: SubscriptionsListProps) {
   return (
     <div className="container mx-auto p-3 space-y-3 w-full">
       <div className="flex items-center justify-between">
@@ -23,7 +25,9 @@ export function SubscriptionsList({ subscriptions, onAddNew }: SubscriptionsList
         </Button>
       </div>
 
-      {subscriptions.length === 0 ? (
+      {isLoading && <Loader length={8} />}
+
+      {!subscriptions.length && !isLoading ? (
         <Card className="w-full">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Users className="w-16 h-16 text-muted-foreground mb-4" />
@@ -53,7 +57,7 @@ export function SubscriptionsList({ subscriptions, onAddNew }: SubscriptionsList
                   profile_image_url: subscription.meta?.profile_image_url || "",
                   description: subscription.meta?.description || "",
                 };
-                return <UserCard key={subscription.id} user={user_data} subscriptions={subscriptions} enabled={subscription.enabled} />;
+                return <UserCard key={subscription.id} user={user_data} enabled={subscription.enabled} subscriptionId={subscription.id} />;
               })}
             </div>
           </CardContent>

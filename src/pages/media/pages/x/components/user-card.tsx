@@ -1,19 +1,24 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { useUpsertMediaSubscription } from "../../../hooks/use-media-subscriptions";
+import { Button } from "@/components/ui/button";
+import { useDeleteMediaSubscription, useUpsertMediaSubscription } from "../../../hooks/use-media-subscriptions";
 import { useQueryClient } from "@tanstack/react-query";
 import type { TwitterUser } from "../interfaces/twitter";
 import type { CreateMediaSubscription } from "../../../interfaces/media-subscriptions";
 import { MediaSubscriptionPlatformTypes } from "../../../interfaces/media-subscriptions";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Trash2 } from "lucide-react";
 
 interface UserCardProps {
   user: TwitterUser;
   enabled: boolean;
+  mode?: "create" | "view";
+  subscriptionId?: number;
 }
 
-export function UserCard({ user, enabled }: UserCardProps) {
+export function UserCard({ user, enabled, mode = "view", subscriptionId }: UserCardProps) {
   const { mutate: upsertSubscription, isPending: isUpsertingSubscription } = useUpsertMediaSubscription();
+  const { mutate: deleteSubscription, isPending: isDeletingSubscription } = useDeleteMediaSubscription();
+
   const queryClient = useQueryClient();
 
   const handleToggle = async (checked: boolean) => {
@@ -37,8 +42,22 @@ export function UserCard({ user, enabled }: UserCardProps) {
     }
   };
 
+  const handleDelete = async () => {
+    if (!subscriptionId) return;
+
+    try {
+      deleteSubscription(subscriptionId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["media-subscriptions", MediaSubscriptionPlatformTypes.twitter] });
+        },
+      });
+    } catch (error) {
+      console.error("Failed to delete subscription:", error);
+    }
+  };
+
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow group">
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
           <div className="flex items-start space-x-3 flex-1">
@@ -57,7 +76,20 @@ export function UserCard({ user, enabled }: UserCardProps) {
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 ml-4">{isUpsertingSubscription ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Switch checked={enabled} onCheckedChange={handleToggle} />}</div>
+          <div className="flex items-center space-x-2 ml-4">
+            {isUpsertingSubscription || isDeletingSubscription ? (
+              <LoaderCircle className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                <Switch checked={enabled} onCheckedChange={handleToggle} />
+                {mode === "view" && subscriptionId && (
+                  <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive" onClick={handleDelete}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
