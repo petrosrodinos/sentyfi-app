@@ -8,7 +8,7 @@ import { NotificationChannelsData } from "./data";
 import SkeletonLoader from "../../components/skeleton-loader";
 
 export default function NotificationChannels() {
-  const [notificationChannels, setNotificationChannels] = useState<NotificationChannelData[]>([]);
+  const [notificationChannels, setNotificationChannels] = useState<NotificationChannelData[]>(NotificationChannelsData);
 
   const { user_uuid } = useAuthStore();
 
@@ -29,6 +29,7 @@ export default function NotificationChannels() {
           setup_status: channel_data.verified ? "fully_setup" : "not_setup",
         };
       });
+      console.log("channels", channels);
       setNotificationChannels(channels as unknown as NotificationChannelData[]);
     }
   }, [data]);

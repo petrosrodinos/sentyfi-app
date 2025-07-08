@@ -52,7 +52,7 @@ export function useUpdateNotificationChannel() {
         onSuccess: () => {
             toast({
                 title: "Notification channel updated successfully",
-                description: "You have successfully updated a notification channel",
+                description: "You have successfully updated the notification channel",
                 duration: 1000,
             });
         },
