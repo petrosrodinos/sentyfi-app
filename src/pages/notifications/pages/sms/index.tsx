@@ -11,11 +11,12 @@ import { useAuthStore } from "@/stores/auth";
 import { NotificationChannelTypes } from "../../interfaces/notification-channels";
 import { useNotificationChannels } from "../../hooks/use-notification-channels";
 import { useCreateVerificationToken, useVerifyVerificationToken } from "../../hooks/verification-tokens";
-import { VerificationTokenType, type VerificationToken } from "../../interfaces/verification-tokens";
+import { VerificationTokenType } from "../../interfaces/verification-tokens";
 import { useUpdateNotificationChannel } from "../../hooks/use-notification-channels";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import Loader from "@/components/ui/loader";
 
 export default function SmsNotifications() {
   const { user_uuid } = useAuthStore();
@@ -44,18 +45,9 @@ export default function SmsNotifications() {
   }, [smsChannel]);
 
   const sendVerificationSms = async () => {
-    if (!phoneNumber) {
-      toast({
-        title: "Phone number required",
-        description: "Please enter your phone number",
-      });
-      return;
-    }
-
     createVerificationToken(
       {
         type: VerificationTokenType.sms,
-        user_uuid: user_uuid!,
         client_identifier: phoneNumber,
       },
       {
@@ -78,7 +70,7 @@ export default function SmsNotifications() {
 
   const verifyPhone = async () => {
     verifyVerificationToken(verificationCode, {
-      onSuccess: (data: VerificationToken) => {
+      onSuccess: () => {
         toast({
           title: "Phone number verified",
           description: "You have successfully verified your phone number",
@@ -106,19 +98,7 @@ export default function SmsNotifications() {
   };
 
   if (isLoadingSmsChannel) {
-    return (
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">SMS Notifications</h2>
-          <p className="text-muted-foreground">Receive instant text message alerts for critical market events and portfolio updates.</p>
-        </div>
-        <div className="space-y-4">
-          <div className="h-32 bg-muted animate-pulse rounded-lg"></div>
-          <div className="h-32 bg-muted animate-pulse rounded-lg"></div>
-          <div className="h-32 bg-muted animate-pulse rounded-lg"></div>
-        </div>
-      </div>
-    );
+    return <Loader length={4} />;
   }
 
   return (

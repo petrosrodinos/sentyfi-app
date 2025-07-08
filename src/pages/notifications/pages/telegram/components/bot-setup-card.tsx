@@ -30,7 +30,6 @@ export default function BotSetupCard({ user_uuid, telegramChannel, botConnected,
     createVerificationToken(
       {
         type: VerificationTokenType.telegram,
-        user_uuid: user_uuid,
       },
       {
         onSuccess: (data) => {
@@ -42,7 +41,7 @@ export default function BotSetupCard({ user_uuid, telegramChannel, botConnected,
 
   const connectBot = async () => {
     getNotificationChannels(
-      { user_uuid: user_uuid, channel: NotificationChannelTypes.telegram },
+      { user_uuid, channel: NotificationChannelTypes.telegram },
       {
         onSuccess: (data: NotificationChannel[]) => {
           toast({
@@ -56,6 +55,7 @@ export default function BotSetupCard({ user_uuid, telegramChannel, botConnected,
           toast({
             title: "Failed to connect bot",
             description: "Please try again",
+            variant: "destructive",
           });
         },
       }

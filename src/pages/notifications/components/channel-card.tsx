@@ -3,20 +3,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { IconCheck, IconX, IconSettings } from "@tabler/icons-react";
-import { NotificationChannelTypes, type NotificationChannelData, type NotificationChannelType } from "../interfaces/notification-channels";
+import { type NotificationChannelData } from "../interfaces/notification-channels";
 import { useNavigate } from "react-router-dom";
-import { Routes } from "@/routes/routes";
 import { useUpdateNotificationChannel } from "../hooks/use-notification-channels";
 import { Loader2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ChannelCardProps {
   channel: NotificationChannelData;
-  on_channel_update: (updated_channel: NotificationChannelData) => void;
 }
 
-export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
+export function ChannelCard({ channel }: ChannelCardProps) {
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const { mutate: updateNotificationChannelMutation, isPending: isUpdatingNotificationChannel } = useUpdateNotificationChannel();
 
   const handleToggleChannel = () => {
@@ -24,7 +23,7 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
       { id: channel.id!, enabled: !channel.enabled },
       {
         onSuccess: () => {
-          on_channel_update({ ...channel, enabled: !channel.enabled });
+          queryClient.invalidateQueries({ queryKey: ["notification-channels"] });
         },
       }
     );
@@ -32,14 +31,6 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
 
   const handleSetupChannel = () => {
     navigate(channel.url);
-
-    // const updated_channel = {
-    //   ...channel,
-    //   requirements_met: true,
-    //   action_required: null,
-    //   setup_status: "fully_setup" as const,
-    // };
-    // on_channel_update(updated_channel);
   };
 
   const getSetupStatusBadge = (status: string) => {

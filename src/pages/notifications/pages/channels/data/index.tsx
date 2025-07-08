@@ -4,7 +4,7 @@ import { Routes } from "@/routes/routes";
 
 export const NotificationChannelsData: NotificationChannelData[] = [
   {
-    id: null,
+    id: "telegram",
     channel: NotificationChannelTypes.telegram,
     title: "Telegram Notifications",
     description: "Get notifications through Telegram bot",
@@ -14,17 +14,19 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     setup_status: "not_setup",
     url: Routes.notifications.telegram,
   },
-  // {
-  //   id: "email",
-  //   title: "Email Notifications",
-  //   description: "Receive detailed notifications via email",
-  //   icon: <IconMail size={20} />,
-  //   enabled: true,
-  //   verified: true,
-  //   setup_status: "fully_setup",
-  // },
   {
-    id: null,
+    id: "email",
+    channel: NotificationChannelTypes.email,
+    title: "Email Notifications",
+    description: "Receive detailed notifications via email",
+    icon: <IconMail size={20} />,
+    enabled: false,
+    verified: false,
+    setup_status: "not_setup",
+    url: Routes.notifications.email,
+  },
+  {
+    id: "sms",
     channel: NotificationChannelTypes.sms,
     title: "SMS Notifications",
     description: "Get text message alerts on your phone",

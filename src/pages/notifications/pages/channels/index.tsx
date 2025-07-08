@@ -8,7 +8,7 @@ import { NotificationChannelsData } from "./data";
 import SkeletonLoader from "../../components/skeleton-loader";
 
 export default function NotificationChannels() {
-  const [notificationChannels, setNotificationChannels] = useState<NotificationChannelData[]>(NotificationChannelsData);
+  const [notificationChannels, setNotificationChannels] = useState<NotificationChannelData[]>([]);
 
   const { user_uuid } = useAuthStore();
 
@@ -16,21 +16,20 @@ export default function NotificationChannels() {
 
   useEffect(() => {
     if (data?.length) {
-      const channels = data
-        .map((channel) => {
-          const channel_data = NotificationChannelsData.find((c) => c.channel === channel.channel);
-          if (!channel_data) return null;
-          return {
-            ...channel_data,
-            id: channel.id,
-            enabled: channel.enabled,
-            verified: channel.verified,
-            setup_status: channel.verified ? "fully_setup" : "not_setup",
-          };
-        })
-        .filter((c) => c !== null);
+      const channels = NotificationChannelsData.map((channel) => {
+        const channel_data = data.find((c) => c.channel === channel.channel);
+        if (!channel_data) {
+          return channel;
+        }
+        return {
+          ...channel,
+          id: channel_data.id,
+          enabled: channel_data.enabled,
+          verified: channel_data.verified,
+          setup_status: channel_data.verified ? "fully_setup" : "not_setup",
+        };
+      });
       setNotificationChannels(channels as unknown as NotificationChannelData[]);
-      console.log(channels);
     }
   }, [data]);
 
@@ -45,7 +44,7 @@ export default function NotificationChannels() {
 
       <div className="space-y-4">
         {notificationChannels.map((channel) => (
-          <ChannelCard key={channel.id} channel={channel} on_channel_update={(updated_channel) => setNotificationChannels((prev) => prev.map((ch) => (ch.id === updated_channel.id ? updated_channel : ch)))} />
+          <ChannelCard key={channel.id} channel={channel} />
         ))}
       </div>
 

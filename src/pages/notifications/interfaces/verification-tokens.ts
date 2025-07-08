@@ -2,16 +2,15 @@
 export interface VerificationToken extends CreateVerificationToken {
     id: string;
     uuid: string;
+    user_uuid: string;
     token: string;
     state?: string;
     identity_uuid?: string;
-    client_identifier?: string;
     expires_at?: Date;
 }
 
 export interface CreateVerificationToken {
     type: VerificationTokenType;
-    user_uuid: string;
     client_identifier?: string;
 }
 
