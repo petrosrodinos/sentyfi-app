@@ -5,7 +5,7 @@ import type { CreateNotificationChannel, NotificationChannelQuery, UpdateNotific
 
 export function useNotificationChannels(query: NotificationChannelQuery) {
     return useQuery({
-        queryKey: ["notification-channels", query],
+        queryKey: ["notification-channels", query.channel],
         queryFn: () => getNotificationChannels(query),
         enabled: !!query,
         retry: false,

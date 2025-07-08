@@ -8,6 +8,7 @@ export interface CreateNotificationChannel {
     user_uuid: string;
     channel: NotificationChannelType;
     enabled: boolean;
+    client_identifier?: string;
 }
 
 export interface UpdateNotificationChannel {
@@ -18,6 +19,7 @@ export interface UpdateNotificationChannel {
 export interface NotificationChannelQuery {
     user_uuid?: string;
     channel?: NotificationChannelType;
+    client_identifier?: string;
     verified?: boolean;
     enabled?: boolean;
 }
@@ -31,6 +33,7 @@ export interface NotificationChannelData {
     enabled: boolean;
     verified: boolean;
     setup_status: "not_setup" | "partially_setup" | "fully_setup";
+    url: string;
 }
 
 export const NotificationChannelTypes = {

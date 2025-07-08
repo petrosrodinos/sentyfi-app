@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -6,24 +6,120 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { IconMessageCircle, IconCheck, IconSend, IconAlertCircle, IconPhone } from "@tabler/icons-react";
+import { IconMessageCircle, IconCheck, IconSend, IconAlertCircle, IconRefresh } from "@tabler/icons-react";
+import { useAuthStore } from "@/stores/auth";
+import { NotificationChannelTypes } from "../../interfaces/notification-channels";
+import { useNotificationChannels } from "../../hooks/use-notification-channels";
+import { useCreateVerificationToken, useVerifyVerificationToken } from "../../hooks/verification-tokens";
+import { VerificationTokenType, type VerificationToken } from "../../interfaces/verification-tokens";
+import { useUpdateNotificationChannel } from "../../hooks/use-notification-channels";
+import { toast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function SmsNotifications() {
-  const [phone_verified, set_phone_verified] = useState(false);
-  const [phone_number, set_phone_number] = useState("");
-  const [verification_sent, set_verification_sent] = useState(false);
-  const [sms_enabled, set_sms_enabled] = useState(false);
+  const { user_uuid } = useAuthStore();
+  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [smsEnabled, setSmsEnabled] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
 
-  const send_verification_sms = () => {
-    if (phone_number) {
-      set_verification_sent(true);
+  const queryClient = useQueryClient();
+
+  const { data: smsChannel, isLoading: isLoadingSmsChannel } = useNotificationChannels({
+    user_uuid: user_uuid!,
+    channel: NotificationChannelTypes.sms,
+  });
+
+  const { mutate: createVerificationToken, isPending: isCreatingVerificationToken } = useCreateVerificationToken();
+  const { mutate: updateNotificationChannelMutation, isPending: isUpdatingNotificationChannel } = useUpdateNotificationChannel();
+  const { mutate: verifyVerificationToken, isPending: isVerifyingVerificationToken } = useVerifyVerificationToken();
+
+  useEffect(() => {
+    if (smsChannel) {
+      setPhoneVerified(smsChannel[0]?.verified || false);
+      setSmsEnabled(smsChannel[0]?.enabled || false);
+    }
+  }, [smsChannel]);
+
+  const sendVerificationSms = async () => {
+    if (!phoneNumber) {
+      toast({
+        title: "Phone number required",
+        description: "Please enter your phone number",
+      });
+      return;
+    }
+
+    createVerificationToken(
+      {
+        type: VerificationTokenType.sms,
+        user_uuid: user_uuid!,
+        client_identifier: phoneNumber,
+      },
+      {
+        onSuccess: () => {
+          setVerificationSent(true);
+          toast({
+            title: "Verification SMS sent",
+            description: `A verification code has been sent to ${phoneNumber}`,
+          });
+        },
+        onError: () => {
+          toast({
+            title: "Failed to send verification SMS",
+            description: "Please try again",
+          });
+        },
+      }
+    );
+  };
+
+  const verifyPhone = async () => {
+    verifyVerificationToken(verificationCode, {
+      onSuccess: (data: VerificationToken) => {
+        toast({
+          title: "Phone number verified",
+          description: "You have successfully verified your phone number",
+        });
+        queryClient.invalidateQueries({ queryKey: ["notification-channels", NotificationChannelTypes.sms] });
+      },
+      onError: () => {
+        toast({
+          title: "Failed to verify phone number",
+          description: "Please try again",
+        });
+      },
+    });
+  };
+
+  const resendVerificationCode = () => {
+    setVerificationSent(false);
+    sendVerificationSms();
+  };
+
+  const updateNotificationChannel = async (enabled: boolean) => {
+    if (smsChannel) {
+      updateNotificationChannelMutation({ id: smsChannel[0].id, enabled: enabled }, {});
     }
   };
 
-  const verify_phone = () => {
-    set_phone_verified(true);
-    set_sms_enabled(true);
-  };
+  if (isLoadingSmsChannel) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">SMS Notifications</h2>
+          <p className="text-muted-foreground">Receive instant text message alerts for critical market events and portfolio updates.</p>
+        </div>
+        <div className="space-y-4">
+          <div className="h-32 bg-muted animate-pulse rounded-lg"></div>
+          <div className="h-32 bg-muted animate-pulse rounded-lg"></div>
+          <div className="h-32 bg-muted animate-pulse rounded-lg"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -38,32 +134,53 @@ export default function SmsNotifications() {
             <IconMessageCircle size={20} className="text-primary" />
             <CardTitle>Phone Number Setup</CardTitle>
           </div>
-          <CardDescription>Verify your phone number to receive SMS notifications</CardDescription>
+          {phoneVerified ? <CardDescription>Your phone number is verified and ready to receive SMS notifications</CardDescription> : <CardDescription>Verify your phone number to receive SMS notifications</CardDescription>}
         </CardHeader>
         <CardContent className="space-y-4">
-          {!phone_verified ? (
+          {!phoneVerified ? (
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" value={phone_number} onChange={(e) => set_phone_number(e.target.value)} />
+                <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                 <p className="text-xs text-muted-foreground">Standard SMS rates may apply. Enter your full international number.</p>
               </div>
 
-              {!verification_sent ? (
-                <Button onClick={send_verification_sms} className="w-full">
-                  <IconSend size={16} className="mr-2" />
-                  Send Verification SMS
+              {!verificationSent ? (
+                <Button onClick={sendVerificationSms} disabled={isCreatingVerificationToken || !phoneNumber} className="w-full">
+                  {isCreatingVerificationToken ? (
+                    <>
+                      <IconRefresh size={16} className="mr-2 animate-spin" />
+                      Sending SMS...
+                    </>
+                  ) : (
+                    <>
+                      <IconSend size={16} className="mr-2" />
+                      Send Verification SMS
+                    </>
+                  )}
                 </Button>
               ) : (
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                     <IconAlertCircle size={16} />
-                    <span>Verification SMS sent to {phone_number}</span>
+                    <span>Verification SMS sent to {phoneNumber}</span>
                   </div>
-                  <Button onClick={verify_phone} className="w-full">
-                    <IconCheck size={16} className="mr-2" />
-                    I've Verified My Phone
-                  </Button>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="otp">Enter verification code</Label>
+                    <Input id="otp" type="text" placeholder="Enter 6-digit code" maxLength={6} value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
+                  </div>
+
+                  <div className="flex space-x-2">
+                    <Button onClick={verifyPhone} className="flex-1">
+                      <IconCheck size={16} className="mr-2" />
+                      {isVerifyingVerificationToken ? <Loader2 className="h-4 w-4 animate-spin" /> : "Verify Code"}
+                    </Button>
+                    <Button onClick={resendVerificationCode} variant="outline" disabled={isCreatingVerificationToken || isVerifyingVerificationToken}>
+                      <IconRefresh size={16} className="mr-2" />
+                      {isCreatingVerificationToken ? <Loader2 className="h-4 w-4 animate-spin" /> : "Resend"}
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
@@ -71,7 +188,7 @@ export default function SmsNotifications() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">SMS notifications</span>
-                <Switch checked={sms_enabled} onCheckedChange={set_sms_enabled} />
+                {isUpdatingNotificationChannel ? <Loader2 className="h-4 w-4 animate-spin" /> : <Switch checked={smsEnabled} onCheckedChange={updateNotificationChannel} />}
               </div>
               <Badge variant="default" className="flex items-center space-x-1">
                 <IconCheck size={12} />
@@ -95,7 +212,7 @@ export default function SmsNotifications() {
               <p className="font-medium">Critical price alerts</p>
               <p className="text-sm text-muted-foreground">Major price movements in your portfolio</p>
             </div>
-            <Switch defaultChecked disabled={!sms_enabled} />
+            <Switch defaultChecked disabled={!smsEnabled} />
           </div>
 
           <div className="flex items-center justify-between">
@@ -103,7 +220,7 @@ export default function SmsNotifications() {
               <p className="font-medium">Breaking news</p>
               <p className="text-sm text-muted-foreground">Important market news and events</p>
             </div>
-            <Switch disabled={!sms_enabled} />
+            <Switch disabled={!smsEnabled} />
           </div>
 
           <div className="flex items-center justify-between">
@@ -111,7 +228,7 @@ export default function SmsNotifications() {
               <p className="font-medium">Portfolio milestones</p>
               <p className="text-sm text-muted-foreground">When your portfolio reaches significant values</p>
             </div>
-            <Switch disabled={!sms_enabled} />
+            <Switch disabled={!smsEnabled} />
           </div>
 
           <div className="flex items-center justify-between">
@@ -119,7 +236,7 @@ export default function SmsNotifications() {
               <p className="font-medium">Social sentiment spikes</p>
               <p className="text-sm text-muted-foreground">Unusual social media activity for your assets</p>
             </div>
-            <Switch disabled={!sms_enabled} />
+            <Switch disabled={!smsEnabled} />
           </div>
 
           <div className="flex items-center justify-between">
@@ -127,7 +244,7 @@ export default function SmsNotifications() {
               <p className="font-medium">Urgent notifications</p>
               <p className="text-sm text-muted-foreground">Critical alerts requiring immediate attention</p>
             </div>
-            <Switch defaultChecked disabled={!sms_enabled} />
+            <Switch defaultChecked disabled={!smsEnabled} />
           </div>
         </CardContent>
       </Card>
@@ -143,7 +260,7 @@ export default function SmsNotifications() {
               <p className="font-medium">Immediate alerts</p>
               <p className="text-sm text-muted-foreground">SMS sent as soon as events occur</p>
             </div>
-            <Switch defaultChecked disabled={!sms_enabled} />
+            <Switch defaultChecked disabled={!smsEnabled} />
           </div>
 
           <div className="flex items-center justify-between">
@@ -151,7 +268,7 @@ export default function SmsNotifications() {
               <p className="font-medium">Batched alerts</p>
               <p className="text-sm text-muted-foreground">Multiple alerts combined into one SMS</p>
             </div>
-            <Switch disabled={!sms_enabled} />
+            <Switch disabled={!smsEnabled} />
           </div>
 
           <div className="flex items-center justify-between">
@@ -159,7 +276,7 @@ export default function SmsNotifications() {
               <p className="font-medium">Daily summary</p>
               <p className="text-sm text-muted-foreground">One SMS with all daily activity</p>
             </div>
-            <Switch disabled={!sms_enabled} />
+            <Switch disabled={!smsEnabled} />
           </div>
         </CardContent>
       </Card>

@@ -1,5 +1,6 @@
 import { IconBell, IconBrandDiscord, IconBrandTelegram, IconBrandWhatsapp, IconMail, IconMessageCircle, IconPhone } from "@tabler/icons-react";
 import { NotificationChannelTypes, type NotificationChannelData } from "../../../interfaces/notification-channels";
+import { Routes } from "@/routes/routes";
 
 export const NotificationChannelsData: NotificationChannelData[] = [
   {
@@ -11,6 +12,27 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     enabled: false,
     verified: false,
     setup_status: "not_setup",
+    url: Routes.notifications.telegram,
+  },
+  // {
+  //   id: "email",
+  //   title: "Email Notifications",
+  //   description: "Receive detailed notifications via email",
+  //   icon: <IconMail size={20} />,
+  //   enabled: true,
+  //   verified: true,
+  //   setup_status: "fully_setup",
+  // },
+  {
+    id: null,
+    channel: NotificationChannelTypes.sms,
+    title: "SMS Notifications",
+    description: "Get text message alerts on your phone",
+    icon: <IconMessageCircle size={20} />,
+    enabled: false,
+    verified: false,
+    setup_status: "not_setup",
+    url: Routes.notifications.sms,
   },
   // {
   //   id: "push",
@@ -30,24 +52,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
   //   verified: true,
   //   setup_status: "fully_setup",
   // },
-  // {
-  //   id: "email",
-  //   title: "Email Notifications",
-  //   description: "Receive detailed notifications via email",
-  //   icon: <IconMail size={20} />,
-  //   enabled: true,
-  //   verified: true,
-  //   setup_status: "fully_setup",
-  // },
-  // {
-  //   id: "sms",
-  //   title: "SMS Notifications",
-  //   description: "Get text message alerts on your phone",
-  //   icon: <IconMessageCircle size={20} />,
-  //   enabled: false,
-  //   verified: false,
-  //   setup_status: "partially_setup",
-  // },
+
   // {
   //   id: "whatsapp",
   //   title: "WhatsApp Notifications",

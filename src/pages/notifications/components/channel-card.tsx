@@ -19,17 +19,6 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
 
   const { mutate: updateNotificationChannelMutation, isPending: isUpdatingNotificationChannel } = useUpdateNotificationChannel();
 
-  const channelsToSetup: Record<NotificationChannelType, string> = {
-    [NotificationChannelTypes.telegram]: Routes.notifications.telegram,
-    [NotificationChannelTypes.email]: Routes.notifications.email,
-    [NotificationChannelTypes.phone]: Routes.notifications.phone,
-    [NotificationChannelTypes.push]: Routes.notifications.push,
-    [NotificationChannelTypes.sms]: Routes.notifications.sms,
-    [NotificationChannelTypes.discord]: Routes.notifications.discord,
-    [NotificationChannelTypes.web]: Routes.notifications.root,
-    [NotificationChannelTypes.whatsapp]: Routes.notifications.whatsapp,
-  };
-
   const handleToggleChannel = () => {
     updateNotificationChannelMutation(
       { id: channel.id!, enabled: !channel.enabled },
@@ -42,18 +31,15 @@ export function ChannelCard({ channel, on_channel_update }: ChannelCardProps) {
   };
 
   const handleSetupChannel = () => {
-    if (channelsToSetup[channel.channel!]) {
-      navigate(channelsToSetup[channel.channel!]);
-      return;
-    }
+    navigate(channel.url);
 
-    const updated_channel = {
-      ...channel,
-      requirements_met: true,
-      action_required: null,
-      setup_status: "fully_setup" as const,
-    };
-    on_channel_update(updated_channel);
+    // const updated_channel = {
+    //   ...channel,
+    //   requirements_met: true,
+    //   action_required: null,
+    //   setup_status: "fully_setup" as const,
+    // };
+    // on_channel_update(updated_channel);
   };
 
   const getSetupStatusBadge = (status: string) => {

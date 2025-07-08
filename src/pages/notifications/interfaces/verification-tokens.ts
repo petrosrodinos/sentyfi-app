@@ -5,12 +5,14 @@ export interface VerificationToken extends CreateVerificationToken {
     token: string;
     state?: string;
     identity_uuid?: string;
+    client_identifier?: string;
     expires_at?: Date;
 }
 
 export interface CreateVerificationToken {
     type: VerificationTokenType;
     user_uuid: string;
+    client_identifier?: string;
 }
 
 export interface VerificationTokenQuery {
@@ -23,6 +25,7 @@ export interface VerificationTokenQuery {
 export const VerificationTokenType = {
     telegram: "telegram",
     email: "email",
+    sms: "sms",
     phone: "phone",
     whatsapp: "whatsapp",
     twitter: "twitter",

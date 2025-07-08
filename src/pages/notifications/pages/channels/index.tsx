@@ -16,16 +16,19 @@ export default function NotificationChannels() {
 
   useEffect(() => {
     if (data?.length) {
-      const channels = data.map((channel) => {
-        const channel_data = NotificationChannelsData.find((c) => c.channel === channel.channel);
-        return {
-          ...channel_data,
-          id: channel.id,
-          enabled: channel.enabled,
-          verified: channel.verified,
-          setup_status: channel.verified ? "fully_setup" : "not_setup",
-        };
-      });
+      const channels = data
+        .map((channel) => {
+          const channel_data = NotificationChannelsData.find((c) => c.channel === channel.channel);
+          if (!channel_data) return null;
+          return {
+            ...channel_data,
+            id: channel.id,
+            enabled: channel.enabled,
+            verified: channel.verified,
+            setup_status: channel.verified ? "fully_setup" : "not_setup",
+          };
+        })
+        .filter((c) => c !== null);
       setNotificationChannels(channels as unknown as NotificationChannelData[]);
       console.log(channels);
     }

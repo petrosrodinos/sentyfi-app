@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { createVerificationToken, verifyVerificationToken } from "../services/verification-tokens";
 import { toast } from "@/hooks/use-toast";
-import type { CreateVerificationToken, VerificationToken } from "../interfaces/verification-tokens";
+import type { CreateVerificationToken } from "../interfaces/verification-tokens";
 
 export function useCreateVerificationToken() {
     return useMutation({
