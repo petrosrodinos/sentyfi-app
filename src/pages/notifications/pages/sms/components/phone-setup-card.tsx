@@ -131,6 +131,16 @@ export default function PhoneSetupCard({ smsChannel, smsEnabled, phoneVerified }
     }
   };
 
+  const handlePhoneFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    phoneForm.handleSubmit(sendVerificationSms)(e);
+  };
+
+  const handleVerificationFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    verificationForm.handleSubmit(verifyPhone)(e);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -143,23 +153,23 @@ export default function PhoneSetupCard({ smsChannel, smsEnabled, phoneVerified }
       <CardContent className="space-y-4">
         {!phoneVerified ? (
           <div className="space-y-4">
-            <Form {...phoneForm}>
-              <form onSubmit={phoneForm.handleSubmit(sendVerificationSms)} className="space-y-4">
-                <FormField
-                  control={phoneForm.control}
-                  name="phoneNumber"
-                  render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel htmlFor="phone">Phone Number</FormLabel>
-                      <FormControl>
-                        <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" value={field.value} onChange={handlePhoneNumberChange} onBlur={field.onBlur} />
-                      </FormControl>
-                      <FormMessage />
-                      <p className="text-xs text-muted-foreground">Enter your full international number.</p>
-                    </FormItem>
-                  )}
-                />
-                {!verificationSent ? (
+            {!verificationSent ? (
+              <Form {...phoneForm}>
+                <form onSubmit={handlePhoneFormSubmit} className="space-y-4">
+                  <FormField
+                    control={phoneForm.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel htmlFor="phone">Phone Number</FormLabel>
+                        <FormControl>
+                          <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" value={field.value} onChange={handlePhoneNumberChange} onBlur={field.onBlur} />
+                        </FormControl>
+                        <FormMessage />
+                        <p className="text-xs text-muted-foreground">Enter your full international number.</p>
+                      </FormItem>
+                    )}
+                  />
                   <Button type="submit" disabled={isCreatingVerificationToken || !isPhoneNumberValid()} className="w-full">
                     {isCreatingVerificationToken ? (
                       <>
@@ -173,56 +183,56 @@ export default function PhoneSetupCard({ smsChannel, smsEnabled, phoneVerified }
                       </>
                     )}
                   </Button>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <IconAlertCircle size={16} />
-                      <span>Verification SMS sent to {phoneForm.watch("phoneNumber")}</span>
+                </form>
+              </Form>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                  <IconAlertCircle size={16} />
+                  <span>Verification SMS sent to {phoneForm.watch("phoneNumber")}</span>
+                </div>
+
+                <Form {...verificationForm}>
+                  <form onSubmit={handleVerificationFormSubmit} className="space-y-3">
+                    <FormField
+                      control={verificationForm.control}
+                      name="verificationCode"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel htmlFor="otp">Enter 6-character verification code</FormLabel>
+                          <FormControl>
+                            <Input
+                              id="otp"
+                              type="text"
+                              placeholder="Enter 6-character code"
+                              maxLength={6}
+                              value={field.value}
+                              onChange={(e) => {
+                                const value = e.target.value.replace(/[^A-Za-z0-9]/g, "");
+                                field.onChange(value);
+                              }}
+                              onBlur={field.onBlur}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="flex space-x-2">
+                      <Button type="submit" className="flex-1" disabled={!verificationForm.watch("verificationCode") || verificationForm.watch("verificationCode").length !== 6}>
+                        <IconCheck size={16} className="mr-2" />
+                        {isVerifyingVerificationToken ? <Loader2 className="h-4 w-4 animate-spin" /> : "Verify Code"}
+                      </Button>
+                      <Button onClick={resendVerificationCode} variant="outline" disabled={isCreatingVerificationToken || isVerifyingVerificationToken || countdown > 0}>
+                        <IconRefresh size={16} className="mr-2" />
+                        {isCreatingVerificationToken ? <Loader2 className="h-4 w-4 animate-spin" /> : countdown > 0 ? `Resend (${countdown}s)` : "Resend"}
+                      </Button>
                     </div>
-
-                    <Form {...verificationForm}>
-                      <form onSubmit={verificationForm.handleSubmit(verifyPhone)} className="space-y-3">
-                        <FormField
-                          control={verificationForm.control}
-                          name="verificationCode"
-                          render={({ field }) => (
-                            <FormItem className="space-y-2">
-                              <FormLabel htmlFor="otp">Enter 6-character verification code</FormLabel>
-                              <FormControl>
-                                <Input
-                                  id="otp"
-                                  type="text"
-                                  placeholder="Enter 6-character code"
-                                  maxLength={6}
-                                  value={field.value}
-                                  onChange={(e) => {
-                                    const value = e.target.value.replace(/[^A-Za-z0-9]/g, "");
-                                    field.onChange(value);
-                                  }}
-                                  onBlur={field.onBlur}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <div className="flex space-x-2">
-                          <Button type="submit" className="flex-1" disabled={!verificationForm.watch("verificationCode") || verificationForm.watch("verificationCode").length !== 6}>
-                            <IconCheck size={16} className="mr-2" />
-                            {isVerifyingVerificationToken ? <Loader2 className="h-4 w-4 animate-spin" /> : "Verify Code"}
-                          </Button>
-                          <Button onClick={resendVerificationCode} variant="outline" disabled={isCreatingVerificationToken || isVerifyingVerificationToken || countdown > 0}>
-                            <IconRefresh size={16} className="mr-2" />
-                            {isCreatingVerificationToken ? <Loader2 className="h-4 w-4 animate-spin" /> : countdown > 0 ? `Resend (${countdown}s)` : "Resend"}
-                          </Button>
-                        </div>
-                      </form>
-                    </Form>
-                  </div>
-                )}
-              </form>
-            </Form>
+                  </form>
+                </Form>
+              </div>
+            )}
           </div>
         ) : (
           <div className="space-y-3">
