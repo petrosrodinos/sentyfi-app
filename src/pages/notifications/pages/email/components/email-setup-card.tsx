@@ -16,6 +16,7 @@ import { NotificationChannelTypes, type NotificationChannel } from "@/pages/noti
 import { VerificationTokenType } from "@/pages/notifications/interfaces/verification-tokens";
 import { EmailAddressSchema, VerificationCodeSchema, type EmailAddressFormValues, type VerificationCodeFormValues } from "../validation-schemas/email";
 import { useCountdown } from "../../../../../hooks/use-countdown";
+import { useAuthStore } from "@/stores/auth";
 
 interface EmailSetupCardProps {
   emailChannel: NotificationChannel;
@@ -24,15 +25,17 @@ interface EmailSetupCardProps {
 }
 
 export default function EmailSetupCard({ emailChannel, emailEnabled, emailVerified }: EmailSetupCardProps) {
-  const [verificationSent, setVerificationSent] = useState(false);
-
   const queryClient = useQueryClient();
   const { countdown, startCountdown } = useCountdown();
+
+  const { email } = useAuthStore();
+
+  const [verificationSent, setVerificationSent] = useState(false);
 
   const emailForm = useForm<EmailAddressFormValues>({
     resolver: zodResolver(EmailAddressSchema),
     defaultValues: {
-      emailAddress: "",
+      emailAddress: email || "",
     },
     mode: "onChange",
   });
@@ -138,7 +141,7 @@ export default function EmailSetupCard({ emailChannel, emailEnabled, emailVerifi
                       <FormItem className="space-y-2">
                         <FormLabel htmlFor="email">Email Address</FormLabel>
                         <FormControl>
-                          <Input id="email" type="email" placeholder="Enter your email address" value={field.value} onChange={field.onChange} onBlur={field.onBlur} />
+                          <Input id="email" readOnly type="email" placeholder="Enter your email address" value={field.value} onChange={field.onChange} onBlur={field.onBlur} />
                         </FormControl>
                         <FormMessage />
                         <p className="text-xs text-muted-foreground">Enter your email address to receive notifications.</p>
