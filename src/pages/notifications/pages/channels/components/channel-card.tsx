@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { IconCheck, IconX, IconSettings } from "@tabler/icons-react";
-import { type NotificationChannelData } from "../interfaces/notification-channels";
+import { type NotificationChannelData, NotificationChannelTypes } from "../../../interfaces/notification-channels";
 import { useNavigate } from "react-router-dom";
-import { useUpdateNotificationChannel } from "../hooks/use-notification-channels";
+import { useUpdateNotificationChannel } from "../../../hooks/use-notification-channels";
 import { Loader2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -17,6 +17,29 @@ export function ChannelCard({ channel }: ChannelCardProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mutate: updateNotificationChannelMutation, isPending: isUpdatingNotificationChannel } = useUpdateNotificationChannel();
+
+  const getChannelColor = (channelType?: string) => {
+    switch (channelType) {
+      case NotificationChannelTypes.telegram:
+        return "bg-blue-500/10 text-blue-600";
+      case NotificationChannelTypes.email:
+        return "bg-red-500/10 text-red-600";
+      case NotificationChannelTypes.sms:
+        return "bg-green-500/10 text-green-600";
+      case NotificationChannelTypes.push:
+        return "bg-purple-500/10 text-purple-600";
+      case NotificationChannelTypes.web:
+        return "bg-orange-500/10 text-orange-600";
+      case NotificationChannelTypes.whatsapp:
+        return "bg-emerald-500/10 text-emerald-600";
+      case NotificationChannelTypes.discord:
+        return "bg-indigo-500/10 text-indigo-600";
+      case NotificationChannelTypes.phone:
+        return "bg-pink-500/10 text-pink-600";
+      default:
+        return "bg-primary/10 text-primary";
+    }
+  };
 
   const handleToggleChannel = () => {
     updateNotificationChannelMutation(
@@ -51,7 +74,7 @@ export function ChannelCard({ channel }: ChannelCardProps) {
         );
       case "not_setup":
         return (
-          <Badge variant="destructive" className="text-xs">
+          <Badge variant="outline" className="text-xs text-orange-600 border-orange-200 bg-orange-50">
             <IconX size={12} className="mr-1" />
             Not Setup
           </Badge>
@@ -66,7 +89,7 @@ export function ChannelCard({ channel }: ChannelCardProps) {
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4 flex-1">
-            <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 text-primary">{channel.icon}</div>
+            <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${getChannelColor(channel.channel)}`}>{channel.icon}</div>
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-3 mb-1">

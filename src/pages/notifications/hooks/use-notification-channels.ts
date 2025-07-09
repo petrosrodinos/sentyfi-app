@@ -3,6 +3,7 @@ import { toast } from "@/hooks/use-toast";
 import { getNotificationChannels, createNotificationChannel, updateNotificationChannel, deleteNotificationChannel } from "../services/notification-channels";
 import type { CreateNotificationChannel, NotificationChannelQuery, UpdateNotificationChannel } from "../interfaces/notification-channels";
 
+
 export function useNotificationChannels(query: NotificationChannelQuery) {
     return useQuery({
         queryKey: ["notification-channels", query.channel],
@@ -11,6 +12,8 @@ export function useNotificationChannels(query: NotificationChannelQuery) {
         retry: false,
     });
 }
+
+
 
 export function useGetNotificationChannels() {
     return useMutation({

@@ -62,7 +62,7 @@ export default function AppRoutes() {
           <Route path="whatsapp" element={<WhatsAppNotifications />} />
           <Route path="telegram" element={<TelegramNotifications />} />
           <Route path="discord" element={<DiscordNotifications />} />
-          <Route path="phone-call" element={<PhoneCallNotifications />} />
+          <Route path="phone" element={<PhoneCallNotifications />} />
         </Route>
 
         {/* Catch all route */}

@@ -26,7 +26,7 @@ export interface NotificationChannelQuery {
 
 export interface NotificationChannelData {
     id: string | null;
-    channel?: NotificationChannelType;
+    channel: NotificationChannelType;
     title: string;
     description: string;
     icon: React.ReactNode;

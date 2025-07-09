@@ -17,7 +17,7 @@ export default function TelegramNotifications() {
         <p className="text-muted-foreground">Receive instant notifications through our Telegram bot for market updates and portfolio alerts.</p>
       </div>
 
-      <BotSetupCard user_uuid={user_uuid!} telegramChannel={telegramChannel} botConnected={telegramConnected} telegramEnabled={telegramEnabled} onBotConnectedChange={() => {}} onTelegramEnabledChange={() => {}} />
+      <BotSetupCard user_uuid={user_uuid!} telegramChannel={telegramChannel} botConnected={telegramConnected} telegramEnabled={telegramEnabled} />
 
       <Separator />
 

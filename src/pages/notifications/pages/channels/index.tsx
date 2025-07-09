@@ -1,40 +1,12 @@
-import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
-import { ChannelCard } from "../../components/channel-card";
-import { type NotificationChannelData } from "../../interfaces/notification-channels";
-import { useNotificationChannels } from "../../hooks/use-notification-channels";
-import { useAuthStore } from "@/stores/auth";
-import { NotificationChannelsData } from "./data";
-import SkeletonLoader from "../../components/skeleton-loader";
+import { ChannelCard } from "./components/channel-card";
+import { useNotificationChannelsData } from "./hooks/use-notification-channels-data";
+import Loader from "@/components/ui/loader";
 
 export default function NotificationChannels() {
-  const [notificationChannels, setNotificationChannels] = useState<NotificationChannelData[]>(NotificationChannelsData);
+  const { notificationChannels, isLoading } = useNotificationChannelsData();
 
-  const { user_uuid } = useAuthStore();
-
-  const { data, isLoading } = useNotificationChannels({ user_uuid: user_uuid! });
-
-  useEffect(() => {
-    if (data?.length) {
-      const channels = NotificationChannelsData.map((channel) => {
-        const channel_data = data.find((c) => c.channel === channel.channel);
-        if (!channel_data) {
-          return channel;
-        }
-        return {
-          ...channel,
-          id: channel_data.id,
-          enabled: channel_data.enabled,
-          verified: channel_data.verified,
-          setup_status: channel_data.verified ? "fully_setup" : "not_setup",
-        };
-      });
-      console.log("channels", channels);
-      setNotificationChannels(channels as unknown as NotificationChannelData[]);
-    }
-  }, [data]);
-
-  if (isLoading) return <SkeletonLoader className="h-full" />;
+  if (isLoading) return <Loader length={4} />;
 
   return (
     <div className="space-y-6">

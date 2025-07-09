@@ -9,22 +9,22 @@ import { VerificationTokenType } from "../../../interfaces/verification-tokens";
 import { NotificationChannelTypes, type NotificationChannel } from "../../../interfaces/notification-channels";
 import { useGetNotificationChannels, useUpdateNotificationChannel } from "../../../hooks/use-notification-channels";
 import { Loader2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface BotSetupCardProps {
   user_uuid: string;
   telegramChannel: NotificationChannel[] | undefined;
   botConnected: boolean;
   telegramEnabled: boolean;
-  onBotConnectedChange: (connected: boolean) => void;
-  onTelegramEnabledChange: (enabled: boolean) => void;
 }
 
-export default function BotSetupCard({ user_uuid, telegramChannel, botConnected, telegramEnabled, onBotConnectedChange, onTelegramEnabledChange }: BotSetupCardProps) {
+export default function BotSetupCard({ user_uuid, telegramChannel, botConnected, telegramEnabled }: BotSetupCardProps) {
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
 
   const { mutate: createVerificationToken, isPending: isCreatingVerificationToken } = useCreateVerificationToken();
   const { mutate: getNotificationChannels, isPending: isLoadingNotificationChannels } = useGetNotificationChannels();
   const { mutate: updateNotificationChannelMutation, isPending: isUpdatingNotificationChannel } = useUpdateNotificationChannel();
+  const queryClient = useQueryClient();
 
   const generateCode = async () => {
     createVerificationToken(
@@ -43,13 +43,12 @@ export default function BotSetupCard({ user_uuid, telegramChannel, botConnected,
     getNotificationChannels(
       { user_uuid, channel: NotificationChannelTypes.telegram },
       {
-        onSuccess: (data: NotificationChannel[]) => {
+        onSuccess: () => {
           toast({
             title: "Bot connected",
             description: "You have successfully connected the bot",
           });
-          onBotConnectedChange(data[0].verified);
-          onTelegramEnabledChange(data[0].enabled);
+          queryClient.invalidateQueries({ queryKey: ["notification-channels", NotificationChannelTypes.telegram] });
         },
         onError: () => {
           toast({
@@ -68,7 +67,7 @@ export default function BotSetupCard({ user_uuid, telegramChannel, botConnected,
         { id: telegramChannel[0].id, enabled: enabled },
         {
           onSuccess: () => {
-            onTelegramEnabledChange(enabled);
+            queryClient.invalidateQueries({ queryKey: ["notification-channels", NotificationChannelTypes.telegram] });
           },
         }
       );
