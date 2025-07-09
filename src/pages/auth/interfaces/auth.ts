@@ -12,6 +12,7 @@ export interface SignUpUser {
 export interface AuthUser {
     user_uuid: string | null;
     email: string | null;
+    role: string | null;
     access_token: string | null;
     expires_at: number | null;
     avatar?: string | null;

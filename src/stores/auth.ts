@@ -12,6 +12,7 @@ const initialValues: UserStore = {
     isLoggedIn: false,
     isNewUser: true,
     user_uuid: null,
+    role: null,
     full_name: "",
     email: null,
     access_token: null,
@@ -30,7 +31,10 @@ export const useAuthStore = create<UserStore>()(
             (set) => ({
                 ...initialValues,
                 login: (user: AuthUser) => {
-                    set((state) => ({ ...state, ...user }));
+                    set((state) => ({
+                        ...state,
+                        ...user,
+                    }));
                 },
                 logout: () => {
                     set(initialValues);

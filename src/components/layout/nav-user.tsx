@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useAuthStore } from "@/stores/auth";
 import { useMemo } from "react";
-import { generateInitials } from "@/lib/utils";
+import { generateInitials } from "@/pages/auth/utils/auth.utils";
 
 export function NavUser() {
   const { full_name, avatar, email, logout } = useAuthStore();

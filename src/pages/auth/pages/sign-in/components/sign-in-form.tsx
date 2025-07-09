@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { SignInSchema, type SignInFormValues } from "../../../validation-schemas/auth";
-import { useSignin } from "../../../hooks/use-signin";
+import { useSignin } from "../../../hooks/use-auth";
 
 interface UserAuthFormProps {
   className?: string;

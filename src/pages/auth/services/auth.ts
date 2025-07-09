@@ -1,4 +1,4 @@
-import { formatAuthUser } from "@/lib/utils";
+import { formatAuthUser } from "../utils/auth.utils";
 import { type AuthUser, type SignInUser, type SignUpUser } from "../interfaces/auth";
 import axiosInstance from "@/config/axios";
 

@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { SignUpSchema, type SignUpFormValues } from "../../../validation-schemas/auth";
 import Cookies from "js-cookie";
 import { CookieKeys } from "@/constants/cookies";
-import { useSignup } from "../../../hooks/use-signup";
+import { useSignup } from "../../../hooks/use-auth";
 
 export function SignUpForm() {
   const params = useParams();
