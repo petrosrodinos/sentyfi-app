@@ -8,11 +8,11 @@ import { useDeleteNotificationChannel } from "../../../hooks/use-notification-ch
 import { NotificationChannelTypes, type NotificationChannel } from "../../../interfaces/notification-channels";
 import { useQueryClient } from "@tanstack/react-query";
 
-interface DangerZoneCardProps {
-  telegramChannel: NotificationChannel[] | undefined;
+interface EmailDangerZoneCardProps {
+  emailChannel: NotificationChannel[] | undefined;
 }
 
-export default function DangerZoneCard({ telegramChannel }: DangerZoneCardProps) {
+export default function EmailDangerZoneCard({ emailChannel }: EmailDangerZoneCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const queryClient = useQueryClient();
@@ -20,10 +20,10 @@ export default function DangerZoneCard({ telegramChannel }: DangerZoneCardProps)
   const { mutate: deleteNotificationChannelMutation, isPending: isDeletingNotificationChannel } = useDeleteNotificationChannel();
 
   const handleDeleteChannel = () => {
-    if (telegramChannel && telegramChannel[0]) {
-      deleteNotificationChannelMutation(telegramChannel[0].id.toString(), {
+    if (emailChannel && emailChannel[0]) {
+      deleteNotificationChannelMutation(emailChannel[0].id.toString(), {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["notification-channels", NotificationChannelTypes.telegram] });
+          queryClient.invalidateQueries({ queryKey: ["notification-channels", NotificationChannelTypes.email] });
           setShowDeleteDialog(false);
         },
       });
@@ -35,10 +35,10 @@ export default function DangerZoneCard({ telegramChannel }: DangerZoneCardProps)
       <Card className="border-red-200">
         <CardHeader>
           <CardTitle className="text-red-800">Danger Zone</CardTitle>
-          <CardDescription>Remove Telegram notification channel</CardDescription>
+          <CardDescription>Remove email notification channel</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground mb-4">This will permanently remove your Telegram notification channel. You will no longer receive notifications through Telegram.</p>
+          <p className="text-sm text-muted-foreground mb-4">This will permanently remove your email notification channel. You will no longer receive notifications through email.</p>
           <Button variant="destructive" onClick={() => setShowDeleteDialog(true)} disabled={isDeletingNotificationChannel}>
             {isDeletingNotificationChannel ? (
               <>
@@ -48,14 +48,14 @@ export default function DangerZoneCard({ telegramChannel }: DangerZoneCardProps)
             ) : (
               <>
                 <IconTrash className="h-4 w-4 mr-2" />
-                Remove Telegram Channel
+                Remove Email Channel
               </>
             )}
           </Button>
         </CardContent>
       </Card>
 
-      <ConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog} title="Remove Telegram Channel" desc="Are you sure you want to remove your Telegram notification channel? This action cannot be undone and you will no longer receive notifications through Telegram." confirmText="Remove Channel" destructive isLoading={isDeletingNotificationChannel} handleConfirm={handleDeleteChannel} />
+      <ConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog} title="Remove Email Channel" desc="Are you sure you want to remove your email notification channel? This action cannot be undone and you will no longer receive notifications through email." confirmText="Remove Channel" destructive isLoading={isDeletingNotificationChannel} handleConfirm={handleDeleteChannel} />
     </>
   );
 }

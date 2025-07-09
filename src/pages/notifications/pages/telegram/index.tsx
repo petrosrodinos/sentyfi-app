@@ -1,32 +1,10 @@
-import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
-import { useAuthStore } from "@/stores/auth";
-import { NotificationChannelTypes } from "../../interfaces/notification-channels";
-import { useNotificationChannels } from "../../hooks/use-notification-channels";
 import { BotSetupCard, AlertTypesCard, BotCommandsCard, MessageFrequencyCard, BenefitsCard, DangerZoneCard } from "./components";
 import Loader from "@/components/ui/loader";
+import { useTelegramNotifications } from "./hooks/use-telegram-notifications";
 
 export default function TelegramNotifications() {
-  const { user_uuid } = useAuthStore();
-  const [telegramConnected, setTelegramConnected] = useState(false);
-  const [telegramEnabled, setTelegramEnabled] = useState(false);
-
-  const { data: telegramChannel, isLoading: isLoadingTelegramChannel } = useNotificationChannels({
-    user_uuid: user_uuid!,
-    channel: NotificationChannelTypes.telegram,
-  });
-
-  useEffect(() => {
-    if (telegramChannel) {
-      setTelegramConnected(telegramChannel[0].verified);
-      setTelegramEnabled(telegramChannel[0].enabled);
-    }
-  }, [telegramChannel]);
-
-  const handleChannelDeleted = () => {
-    setTelegramConnected(false);
-    setTelegramEnabled(false);
-  };
+  const { telegramChannel, telegramConnected, telegramEnabled, isLoadingTelegramChannel, user_uuid } = useTelegramNotifications();
 
   if (isLoadingTelegramChannel) {
     return <Loader length={4} />;
@@ -39,7 +17,7 @@ export default function TelegramNotifications() {
         <p className="text-muted-foreground">Receive instant notifications through our Telegram bot for market updates and portfolio alerts.</p>
       </div>
 
-      <BotSetupCard user_uuid={user_uuid!} telegramChannel={telegramChannel} botConnected={telegramConnected} telegramEnabled={telegramEnabled} onBotConnectedChange={setTelegramConnected} onTelegramEnabledChange={setTelegramEnabled} />
+      <BotSetupCard user_uuid={user_uuid!} telegramChannel={telegramChannel} botConnected={telegramConnected} telegramEnabled={telegramEnabled} onBotConnectedChange={() => {}} onTelegramEnabledChange={() => {}} />
 
       <Separator />
 
@@ -53,7 +31,7 @@ export default function TelegramNotifications() {
 
       <BenefitsCard />
 
-      {telegramConnected && <DangerZoneCard telegramChannel={telegramChannel} onChannelDeleted={handleChannelDeleted} />}
+      {telegramConnected && <DangerZoneCard telegramChannel={telegramChannel} />}
     </div>
   );
 }

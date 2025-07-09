@@ -1,41 +1,13 @@
-import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
-import { useAuthStore } from "@/stores/auth";
-import { NotificationChannelTypes } from "../../interfaces/notification-channels";
-import { useNotificationChannels } from "../../hooks/use-notification-channels";
 import Loader from "@/components/ui/loader";
 import PhoneSetupCard from "./components/phone-setup-card";
 import AlertTypesCard from "./components/alert-types-card";
 import AlertFrequencyCard from "./components/alert-frequency-card";
 import DangerZoneCard from "./components/danger-zone-card";
+import { useSmsNotifications } from "./hooks/use-sms-notifications";
 
 export default function SmsNotifications() {
-  const { user_uuid } = useAuthStore();
-  const [smsEnabled, setSmsEnabled] = useState(false);
-  const [phoneVerified, setPhoneVerified] = useState(false);
-
-  const {
-    data: smsChannel,
-    error,
-    isLoading: isLoadingSmsChannel,
-  } = useNotificationChannels({
-    user_uuid: user_uuid!,
-    channel: NotificationChannelTypes.sms,
-  });
-
-  useEffect(() => {
-    if (smsChannel) {
-      setSmsEnabled(smsChannel[0]?.enabled || false);
-      setPhoneVerified(smsChannel[0]?.verified || false);
-    }
-  }, [smsChannel]);
-
-  useEffect(() => {
-    if (error) {
-      setSmsEnabled(false);
-      setPhoneVerified(false);
-    }
-  }, [error]);
+  const { smsChannel, smsEnabled, phoneVerified, isLoadingSmsChannel } = useSmsNotifications();
 
   if (isLoadingSmsChannel) {
     return <Loader length={4} />;
