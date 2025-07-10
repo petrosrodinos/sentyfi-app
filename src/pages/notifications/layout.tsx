@@ -13,14 +13,14 @@ export default function NotificationsLayout() {
 
 const sidebarNavItems = [
   {
-    title: "All Channels",
+    title: "Channels",
     icon: <IconList size={18} />,
     href: Routes.notifications.channels,
   },
   {
-    title: "Push Notifications",
-    icon: <IconBell size={18} />,
-    href: Routes.notifications.push,
+    title: "Telegram",
+    icon: <IconBrandTelegram size={18} />,
+    href: Routes.notifications.telegram,
   },
   {
     title: "Email",
@@ -32,15 +32,16 @@ const sidebarNavItems = [
     icon: <IconMessageCircle size={18} />,
     href: Routes.notifications.sms,
   },
-  // {
-  //   title: "WhatsApp",
-  //   icon: <IconBrandWhatsapp size={18} />,
-  //   href: Routes.notifications.whatsapp,
-  // },
   {
-    title: "Telegram",
-    icon: <IconBrandTelegram size={18} />,
-    href: Routes.notifications.telegram,
+    title: "Push Notifications",
+    icon: <IconBell size={18} />,
+    href: Routes.notifications.push,
+  },
+  {
+    title: "WhatsApp",
+    icon: <IconBrandWhatsapp size={18} />,
+    href: Routes.notifications.whatsapp,
+    disabled: true,
   },
   {
     title: "Discord",
