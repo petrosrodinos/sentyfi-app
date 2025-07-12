@@ -66,8 +66,17 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
             <div className="flex items-start space-x-3 flex-1">
               <div className="relative">
                 <Avatar className="w-12 h-12">
-                  <AvatarImage src={ticker.icon_url} alt={ticker.ticker} />
-                  <AvatarFallback className="bg-primary/10 text-primary font-semibold">{getTickerFallback()}</AvatarFallback>
+                  {ticker.market === "stock" ? (
+                    <>
+                      <AvatarImage src={`https://assets.parqet.com/logos/symbol/${ticker.ticker}`} alt={ticker.ticker} />
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">{getTickerFallback()}</AvatarFallback>
+                    </>
+                  ) : (
+                    <>
+                      <AvatarImage src={`/node_modules/cryptocurrency-icons/svg/color/${ticker.ticker.toLowerCase()}.svg`} alt={ticker.ticker} />
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">{getTickerFallback()}</AvatarFallback>
+                    </>
+                  )}
                 </Avatar>
               </div>
 
