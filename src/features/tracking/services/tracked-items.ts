@@ -1,9 +1,10 @@
 import axiosInstance from "@/config/axios";
 import type { CreateTrackedItem, TrackedItem, TrackedItemQuery, UpdateTrackedItem } from "../interfaces/tracked-items";
+import { ApiRoutes } from "@/constants/api";
 
 export const getTrackedItems = async (query: TrackedItemQuery): Promise<TrackedItem[]> => {
     try {
-        const response = await axiosInstance.get("/tracked-items", { params: query });
+        const response = await axiosInstance.get(ApiRoutes.tracking.tracked_items.prefix, { params: query });
         return response.data;
     } catch (error) {
         throw new Error("Failed to fetch tracked items. Please try again.");
@@ -12,7 +13,7 @@ export const getTrackedItems = async (query: TrackedItemQuery): Promise<TrackedI
 
 export const createTrackedItem = async (trackedItem: CreateTrackedItem): Promise<TrackedItem> => {
     try {
-        const response = await axiosInstance.post("/tracked-items/create", trackedItem);
+        const response = await axiosInstance.post(ApiRoutes.tracking.tracked_items.create, trackedItem);
         return response.data;
     } catch (error) {
         throw new Error("Failed to create tracked item. Please try again.");
@@ -21,7 +22,7 @@ export const createTrackedItem = async (trackedItem: CreateTrackedItem): Promise
 
 export const updateTrackedItem = async (trackedItem: UpdateTrackedItem): Promise<TrackedItem> => {
     try {
-        const response = await axiosInstance.patch(`/tracked-items/${trackedItem.id}`, trackedItem);
+        const response = await axiosInstance.patch(`${ApiRoutes.tracking.tracked_items.prefix}/${trackedItem.id}`, trackedItem);
         return response.data;
     } catch (error) {
         throw new Error("Failed to update tracked item. Please try again.");
@@ -30,7 +31,7 @@ export const updateTrackedItem = async (trackedItem: UpdateTrackedItem): Promise
 
 export const upsertTrackedItem = async (trackedItem: CreateTrackedItem): Promise<TrackedItem> => {
     try {
-        const response = await axiosInstance.post(`/tracked-items/upsert`, trackedItem);
+        const response = await axiosInstance.post(ApiRoutes.tracking.tracked_items.upsert, trackedItem);
         return response.data;
     } catch (error) {
         throw new Error("Failed to update tracked item. Please try again.");
@@ -39,7 +40,7 @@ export const upsertTrackedItem = async (trackedItem: CreateTrackedItem): Promise
 
 export const deleteTrackedItem = async (id: number): Promise<void> => {
     try {
-        await axiosInstance.delete(`/tracked-items/${id}`);
+        await axiosInstance.delete(`${ApiRoutes.tracking.tracked_items.prefix}/${id}`);
     } catch (error) {
         throw new Error("Failed to delete tracked item. Please try again.");
     }

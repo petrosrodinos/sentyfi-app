@@ -1,10 +1,11 @@
 import axiosInstance from "@/config/axios";
 import type { CreateNotificationChannel, NotificationChannel, NotificationChannelData, NotificationChannelQuery, UpdateNotificationChannel } from "../interfaces/notification-channels";
+import { ApiRoutes } from "@/constants/api";
 
 
 export const getNotificationChannels = async (query: NotificationChannelQuery): Promise<NotificationChannel[]> => {
     try {
-        const response = await axiosInstance.get("/notification-channels", { params: query });
+        const response = await axiosInstance.get(ApiRoutes.notification_channels.prefix, { params: query });
         return response.data;
     } catch (error) {
         throw new Error("Failed to fetch notification channels. Please try again.");
@@ -13,7 +14,7 @@ export const getNotificationChannels = async (query: NotificationChannelQuery): 
 
 export const createNotificationChannel = async (payload: CreateNotificationChannel): Promise<NotificationChannelData> => {
     try {
-        const response = await axiosInstance.post("/notification-channels", payload);
+        const response = await axiosInstance.post(ApiRoutes.notification_channels.prefix, payload);
         return response.data;
     } catch (error) {
         throw new Error("Failed to create notification channel. Please try again.");
@@ -22,7 +23,7 @@ export const createNotificationChannel = async (payload: CreateNotificationChann
 
 export const updateNotificationChannel = async (payload: UpdateNotificationChannel): Promise<NotificationChannel> => {
     try {
-        const response = await axiosInstance.patch(`/notification-channels/${payload.id}`, payload);
+        const response = await axiosInstance.patch(`${ApiRoutes.notification_channels.prefix}/${payload.id}`, payload);
         return response.data;
     } catch (error) {
         throw new Error("Failed to update notification channel. Please try again.");
@@ -31,7 +32,7 @@ export const updateNotificationChannel = async (payload: UpdateNotificationChann
 
 export const deleteNotificationChannel = async (id: string): Promise<void> => {
     try {
-        await axiosInstance.delete(`/notification-channels/${id}`);
+        await axiosInstance.delete(`${ApiRoutes.notification_channels.prefix}/${id}`);
     } catch (error) {
         throw new Error("Failed to delete notification channel. Please try again.");
     }
