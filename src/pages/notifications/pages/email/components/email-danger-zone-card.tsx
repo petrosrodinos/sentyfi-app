@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { IconTrash } from "@tabler/icons-react";
 import { Loader2 } from "lucide-react";
-import { ConfirmDialog } from "@/components/confirm-dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useDeleteNotificationChannel } from "../../../hooks/use-notification-channels";
 import { NotificationChannelTypes, type NotificationChannel } from "../../../interfaces/notification-channels";
 import { useQueryClient } from "@tanstack/react-query";

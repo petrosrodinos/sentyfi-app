@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ConfirmDialog } from "@/components/confirm-dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { Ticker } from "../interfaces/tickers";
 import { type CreateTrackedItem } from "../interfaces/tracked-items";
 import { useQueryClient } from "@tanstack/react-query";

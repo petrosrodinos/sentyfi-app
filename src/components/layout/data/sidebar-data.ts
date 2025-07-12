@@ -35,6 +35,16 @@ export const sidebarData: SidebarData = {
           icon: IconLayoutDashboard,
         },
         {
+          title: "Alerts",
+          url: Routes.alerts,
+          icon: IconAlertTriangle,
+        },
+      ],
+    },
+    {
+      title: "Monitoring ",
+      items: [
+        {
           title: "Media",
           url: Routes.media.x,
           icon: IconPhoto,
@@ -49,12 +59,7 @@ export const sidebarData: SidebarData = {
           url: Routes.notifications.root,
           icon: IconBell,
         },
-        {
-          title: "Alerts",
-          url: Routes.alerts,
-          icon: IconAlertTriangle,
-        },
-      ],
+      ]
     },
     {
       title: "Settings",

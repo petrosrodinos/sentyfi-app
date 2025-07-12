@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { Main } from "@/components/layout/main";
-import SidebarNav from "@/components/sidebar-nav";
+import SidebarNav from "@/components/layout/sidebar-nav";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { type JSX } from "react";
