@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { useAuthStore } from "@/stores/auth";
-import type { TrackedItemType } from "../interfaces/tracked-items";
-import { useTrackedItems } from "../hooks/use-tracked-items";
+import type { TrackedItemType } from "../../../features/tracking/interfaces/tracked-items";
+import { useTrackedItems } from "@/features/tracking/hooks/use-tracked-items";
 import TrackingList from "./tracking-list";
 import { CreateTracking } from "./create-tracking";
 

@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Users, RefreshCw } from "lucide-react";
-import { useTwitterFollowings } from "../hooks/use-twitter";
+import { useTwitterFollowings } from "@/features/media/hooks/use-twitter";
 import { UserCard } from "./user-card";
-import type { TwitterUser } from "../interfaces/twitter";
-import type { MediaSubscription } from "@/pages/media/interfaces/media-subscriptions";
+import type { TwitterUser } from "@/features/media/interfaces/twitter";
+import type { MediaSubscription } from "@/features/media/interfaces/media-subscriptions";
 import { useEffect, useState } from "react";
 
 interface FollowingListProps {
@@ -21,7 +21,7 @@ export function FollowingList({ username, subscriptions }: FollowingListProps) {
 
   useEffect(() => {
     if (!followings?.length) return;
-    const items = followings?.map((user) => {
+    const items = followings?.map((user: TwitterUser) => {
       const isEnabled = subscriptions.find((subscription) => subscription.account_identifier === user.id);
       return { ...user, enabled: isEnabled ? isEnabled.enabled : false };
     });

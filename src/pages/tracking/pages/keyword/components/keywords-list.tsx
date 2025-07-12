@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import KeywordCard from "./keyword-card";
-import type { TrackedItem } from "@/pages/tracking/interfaces/tracked-items";
+import type { TrackedItem } from "@/features/tracking/interfaces/tracked-items";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";

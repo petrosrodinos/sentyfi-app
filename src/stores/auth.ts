@@ -1,4 +1,4 @@
-import type { AuthUser } from "@/pages/auth/interfaces/auth";
+import type { AuthUser } from "@/features/auth/interfaces/auth.interface";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 

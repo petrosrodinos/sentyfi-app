@@ -1,4 +1,4 @@
-import { TrackedItemTypes } from "../interfaces/tracked-items";
+import { TrackedItemTypes } from "../../../features/tracking/interfaces/tracked-items";
 
 export const MarketLabels = {
   [TrackedItemTypes.stock]: "Stocks",

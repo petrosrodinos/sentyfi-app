@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, RefreshCw } from "lucide-react";
-import { useTwitterUser } from "../hooks/use-twitter";
+import { useTwitterUser } from "@/features/media/hooks/use-twitter";
 import { UserCard } from "./user-card";
 import { useMemo, useState } from "react";
 import { FollowingList } from "./following-list";
-import type { MediaSubscription } from "../../../interfaces/media-subscriptions";
+import type { MediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
 
 interface UserResultProps {
   username: string;

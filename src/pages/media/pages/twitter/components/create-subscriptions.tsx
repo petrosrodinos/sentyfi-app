@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, ArrowLeft } from "lucide-react";
 import { UserResult } from "./user-result";
-import type { MediaSubscription } from "@/pages/media/interfaces/media-subscriptions";
+import type { MediaSubscription } from "@/features/media/interfaces/media-subscriptions";
 
 interface CreateSubscriptionsProps {
   subscriptions: MediaSubscription[];

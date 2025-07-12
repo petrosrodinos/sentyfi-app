@@ -3,9 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, ArrowLeft, TrendingUp } from "lucide-react";
-import { useTickers } from "../hooks/use-tickers";
-import type { Ticker } from "../interfaces/tickers";
-import { type TrackedItem, type TrackedItemType } from "../interfaces/tracked-items";
+import { useTickers } from "@/features/tracking/hooks/use-tickers";
+import type { Ticker } from "../../../features/tracking/interfaces/tickers";
+import { type TrackedItem, type TrackedItemType } from "../../../features/tracking/interfaces/tracked-items";
 import TickerCard from "./ticker-card";
 import { MarketLabels } from "../constants";
 

@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
-import { useCreateTrackedItem } from "@/pages/tracking/hooks/use-tracked-items";
+import { useCreateTrackedItem } from "@/features/tracking/hooks/use-tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
-import { TrackedItemTypes } from "@/pages/tracking/interfaces/tracked-items";
+import { TrackedItemTypes } from "@/features/tracking/interfaces/tracked-items";
 
 interface AddKeywordModalProps {
   children?: React.ReactNode;

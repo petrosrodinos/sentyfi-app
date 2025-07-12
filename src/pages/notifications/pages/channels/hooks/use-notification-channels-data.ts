@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNotificationChannels } from "../../../hooks/use-notification-channels";
+import { useNotificationChannels } from "../../../../../features/notifications/hooks/use-notification-channels";
 import { useAuthStore } from "@/stores/auth";
 import { NotificationChannelsData } from "../data";
-import type { NotificationChannelData } from "../../../interfaces/notification-channels";
+import type { NotificationChannelData } from "../../../../../features/notifications/interfaces/notification-channels";
 
 export function useNotificationChannelsData() {
     const [notificationChannels, setNotificationChannels] = useState<NotificationChannelData[]>(NotificationChannelsData);

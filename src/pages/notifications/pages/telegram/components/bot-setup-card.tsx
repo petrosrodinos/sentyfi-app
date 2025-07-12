@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { IconBrandTelegram, IconCheck, IconBolt, IconCopy, IconRefresh } from "@tabler/icons-react";
 import { toast } from "@/hooks/use-toast";
-import { useCreateVerificationToken } from "../../../hooks/verification-tokens";
-import { VerificationTokenType } from "../../../interfaces/verification-tokens";
-import { NotificationChannelTypes, type NotificationChannel } from "../../../interfaces/notification-channels";
-import { useGetNotificationChannels, useUpdateNotificationChannel } from "../../../hooks/use-notification-channels";
+import { useCreateVerificationToken } from "../../../../../features/notifications/hooks/verification-tokens";
+import { VerificationTokenType } from "../../../../../features/notifications/interfaces/verification-tokens";
+import { NotificationChannelTypes, type NotificationChannel } from "../../../../../features/notifications/interfaces/notification-channels";
+import { useGetNotificationChannels, useUpdateNotificationChannel } from "../../../../../features/notifications/hooks/use-notification-channels";
 import { Loader2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 

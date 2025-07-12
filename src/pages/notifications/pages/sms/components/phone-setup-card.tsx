@@ -10,10 +10,10 @@ import { IconMessageCircle, IconCheck, IconSend, IconAlertCircle, IconRefresh } 
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useUpdateNotificationChannel } from "@/pages/notifications/hooks/use-notification-channels";
-import { useCreateVerificationToken, useVerifyVerificationToken } from "@/pages/notifications/hooks/verification-tokens";
-import { NotificationChannelTypes, type NotificationChannel } from "@/pages/notifications/interfaces/notification-channels";
-import { VerificationTokenType } from "@/pages/notifications/interfaces/verification-tokens";
+import { useUpdateNotificationChannel } from "@/features/notifications/hooks/use-notification-channels";
+import { useCreateVerificationToken, useVerifyVerificationToken } from "@/features/notifications/hooks/verification-tokens";
+import { NotificationChannelTypes, type NotificationChannel } from "@/features/notifications/interfaces/notification-channels";
+import { VerificationTokenType } from "@/features/notifications/interfaces/verification-tokens";
 import { PhoneNumberSchema, VerificationCodeSchema, type PhoneNumberFormValues, type VerificationCodeFormValues } from "../validation-schemas/phone";
 import { useCountdown } from "../../../../../hooks/use-countdown";
 

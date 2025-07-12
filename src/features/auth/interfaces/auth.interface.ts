@@ -1,4 +1,3 @@
-
 export interface SignInUser {
     email: string;
     password: string;
@@ -12,7 +11,7 @@ export interface SignUpUser {
 export interface AuthUser {
     user_uuid: string | null;
     email: string | null;
-    role: string | null;
+    role: RoleType | null;
     access_token: string | null;
     expires_at: number | null;
     avatar?: string | null;
@@ -20,3 +19,13 @@ export interface AuthUser {
     isNewUser?: boolean | null;
     isLoggedIn?: boolean | null;
 }
+
+
+export const RoleTypes = {
+    user: "user",
+    admin: "admin",
+    super_admin: "super_admin",
+    support: "support",
+} as const;
+
+export type RoleType = (typeof RoleTypes)[keyof typeof RoleTypes];

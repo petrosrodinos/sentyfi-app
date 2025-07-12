@@ -1,9 +1,9 @@
 import { useAuthStore } from "@/stores/auth";
-import { useMediaSubscriptions } from "../../hooks/use-media-subscriptions";
 import { SubscriptionsList } from "./components/subscriptions-list";
 import { CreateSubscriptions } from "./components/create-subscriptions";
-import { MediaSubscriptionPlatformTypes } from "../../interfaces/media-subscriptions";
+import { MediaSubscriptionPlatformTypes } from "@/features/media/interfaces/media-subscriptions";
 import { useState } from "react";
+import { useMediaSubscriptions } from "@/features/media/hooks/use-media-subscriptions";
 
 export default function Twitter() {
   const { user_uuid } = useAuthStore();

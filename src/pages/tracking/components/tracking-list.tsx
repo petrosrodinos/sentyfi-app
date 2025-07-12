@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TickerCard from "./ticker-card";
-import { type TrackedItem, type TrackedItemType } from "../interfaces/tracked-items";
+import { type TrackedItem, type TrackedItemType } from "../../../features/tracking/interfaces/tracked-items";
 import { Plus, Users } from "lucide-react";
-import type { Ticker } from "../interfaces/tickers";
+import type { Ticker } from "../../../features/tracking/interfaces/tickers";
 import { MarketLabels } from "../constants";
 import Loader from "@/components/ui/loader";
 

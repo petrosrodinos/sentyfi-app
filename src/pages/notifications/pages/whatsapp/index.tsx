@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { IconBrandWhatsapp, IconCheck, IconSend, IconAlertCircle, IconQrcode, IconLink } from "@tabler/icons-react";
+import { IconBrandWhatsapp, IconCheck, IconSend, IconAlertCircle, IconLink } from "@tabler/icons-react";
 
 export default function WhatsAppNotifications() {
   const [phone_verified, set_phone_verified] = useState(false);

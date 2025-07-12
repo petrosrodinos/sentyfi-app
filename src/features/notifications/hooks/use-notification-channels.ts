@@ -14,7 +14,6 @@ export function useNotificationChannels(query: NotificationChannelQuery) {
 }
 
 
-
 export function useGetNotificationChannels() {
     return useMutation({
         mutationFn: (query: NotificationChannelQuery) => getNotificationChannels(query),

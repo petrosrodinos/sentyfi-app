@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuthStore } from "@/stores/auth";
-import { generateInitials } from "@/pages/auth/utils/auth.utils";
+import { generateInitials } from "@/features/auth/utils/auth.utils";
 
 export function ProfileDropdown() {
   const { full_name, avatar, email, logout } = useAuthStore();

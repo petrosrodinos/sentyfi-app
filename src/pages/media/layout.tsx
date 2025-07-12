@@ -17,7 +17,7 @@ const sidebarNavItems = [
   {
     title: "X (Twitter)",
     icon: <IconBrandX size={18} />,
-    href: Routes.media.x,
+    href: Routes.media.twitter,
   },
 
   {

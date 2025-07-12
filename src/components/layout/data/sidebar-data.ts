@@ -46,7 +46,7 @@ export const sidebarData: SidebarData = {
       items: [
         {
           title: "Media",
-          url: Routes.media.x,
+          url: Routes.media.twitter,
           icon: IconPhoto,
         },
         {

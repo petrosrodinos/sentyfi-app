@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { useDeleteMediaSubscription, useUpsertMediaSubscription } from "../../../hooks/use-media-subscriptions";
+import { useDeleteMediaSubscription, useUpsertMediaSubscription } from "@/features/media/hooks/use-media-subscriptions";
 import { useQueryClient } from "@tanstack/react-query";
-import type { TwitterUser } from "../interfaces/twitter";
-import type { CreateMediaSubscription } from "../../../interfaces/media-subscriptions";
-import { MediaSubscriptionPlatformTypes } from "../../../interfaces/media-subscriptions";
+import type { TwitterUser } from "../../../../../features/media/interfaces/twitter";
+import type { CreateMediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
+import { MediaSubscriptionPlatformTypes } from "../../../../../features/media/interfaces/media-subscriptions";
 import { LoaderCircle, Trash2 } from "lucide-react";
 
 interface UserCardProps {

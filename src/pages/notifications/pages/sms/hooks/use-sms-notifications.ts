@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/auth";
-import { NotificationChannelTypes } from "../../../interfaces/notification-channels";
-import { useNotificationChannels } from "../../../hooks/use-notification-channels";
+import { NotificationChannelTypes } from "../../../../../features/notifications/interfaces/notification-channels";
+import { useNotificationChannels } from "../../../../../features/notifications/hooks/use-notification-channels";
 
 export function useSmsNotifications() {
     const { user_uuid } = useAuthStore();

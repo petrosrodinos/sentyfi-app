@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, TrendingDown, Activity, Users, Bell, BarChart3, Twitter, DollarSign, AlertTriangle } from "lucide-react";
+import { TrendingUp, TrendingDown, Activity, Bell, BarChart3, Twitter, DollarSign, AlertTriangle } from "lucide-react";
 
 export default function Dashboard() {
   // Mock data - in real app this would come from API

@@ -13,7 +13,7 @@ export const Routes = {
     alerts: "/dashboard/alerts",
     media: {
         root: "/dashboard/media",
-        x: "/dashboard/media/x",
+        twitter: "/dashboard/media/twitter",
         youtube: "/dashboard/media/youtube",
         reddit: "/dashboard/media/reddit",
         news: "/dashboard/media/news",

@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth";
+import { RoleTypes, type RoleType } from "@/features/auth/interfaces/auth.interface";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  requiredRoles?: string[];
+  requiredRoles?: RoleType[];
   loggedIn?: boolean;
   fallbackPath?: string;
 }
@@ -20,7 +21,7 @@ export default function ProtectedRoute({ children, requiredRoles, loggedIn, fall
     return <Navigate to={"/dashboard"} replace />;
   }
 
-  if (requiredRoles && !requiredRoles.includes(role || "")) {
+  if (requiredRoles && !requiredRoles.includes(role || RoleTypes.user)) {
     return <Navigate to={fallbackPath} replace />;
   }
 

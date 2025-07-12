@@ -4,7 +4,7 @@ import Alerts from "@/pages/alerts";
 import SignUp from "@/pages/auth/pages/sign-up";
 import SignIn from "@/pages/auth/pages/sign-in";
 import AppLayout from "@/pages/layout";
-import Twitter from "@/pages/media/pages/x";
+import Twitter from "@/pages/media/pages/twitter";
 import News from "@/pages/media/pages/news";
 import Youtube from "@/pages/media/pages/youtube";
 import Reddit from "@/pages/media/pages/reddit";
@@ -57,7 +57,7 @@ export default function AppRoutes() {
 
         {/* Media routes */}
         <Route path="media" element={<MediaLayout />}>
-          <Route path="x" element={<Twitter />} />
+          <Route path="twitter" element={<Twitter />} />
           <Route path="youtube" element={<Youtube />} />
           <Route path="reddit" element={<Reddit />} />
           <Route path="news" element={<News />} />

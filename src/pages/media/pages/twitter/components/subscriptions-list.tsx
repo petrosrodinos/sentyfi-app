@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Users } from "lucide-react";
 import { UserCard } from "./user-card";
-import type { MediaSubscription } from "@/pages/media/interfaces/media-subscriptions";
+import type { MediaSubscription } from "@/features/media/interfaces/media-subscriptions";
 import Loader from "@/components/ui/loader";
 
 interface SubscriptionsListProps {

@@ -1,5 +1,5 @@
-import { useTrackedItems } from "@/pages/tracking/hooks/use-tracked-items";
-import { TrackedItemTypes } from "@/pages/tracking/interfaces/tracked-items";
+import { useTrackedItems } from "@/features/tracking/hooks/use-tracked-items";
+import { TrackedItemTypes } from "@/features/tracking/interfaces/tracked-items";
 import { KeywordsList, AddKeywordModal } from "./components";
 import { useAuthStore } from "@/stores/auth";
 import { useState } from "react";

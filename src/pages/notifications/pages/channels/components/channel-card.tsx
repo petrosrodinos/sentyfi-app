@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { IconCheck, IconX, IconSettings } from "@tabler/icons-react";
-import { type NotificationChannelData, NotificationChannelTypes } from "../../../interfaces/notification-channels";
+import { type NotificationChannelData, NotificationChannelTypes } from "../../../../../features/notifications/interfaces/notification-channels";
 import { useNavigate } from "react-router-dom";
-import { useUpdateNotificationChannel } from "../../../hooks/use-notification-channels";
+import { useUpdateNotificationChannel } from "../../../../../features/notifications/hooks/use-notification-channels";
 import { Loader2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 

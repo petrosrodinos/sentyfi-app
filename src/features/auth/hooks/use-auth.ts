@@ -1,8 +1,8 @@
 import { signIn } from "../services/auth";
-import { type AuthUser, type SignInUser } from "../interfaces/auth";
+import { type AuthUser, type SignInUser } from "../interfaces/auth.interface";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../services/auth";
-import type { SignUpUser } from "../interfaces/auth";
+import type { SignUpUser } from "../interfaces/auth.interface";
 import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";

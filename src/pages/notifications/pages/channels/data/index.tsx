@@ -1,5 +1,5 @@
 import { IconBell, IconBrandDiscord, IconBrandTelegram, IconBrandWhatsapp, IconMail, IconMessageCircle, IconPhone } from "@tabler/icons-react";
-import { NotificationChannelTypes, type NotificationChannelData } from "../../../interfaces/notification-channels";
+import { NotificationChannelTypes, type NotificationChannelData } from "../../../../../features/notifications/interfaces/notification-channels";
 import { Routes } from "@/routes/routes";
 
 export const NotificationChannelsData: NotificationChannelData[] = [

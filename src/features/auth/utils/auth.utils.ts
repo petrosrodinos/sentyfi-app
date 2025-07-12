@@ -1,4 +1,4 @@
-import type { AuthUser } from "@/pages/auth/interfaces/auth";
+import type { AuthUser } from "../interfaces/auth.interface";
 
 export const generateInitials = (value: string) => {
     if (!value) return "AN";
