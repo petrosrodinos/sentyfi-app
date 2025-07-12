@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { debounce } from "lodash";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +17,7 @@ interface CreateTrackingProps {
 }
 
 export function CreateTracking({ trackedItems, onBack, market = "stock" }: CreateTrackingProps) {
+  const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [tickersData, setTickersData] = useState<Ticker[]>([]);
@@ -27,7 +29,49 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
   } = useTickers({
     market,
     ticker: searchQuery.trim(),
+    enabled: isSearching,
   });
+
+  const debouncedSearch = useMemo(() => {
+    return debounce((query: string) => {
+      setSearchQuery(query);
+      setIsSearching(true);
+    }, 800);
+  }, []);
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setInputValue(value);
+
+      if (value.trim()) {
+        debouncedSearch(value);
+      } else {
+        debouncedSearch.cancel();
+        setSearchQuery("");
+        setIsSearching(false);
+        setTickersData([]);
+      }
+    },
+    [debouncedSearch]
+  );
+
+  const handleClear = useCallback(() => {
+    debouncedSearch.cancel();
+    setInputValue("");
+    setSearchQuery("");
+    setIsSearching(false);
+    setTickersData([]);
+  }, [debouncedSearch]);
+
+  const handleSearch = useCallback(() => {
+    if (inputValue.trim()) {
+      debouncedSearch.cancel();
+      setSearchQuery(inputValue);
+      setIsSearching(true);
+      refetch();
+    }
+  }, [inputValue, refetch, debouncedSearch]);
 
   useEffect(() => {
     if (!searchResults?.results?.length) return;
@@ -38,17 +82,11 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
     setTickersData(items || []);
   }, [searchResults, trackedItems]);
 
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      setIsSearching(true);
-      refetch();
-    }
-  };
-
-  const handleClear = () => {
-    setSearchQuery("");
-    setIsSearching(false);
-  };
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
 
   return (
     <div className="container mx-auto p-3 space-y-3 w-full">
@@ -74,7 +112,7 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
         </CardHeader>
         <CardContent>
           <div className="flex space-x-2">
-            <Input placeholder="Enter ticker symbol (e.g., AAPL, GOOGL)" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="flex-1" />
+            <Input placeholder="Enter ticker symbol (e.g., AAPL, GOOGL)" value={inputValue} onChange={handleInputChange} className="flex-1" />
             <Button onClick={handleSearch} disabled={!searchQuery.trim() || isLoading}>
               {isLoading ? "Searching..." : "Search"}
             </Button>

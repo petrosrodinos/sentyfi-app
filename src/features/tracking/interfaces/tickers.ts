@@ -21,4 +21,5 @@ export interface TickerQuery {
     market: string;
     market_cap?: number;
     ticker: string;
+    enabled?: boolean;
 }
