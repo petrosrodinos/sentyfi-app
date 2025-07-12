@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
-import { useDeleteTrackedItem, useUpdateTrackedItem } from "@/features/tracking/hooks/use-tracked-items";
+import { useDeleteTrackedItem, useUpsertTrackedItem } from "@/features/tracking/hooks/use-tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
 import { TrackedItemTypes, type TrackedItem } from "@/features/tracking/interfaces/tracked-items";
 
@@ -17,7 +17,7 @@ export default function KeywordCard({ keyword }: KeywordCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const { mutate: deleteTrackedItem, isPending: isDeletePending } = useDeleteTrackedItem();
-  const { mutate: updateTrackedItem, isPending: isUpdatePending } = useUpdateTrackedItem();
+  const { mutate: updateTrackedItem, isPending: isUpdatePending } = useUpsertTrackedItem();
 
   const handleDelete = () => {
     try {
@@ -35,7 +35,11 @@ export default function KeywordCard({ keyword }: KeywordCardProps) {
   const handleToggle = (enabled: boolean) => {
     try {
       updateTrackedItem(
-        { id: keyword.id.toString(), enabled },
+        {
+          enabled,
+          item_identifier: keyword.item_identifier,
+          item_type: TrackedItemTypes.keyword,
+        },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["tracked-items", TrackedItemTypes.keyword] });

@@ -78,18 +78,14 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
             </div>
 
             <div className="flex items-center space-x-2 ml-4">
-              {isUpsertingTrackedItem || isDeletingTrackedItem ? (
-                <LoaderCircle className="w-4 h-4 animate-spin" />
-              ) : (
-                <>
-                  <Switch checked={enabled} onCheckedChange={handleToggle} />
-                  {mode === "view" && trackedItemId && (
-                    <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => setShowDeleteConfirm(true)}>
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  )}
-                </>
-              )}
+              <>
+                {isUpsertingTrackedItem || isDeletingTrackedItem ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Switch checked={enabled} onCheckedChange={handleToggle} />}
+                {mode === "view" && trackedItemId && (
+                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive group-hover:opacity-100 transition-opacity" onClick={() => setShowDeleteConfirm(true)}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                )}
+              </>
             </div>
           </div>
         </CardContent>

@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useDeleteMediaSubscription, useUpsertMediaSubscription } from "@/features/media/hooks/use-media-subscriptions";
 import { useQueryClient } from "@tanstack/react-query";
 import type { TwitterUser } from "../../../../../features/media/interfaces/twitter";
@@ -11,6 +10,8 @@ import { LoaderCircle, Trash2 } from "lucide-react";
 import { Privileges } from "@/constants/privileges";
 import { useAuthStore } from "@/stores/auth";
 import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface UserCardProps {
   user: TwitterUser;
@@ -21,6 +22,8 @@ interface UserCardProps {
 }
 
 export function UserCard({ user, enabled, mode = "view", subscriptionId, subscriptionsLength }: UserCardProps) {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   const { mutate: upsertSubscription, isPending: isUpsertingSubscription } = useUpsertMediaSubscription();
   const { mutate: deleteSubscription, isPending: isDeletingSubscription } = useDeleteMediaSubscription();
 
@@ -99,31 +102,16 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
               <>
                 <Switch checked={enabled} onCheckedChange={handleToggle} />
                 {mode === "view" && subscriptionId && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive">
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Subscription</AlertDialogTitle>
-                        <AlertDialogDescription>Are you sure you want to delete your subscription to @{user.screen_name}? This action cannot be undone.</AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setShowDeleteConfirm(true)}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 )}
               </>
             )}
           </div>
         </div>
       </CardContent>
+      <ConfirmDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm} title="Delete Tracked Item" desc={`Are you sure you want to delete your subscription to @${user.screen_name}? This action cannot be undone.`} confirmText="Delete" destructive handleConfirm={handleDelete} isLoading={isDeletingSubscription} />
     </Card>
   );
 }
