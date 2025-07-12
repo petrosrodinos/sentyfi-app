@@ -22,7 +22,7 @@ export default function PageLayout({ title, description, children, className, si
   return (
     <>
       <Main fixed>
-        <div className="space-y-0.5">
+        <div className="space-y-0.5 mb-2">
           <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{title}</h1>
           <p className="text-muted-foreground">{description}</p>
         </div>
