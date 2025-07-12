@@ -23,20 +23,36 @@ import TrackingLayout from "@/pages/tracking/layout";
 import MediaLayout from "@/pages/media/layout";
 import AuthLayout from "@/pages/auth/layout";
 import Keywords from "@/pages/tracking/pages/keyword";
+import ProtectedRoute from "@/routes/protected-route";
 
 export default function AppRoutes() {
   return (
     <Routes>
       {/* Auth routes */}
-      <Route path="/auth" element={<AuthLayout />}>
+      <Route
+        path="/auth"
+        element={
+          <ProtectedRoute loggedIn={false}>
+            <AuthLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route path="sign-up" element={<SignUp />} />
         <Route path="sign-in" element={<SignIn />} />
         <Route index element={<Navigate to="/auth/sign-in" replace />} />
       </Route>
 
-      {/* Console routes with layout */}
-      <Route path="/dashboard" element={<AppLayout />}>
+      {/* Dashboard routes with layout */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute loggedIn={true}>
+            <AppLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Dashboard />} />
+
         <Route path="alerts" element={<Alerts />} />
 
         {/* Media routes */}
@@ -54,6 +70,7 @@ export default function AppRoutes() {
           <Route path="keywords" element={<Keywords />} />
         </Route>
 
+        {/* Notifications routes */}
         <Route path="notifications" element={<NotificationsLayout />}>
           <Route path="channels" element={<NotificationChannels />} />
           <Route path="push" element={<PushNotifications />} />
