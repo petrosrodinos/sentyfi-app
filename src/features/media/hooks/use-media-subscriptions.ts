@@ -42,14 +42,14 @@ export function useUpsertMediaSubscription() {
         mutationFn: (payload: CreateMediaSubscription) => upsertMediaSubscription(payload),
         onSuccess: () => {
             toast({
-                title: "Media subscription upserted successfully",
-                description: "You have successfully upserted a media subscription",
+                title: "Media subscription updated successfully",
+                description: "You have successfully updated a media subscription",
                 duration: 1000,
             });
         },
         onError: () => {
             toast({
-                title: "Failed to upsert media subscription",
+                title: "Failed to update media subscription",
                 description: "Please try again",
                 duration: 3000,
             });
