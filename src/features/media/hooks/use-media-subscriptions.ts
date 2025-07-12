@@ -14,6 +14,14 @@ export function useCreateMediaSubscription() {
                 duration: 1000,
             });
         },
+        onError: () => {
+            toast({
+                title: "Failed to create media subscription",
+                description: "Please try again",
+                duration: 3000,
+                variant: "error",
+            });
+        },
     });
 }
 
@@ -32,6 +40,7 @@ export function useCreateMediaSubscriptions() {
                 title: "Failed to create media subscription",
                 description: "Please try again",
                 duration: 3000,
+                variant: "error",
             });
         },
     });
@@ -52,6 +61,7 @@ export function useUpsertMediaSubscription() {
                 title: "Failed to update media subscription",
                 description: "Please try again",
                 duration: 3000,
+                variant: "error",
             });
         },
     });
@@ -81,6 +91,7 @@ export function useDeleteMediaSubscription() {
                 title: "Failed to delete media subscription",
                 description: "Please try again",
                 duration: 3000,
+                variant: "error",
             });
 
         },

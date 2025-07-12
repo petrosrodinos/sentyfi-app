@@ -22,6 +22,7 @@ export function useGetNotificationChannels() {
                 title: "Failed to fetch notification channels",
                 description: "Please try again",
                 duration: 3000,
+                variant: "error",
             });
         },
     });
@@ -42,6 +43,7 @@ export function useCreateNotificationChannel() {
                 title: "Failed to create notification channel",
                 description: "Please try again",
                 duration: 3000,
+                variant: "error",
             });
         },
     });
@@ -63,6 +65,7 @@ export function useUpdateNotificationChannel() {
                 title: "Failed to update notification channel",
                 description: "Please try again",
                 duration: 3000,
+                variant: "error",
             });
         },
     });
@@ -84,6 +87,7 @@ export function useDeleteNotificationChannel() {
                 title: "Failed to delete notification channel",
                 description: "Please try again",
                 duration: 3000,
+                variant: "error",
             });
         },
     });

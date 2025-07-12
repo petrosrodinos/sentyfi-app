@@ -14,10 +14,16 @@ const toastVariants = cva("group pointer-events-auto relative flex w-full items-
     variant: {
       default: "border bg-background text-foreground",
       destructive: "destructive group border-destructive bg-destructive text-destructive-foreground",
+      warning: "border-yellow-200 bg-yellow-50 text-yellow-800",
+      info: "border-blue-200 bg-blue-50 text-blue-800",
+      success: "border-green-200 bg-green-50 text-green-800",
+      error: "border-red-200 bg-red-50 text-red-800",
+      light: "border-gray-200 bg-gray-50 text-gray-800",
+      dark: "border-gray-200 bg-gray-50 text-gray-800",
     },
   },
   defaultVariants: {
-    variant: "default",
+    variant: "success",
   },
 });
 

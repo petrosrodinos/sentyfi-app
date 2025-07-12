@@ -1,4 +1,5 @@
 import type { AuthUser } from "@/features/auth/interfaces/auth.interface";
+import { PlanTypes } from "@/constants/subscription";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -18,6 +19,9 @@ const initialValues: UserStore = {
     access_token: null,
     expires_at: null,
     avatar: null,
+    plan_subscription: {
+        plan: PlanTypes.free,
+    },
     login: () => { },
     logout: () => { },
     updateUser: () => { },

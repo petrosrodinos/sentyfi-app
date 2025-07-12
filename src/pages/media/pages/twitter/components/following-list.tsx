@@ -100,7 +100,7 @@ export function FollowingList({ username, subscriptions }: FollowingListProps) {
           ) : (
             <div className="space-y-3">
               {twitterData?.map((user: TwitterUser) => (
-                <UserCard key={user.id} user={user} enabled={user.enabled || false} mode="view" />
+                <UserCard key={user.id} user={user} enabled={user.enabled || false} mode="view" subscriptionsLength={subscriptions.length} />
               ))}
             </div>
           )}

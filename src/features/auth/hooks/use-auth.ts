@@ -38,7 +38,7 @@ export function useSignin() {
                 title: "Could not sign in",
                 description: error?.message || "An unexpected error occurred",
                 duration: 3000,
-                variant: "destructive",
+                variant: "error",
             });
         },
     });
@@ -65,6 +65,7 @@ export function useSignup() {
                 title: "Could not sign up",
                 description: error.message,
                 duration: 3000,
+                variant: "error",
             });
         },
     });

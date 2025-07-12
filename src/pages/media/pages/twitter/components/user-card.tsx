@@ -8,19 +8,25 @@ import type { TwitterUser } from "../../../../../features/media/interfaces/twitt
 import type { CreateMediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
 import { MediaSubscriptionPlatformTypes } from "../../../../../features/media/interfaces/media-subscriptions";
 import { LoaderCircle, Trash2 } from "lucide-react";
+import { Privileges } from "@/constants/privileges";
+import { useAuthStore } from "@/stores/auth";
+import { toast } from "@/hooks/use-toast";
 
 interface UserCardProps {
   user: TwitterUser;
   enabled: boolean;
   mode?: "create" | "view";
   subscriptionId?: number;
+  subscriptionsLength: number;
 }
 
-export function UserCard({ user, enabled, mode = "view", subscriptionId }: UserCardProps) {
+export function UserCard({ user, enabled, mode = "view", subscriptionId, subscriptionsLength }: UserCardProps) {
   const { mutate: upsertSubscription, isPending: isUpsertingSubscription } = useUpsertMediaSubscription();
   const { mutate: deleteSubscription, isPending: isDeletingSubscription } = useDeleteMediaSubscription();
 
   const queryClient = useQueryClient();
+
+  const { plan_subscription } = useAuthStore();
 
   const handleToggle = async (checked: boolean) => {
     try {
@@ -32,6 +38,15 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId }: UserC
           ...user,
         },
       };
+
+      if (checked && subscriptionsLength >= Privileges[plan_subscription.plan]?.media_subscriptions) {
+        toast({
+          title: "Free plan limit reached",
+          description: "You have reached the limit of your free plan. Please upgrade to a paid plan to continue.",
+          variant: "error",
+        });
+        return;
+      }
 
       upsertSubscription(subscription_data, {
         onSuccess: () => {

@@ -25,6 +25,7 @@ export function useCreateTrackedItem() {
             toast({
                 title: "Failed to create tracked item",
                 description: "Please try again",
+                variant: "error",
             });
         },
     });
@@ -43,6 +44,7 @@ export function useUpdateTrackedItem() {
             toast({
                 title: "Failed to update tracked item",
                 description: "Please try again",
+                variant: "error",
             });
         },
     });
@@ -61,6 +63,7 @@ export function useUpsertTrackedItem() {
             toast({
                 title: "Failed to update tracked item",
                 description: "Please try again",
+                variant: "error",
             });
         },
     });
@@ -79,6 +82,7 @@ export function useDeleteTrackedItem() {
             toast({
                 title: "Failed to delete tracked item",
                 description: "Please try again",
+                variant: "error",
             });
         },
     });
