@@ -1,7 +1,7 @@
 import { TrackedItemTypes } from "../interfaces/tracked-items";
 
 export const MarketLabels = {
-  [TrackedItemTypes.stock]: "Stock",
+  [TrackedItemTypes.stock]: "Stocks",
   [TrackedItemTypes.crypto]: "Crypto",
-  [TrackedItemTypes.keyword]: "Keyword",
+  [TrackedItemTypes.keyword]: "Keywords",
 } as const;

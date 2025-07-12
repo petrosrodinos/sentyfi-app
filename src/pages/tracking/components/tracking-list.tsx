@@ -45,7 +45,7 @@ export default function TrackingList({ trackedItems, isLoading, onAddNew, market
           </CardContent>
         </Card>
       )}
-      {trackedItems?.length && (
+      {trackedItems?.length > 0 && (
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
