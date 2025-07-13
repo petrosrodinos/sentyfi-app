@@ -26,11 +26,11 @@ export default function Alerts() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Alerts</h1>
-          <p className="text-gray-600 mt-2">Monitor all your portfolio alerts and notifications</p>
+          <h1 className="text-3xl font-bold text-foreground">Alerts</h1>
+          <p className="text-muted-foreground mt-2">Monitor all your portfolio alerts and notifications</p>
         </div>
 
         <div className="mb-6">
