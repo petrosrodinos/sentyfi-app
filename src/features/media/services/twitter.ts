@@ -1,8 +1,8 @@
-import axiosInstance from "@/config/axios";
+import axiosInstance from "@/config/api/axios";
 import type {
     TwitterUser,
 } from "../interfaces/twitter";
-import { ApiRoutes } from "@/constants/api";
+import { ApiRoutes } from "@/config/api/routes";
 
 export const getFollowingsByUsername = async (username: string): Promise<{ user: TwitterUser, followings: TwitterUser[] }> => {
     try {

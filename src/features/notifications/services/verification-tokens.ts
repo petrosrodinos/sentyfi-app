@@ -1,6 +1,6 @@
-import axiosInstance from "@/config/axios";
+import axiosInstance from "@/config/api/axios";
 import type { CreateVerificationToken, VerificationToken } from "../interfaces/verification-tokens";
-import { ApiRoutes } from "@/constants/api";
+import { ApiRoutes } from "@/config/api/routes";
 
 export const createVerificationToken = async (payload: CreateVerificationToken): Promise<VerificationToken> => {
     try {

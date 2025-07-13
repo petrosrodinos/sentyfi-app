@@ -25,3 +25,27 @@ export interface Alert {
     platform_type: MediaSubscriptionPlatformType;
     account_identifier: string;
 }
+
+export interface AlertQuery {
+    platform_type: MediaSubscriptionPlatformType;
+    account_identifier: string;
+    sentiment: AlertSentiment;
+    severity: AlertSeverity;
+    popularity: number;
+    tickers: string[];
+}
+
+export const AlertSentiments = {
+    positive: 'positive',
+    negative: 'negative',
+    neutral: 'neutral',
+} as const;
+
+export const AlertSeverities = {
+    low: 'low',
+    medium: 'medium',
+    high: 'high',
+} as const;
+
+export type AlertSentiment = (typeof AlertSentiments)[keyof typeof AlertSentiments];
+export type AlertSeverity = (typeof AlertSeverities)[keyof typeof AlertSeverities];

@@ -1,6 +1,6 @@
-import axiosInstance from "@/config/axios";
+import axiosInstance from "@/config/api/axios";
 import type { CreateNotificationChannel, NotificationChannel, NotificationChannelData, NotificationChannelQuery, UpdateNotificationChannel } from "../interfaces/notification-channels";
-import { ApiRoutes } from "@/constants/api";
+import { ApiRoutes } from "@/config/api/routes";
 
 
 export const getNotificationChannels = async (query: NotificationChannelQuery): Promise<NotificationChannel[]> => {

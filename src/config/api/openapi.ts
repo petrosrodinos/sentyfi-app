@@ -1,5 +1,5 @@
 import OpenAPIClientAxios from 'openapi-client-axios';
-import { API_URL } from '@/constants/api';
+import { API_URL } from '@/config/api/routes';
 
 export const openapi_client = new OpenAPIClientAxios({
     definition: `${API_URL}/api-json`,

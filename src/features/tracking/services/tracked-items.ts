@@ -1,6 +1,6 @@
-import axiosInstance from "@/config/axios";
+import axiosInstance from "@/config/api/axios";
 import type { CreateTrackedItem, TrackedItem, TrackedItemQuery, UpdateTrackedItem } from "../interfaces/tracked-items";
-import { ApiRoutes } from "@/constants/api";
+import { ApiRoutes } from "@/config/api/routes";
 
 export const getTrackedItems = async (query: TrackedItemQuery): Promise<TrackedItem[]> => {
     try {
