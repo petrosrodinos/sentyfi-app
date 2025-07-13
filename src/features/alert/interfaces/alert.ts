@@ -1,5 +1,6 @@
 import type { MediaSubscriptionPlatformType } from "@/features/media/interfaces/media-subscriptions";
 import type { NotificationChannelType } from "@/features/notifications/interfaces/notification-channels";
+import type { TrackedItemType } from "@/features/tracking/interfaces/tracked-items";
 
 export interface UserAlert {
     id: number;
@@ -17,7 +18,10 @@ export interface Alert {
     uuid: string;
     title: string;
     description: string;
-    tickers: string[];
+    tickers: {
+        ticker: string;
+        item_type: TrackedItemType;
+    }[];
     sentiment: 'positive' | 'negative' | 'neutral';
     severity: 'low' | 'medium' | 'high';
     popularity: number;

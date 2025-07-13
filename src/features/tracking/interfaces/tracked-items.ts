@@ -29,6 +29,7 @@ export interface TrackedItemQuery {
 export const TrackedItemTypes = {
     crypto: "crypto",
     stock: "stock",
+    commodity: "commodity",
     keyword: "keyword",
 } as const;
 
