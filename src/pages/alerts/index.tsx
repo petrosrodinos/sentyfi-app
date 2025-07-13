@@ -37,7 +37,7 @@ export default function Alerts() {
           <AlertFilters alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} alertFilters={alertFilters} onAlertFiltersChange={setAlertFilters} />
         </div>
 
-        <AlertList alerts={alertsResponse?.data || []} isLoading={isLoading} error={error} onLoadMore={handleLoadMore} hasMore={alertsResponse?.pagination.hasMore || false} />
+        <AlertList alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} isLoading={isLoading} error={error} onLoadMore={handleLoadMore} hasMore={alertsResponse?.pagination.hasMore || false} />
       </div>
     </div>
   );

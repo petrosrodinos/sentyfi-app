@@ -9,13 +9,14 @@ import { useAlertUtils } from "../hooks/use-alert-utils";
 import { MediaSubscriptionPlatformTypes } from "@/features/media/interfaces/media-subscriptions";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useState } from "react";
-import { TrackedItemTypes } from "@/features/tracking/interfaces/tracked-items";
+import { TrackedItemTypes, type TrackedItem } from "@/features/tracking/interfaces/tracked-items";
 
 interface AlertCardProps {
   alert: UserAlert;
+  trackedItems: TrackedItem[];
 }
 
-export function AlertCard({ alert }: AlertCardProps) {
+export function AlertCard({ alert, trackedItems }: AlertCardProps) {
   const { mutate: deleteAlert, isPending: isDeleting } = useDeleteAlert();
   const { getPlatformIcon, getPlatformColor, getChannelIcon, getSeverityColor, getSentimentColor, formatTime } = useAlertUtils();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -38,31 +39,33 @@ export function AlertCard({ alert }: AlertCardProps) {
                 <Badge variant={getSeverityColor(alert.alert.severity)}>{alert.alert.severity}</Badge>
               </div>
               <div className="flex items-center gap-2">
-                {alert?.alert?.tickers.map((ticker: any) => {
-                  return (
-                    <div key={ticker.ticker} className="flex items-center gap-2">
-                      <Avatar className="w-6 h-6">
-                        {(ticker.item_type === TrackedItemTypes.stock || ticker.item_type === TrackedItemTypes.commodity) && (
+                {alert?.alert?.tickers
+                  .filter((ticker: any) => trackedItems.some((item) => item.item_identifier === ticker.ticker))
+                  .map((ticker: any) => {
+                    return (
+                      <div key={ticker.ticker} className="flex items-center gap-2">
+                        <Avatar className="w-6 h-6">
+                          {(ticker.item_type === TrackedItemTypes.stock || ticker.item_type === TrackedItemTypes.commodity) && (
+                            <>
+                              <AvatarImage src={`https://assets.parqet.com/logos/symbol/${ticker.ticker}`} alt={ticker.ticker} />
+                              <AvatarFallback className="bg-primary/10 text-primary font-semibold">{ticker.ticker}</AvatarFallback>
+                            </>
+                          )}
+                          {ticker.item_type === TrackedItemTypes.crypto && (
+                            <>
+                              <AvatarImage src={`/node_modules/cryptocurrency-icons/svg/color/${ticker.ticker.toLowerCase()}.svg`} alt={ticker.ticker} />
+                              <AvatarFallback className="bg-primary/10 text-primary font-semibold">{ticker.ticker}</AvatarFallback>
+                            </>
+                          )}
+                        </Avatar>
+                        {ticker.item_type === TrackedItemTypes.keyword && (
                           <>
-                            <AvatarImage src={`https://assets.parqet.com/logos/symbol/${ticker.ticker}`} alt={ticker.ticker} />
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">{ticker.ticker}</AvatarFallback>
+                            <span className="font-medium">{ticker.ticker}</span>
                           </>
                         )}
-                        {ticker.item_type === TrackedItemTypes.crypto && (
-                          <>
-                            <AvatarImage src={`/node_modules/cryptocurrency-icons/svg/color/${ticker.ticker.toLowerCase()}.svg`} alt={ticker.ticker} />
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">{ticker.ticker}</AvatarFallback>
-                          </>
-                        )}
-                      </Avatar>
-                      {ticker.item_type === TrackedItemTypes.keyword && (
-                        <>
-                          <span className="font-medium">{ticker.ticker}</span>
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
+                      </div>
+                    );
+                  })}
               </div>
               <span className={`text-sm font-medium ${getSentimentColor(alert.alert.sentiment)}`}>{alert.alert.sentiment}</span>
             </div>

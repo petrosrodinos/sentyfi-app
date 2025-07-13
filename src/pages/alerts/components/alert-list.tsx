@@ -1,16 +1,18 @@
 import { AlertCard } from "./alert-card";
 import { Button } from "@/components/ui/button";
 import type { UserAlert } from "@/features/alert/interfaces/alert";
+import type { TrackedItem } from "@/features/tracking/interfaces/tracked-items";
 
 interface AlertListProps {
   alerts: UserAlert[];
+  trackedItems: TrackedItem[];
   isLoading: boolean;
   error: Error | null;
   onLoadMore: () => void;
   hasMore: boolean;
 }
 
-export function AlertList({ alerts, isLoading, error, onLoadMore, hasMore }: AlertListProps) {
+export function AlertList({ alerts, trackedItems, isLoading, error, onLoadMore, hasMore }: AlertListProps) {
   if (isLoading && alerts.length === 0) {
     return (
       <div className="space-y-4">
@@ -45,7 +47,7 @@ export function AlertList({ alerts, isLoading, error, onLoadMore, hasMore }: Ale
   return (
     <div className="space-y-4">
       {alerts.map((alert) => (
-        <AlertCard key={alert.id} alert={alert} />
+        <AlertCard key={alert.id} alert={alert} trackedItems={trackedItems} />
       ))}
 
       {hasMore && (
