@@ -15,16 +15,16 @@ interface AlertFiltersProps {
 
 export function AlertFilters({ alerts, trackedItems, alertFilters, onAlertFiltersChange }: AlertFiltersProps) {
   return (
-    <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-sm">
+    <Card className="p-6 border-border shadow-sm bg-blue-50 dark:bg-blue-950/20">
       <div className="flex items-center gap-2 mb-6">
-        <Filter className="h-5 w-5 text-blue-600" />
-        <h3 className="font-semibold text-blue-900">Filters</h3>
+        <Filter className="h-5 w-5 text-muted-foreground" />
+        <h3 className="font-semibold text-foreground">Filters</h3>
       </div>
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col md:flex-row gap-4">
           <Select value={alertFilters.severity || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, severity: value === "all" ? undefined : (value as AlertSeverity) })}>
-            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+            <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Filter by severity" />
             </SelectTrigger>
             <SelectContent>
@@ -35,7 +35,7 @@ export function AlertFilters({ alerts, trackedItems, alertFilters, onAlertFilter
             </SelectContent>
           </Select>
           <Select value={alertFilters.sentiment || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, sentiment: value === "all" ? undefined : (value as AlertSentiment) })}>
-            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+            <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Filter by sentiment" />
             </SelectTrigger>
             <SelectContent>
@@ -46,7 +46,7 @@ export function AlertFilters({ alerts, trackedItems, alertFilters, onAlertFilter
             </SelectContent>
           </Select>
           <Select value={alertFilters.platform_type || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, platform_type: value === "all" ? undefined : (value as any) })}>
-            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+            <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Filter by platform" />
             </SelectTrigger>
             <SelectContent>
@@ -60,7 +60,7 @@ export function AlertFilters({ alerts, trackedItems, alertFilters, onAlertFilter
         </div>
         <div className="flex flex-col md:flex-row gap-4">
           <Select value={alertFilters.account_identifier || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, account_identifier: value === "all" ? undefined : (value as string) })}>
-            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+            <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Filter by account" />
             </SelectTrigger>
             <SelectContent>
@@ -73,7 +73,7 @@ export function AlertFilters({ alerts, trackedItems, alertFilters, onAlertFilter
             </SelectContent>
           </Select>
           <Select value={Array.isArray(alertFilters.tickers) ? alertFilters.tickers[0] || "all" : alertFilters.tickers || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, tickers: value === "all" ? undefined : [value] })}>
-            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+            <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Filter by tickers" />
             </SelectTrigger>
             <SelectContent>
@@ -86,7 +86,7 @@ export function AlertFilters({ alerts, trackedItems, alertFilters, onAlertFilter
             </SelectContent>
           </Select>
           <Select value={alertFilters.order_by || "desc"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, order_by: value as "asc" | "desc" })}>
-            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+            <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Sort order" />
             </SelectTrigger>
             <SelectContent>

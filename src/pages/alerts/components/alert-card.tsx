@@ -30,12 +30,12 @@ export function AlertCard({ alert, trackedItems }: AlertCardProps) {
 
   return (
     <>
-      <Card className={`p-6 ${!alert.alert ? "border-l-4 border-l-blue-500 bg-blue-50" : ""}`}>
+      <Card className={`p-6 ${!alert.alert ? "border-l-4 border-l-blue-500 bg-blue-50 dark:bg-blue-950/20" : ""}`}>
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
               <div className="flex items-center gap-2">
-                <Bell className="h-5 w-5 text-gray-600" />
+                <Bell className="h-5 w-5 text-muted-foreground" />
                 <Badge variant={getSeverityColor(alert.alert.severity)}>{alert.alert.severity}</Badge>
               </div>
               <div className="flex items-center gap-2">
@@ -70,33 +70,33 @@ export function AlertCard({ alert, trackedItems }: AlertCardProps) {
               <span className={`text-sm font-medium ${getSentimentColor(alert.alert.sentiment)}`}>{alert.alert.sentiment}</span>
             </div>
 
-            <p className="text-gray-900 mb-3">{alert.alert.description}</p>
+            <p className="text-foreground mb-3">{alert.alert.description}</p>
 
-            <div className="flex items-center gap-2 mb-3 p-3 bg-gray-100 rounded-lg">
+            <div className="flex items-center gap-2 mb-3 p-3 bg-muted rounded-lg">
               <PlatformIcon className={`h-4 w-4 ${getPlatformColor(alert.alert.platform_type)}`} />
-              <span className="text-sm font-medium">{alert.alert.account_name}</span>
-              <span className="text-sm text-gray-600">•</span>
-              <span className="text-sm text-gray-600">{alert.alert.title}</span>
-              <Button variant="ghost" size="sm" className="ml-auto cursor-pointer hover:text-blue-500" onClick={() => window.open(`https://x.com/${alert.alert.account_identifier}`, "_blank")}>
+              <span className="text-sm font-medium text-foreground">{alert.alert.account_name}</span>
+              <span className="text-sm text-muted-foreground">•</span>
+              <span className="text-sm text-muted-foreground">{alert.alert.title}</span>
+              <Button variant="ghost" size="sm" className="ml-auto cursor-pointer hover:text-blue-500 dark:hover:text-blue-400" onClick={() => window.open(`https://x.com/${alert.alert.account_identifier}`, "_blank")}>
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </div>
 
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-sm text-gray-600">Notified via:</span>
+              <span className="text-sm text-muted-foreground">Notified via:</span>
               {alert.notification_channels.map((channel, index) => {
                 const ChannelIcon = getChannelIcon(channel);
                 return (
                   <div key={index} className="flex items-center gap-1">
-                    <ChannelIcon className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-600 capitalize">{channel}</span>
-                    {index < alert.notification_channels.length - 1 && <span className="text-gray-400">•</span>}
+                    <ChannelIcon className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground capitalize">{channel}</span>
+                    {index < alert.notification_channels.length - 1 && <span className="text-muted-foreground/50">•</span>}
                   </div>
                 );
               })}
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-gray-600">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />
                 {formatTime(alert.created_at)}
