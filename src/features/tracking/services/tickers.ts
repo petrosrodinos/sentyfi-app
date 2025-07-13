@@ -1,8 +1,8 @@
 import axiosInstance from "@/config/api/axios";
-import type { TickerQuery, TickersResponse } from "../interfaces/tickers";
+import type { TickerQuery, Ticker } from "../interfaces/tickers";
 import { ApiRoutes } from "@/config/api/routes";
 
-export const getTickers = async (query: TickerQuery): Promise<TickersResponse> => {
+export const getTickers = async (query: TickerQuery): Promise<Ticker[]> => {
     try {
         const response = await axiosInstance.get(ApiRoutes.tracking.market_data.prefix, { params: query });
         return response.data;

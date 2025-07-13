@@ -3,7 +3,7 @@ import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { Ticker } from "../../../features/tracking/interfaces/tickers";
-import { type CreateTrackedItem } from "../../../features/tracking/interfaces/tracked-items";
+import { TrackedItemTypes, type CreateTrackedItem } from "../../../features/tracking/interfaces/tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteTrackedItem, useUpsertTrackedItem } from "@/features/tracking/hooks/use-tracked-items";
 import { LoaderCircle, Trash2 } from "lucide-react";
@@ -66,7 +66,7 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
             <div className="flex items-start space-x-3 flex-1">
               <div className="relative">
                 <Avatar className="w-12 h-12">
-                  {ticker.market === "stock" ? (
+                  {ticker.market === TrackedItemTypes.stock ? (
                     <>
                       <AvatarImage src={`https://assets.parqet.com/logos/symbol/${ticker.ticker}`} alt={ticker.ticker} />
                       <AvatarFallback className="bg-primary/10 text-primary font-semibold">{getTickerFallback()}</AvatarFallback>

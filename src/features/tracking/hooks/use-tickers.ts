@@ -6,7 +6,7 @@ export function useTickers(query: TickerQuery) {
     return useQuery({
         queryKey: ["tickers", query],
         queryFn: () => getTickers(query),
-        enabled: !!query.ticker && query.ticker.trim().length > 0,
+        enabled: !!query.ticker,
         retry: false,
     });
 }

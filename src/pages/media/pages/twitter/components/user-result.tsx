@@ -1,22 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Users, RefreshCw } from "lucide-react";
-import { useTwitterUser } from "@/features/media/hooks/use-twitter";
+import { Users } from "lucide-react";
 import { UserCard } from "./user-card";
 import { useMemo, useState } from "react";
 import { FollowingList } from "./following-list";
 import type { MediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
+import type { TwitterUser } from "@/features/media/interfaces/twitter";
 
 interface UserResultProps {
+  user: TwitterUser;
+  isLoadingUser: boolean;
+  errorUser: Error;
   username: string;
   subscriptions: MediaSubscription[];
 }
 
-export function UserResult({ username, subscriptions }: UserResultProps) {
+export function UserResult({ user, isLoadingUser, errorUser, username, subscriptions }: UserResultProps) {
   const [getFollowings, setGetFollowings] = useState(false);
-
-  const { data: user, isLoading: isLoadingUser, isError: isErrorUser, error: errorUser, refetch: refetchUser } = useTwitterUser(username);
 
   const handleGetFollowings = () => {
     setGetFollowings(true);
@@ -52,7 +53,7 @@ export function UserResult({ username, subscriptions }: UserResultProps) {
     );
   }
 
-  if (isErrorUser) {
+  if (!!errorUser) {
     return (
       <Card>
         <CardHeader>
@@ -64,10 +65,6 @@ export function UserResult({ username, subscriptions }: UserResultProps) {
         <CardContent>
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">{errorUser?.message || "Failed to load user"}</p>
-            <Button onClick={() => refetchUser()} variant="outline">
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Try Again
-            </Button>
           </div>
         </CardContent>
       </Card>
@@ -104,7 +101,7 @@ export function UserResult({ username, subscriptions }: UserResultProps) {
         </CardContent>
       </Card>
 
-      {getFollowings && <FollowingList username={username} subscriptions={subscriptions} />}
+      {getFollowings && <FollowingList user={user!} subscriptions={subscriptions} />}
     </>
   );
 }

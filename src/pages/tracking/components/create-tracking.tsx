@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, ArrowLeft, TrendingUp } from "lucide-react";
 import { useTickers } from "@/features/tracking/hooks/use-tickers";
 import type { Ticker } from "../../../features/tracking/interfaces/tickers";
-import { type TrackedItem, type TrackedItemType } from "../../../features/tracking/interfaces/tracked-items";
+import { TrackedItemTypes, type TrackedItem, type TrackedItemType } from "../../../features/tracking/interfaces/tracked-items";
 import TickerCard from "./ticker-card";
 import { MarketLabels } from "../constants";
 
@@ -16,7 +16,7 @@ interface CreateTrackingProps {
   market: TrackedItemType;
 }
 
-export function CreateTracking({ trackedItems, onBack, market = "stock" }: CreateTrackingProps) {
+export function CreateTracking({ trackedItems, onBack, market = TrackedItemTypes.stock }: CreateTrackingProps) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -28,8 +28,7 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
     refetch,
   } = useTickers({
     market,
-    ticker: searchQuery.trim(),
-    enabled: isSearching,
+    ticker: searchQuery.trim().toUpperCase(),
   });
 
   const debouncedSearch = useMemo(() => {
@@ -74,8 +73,9 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
   }, [inputValue, refetch, debouncedSearch]);
 
   useEffect(() => {
-    if (!searchResults?.results?.length) return;
-    const items = searchResults?.results?.map((ticker) => {
+    setTickersData([]);
+    if (!searchResults?.length) return;
+    const items = searchResults?.map((ticker) => {
       const isEnabled = trackedItems.find((item) => item.item_identifier === ticker.ticker);
       return { ...ticker, enabled: isEnabled ? isEnabled.enabled : false };
     });
@@ -147,7 +147,7 @@ export function CreateTracking({ trackedItems, onBack, market = "stock" }: Creat
                   </div>
                 ))}
               </div>
-            ) : searchResults && searchResults.results?.length > 0 ? (
+            ) : searchResults && searchResults?.length > 0 ? (
               <div className="space-y-3">
                 {tickersData?.map((ticker: Ticker) => (
                   <TickerCard key={ticker.ticker} ticker={ticker} enabled={ticker.enabled || false} mode="create" />

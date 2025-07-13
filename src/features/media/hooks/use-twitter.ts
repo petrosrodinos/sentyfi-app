@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getTwitterUser, searchTwitterUsers, getTwitterUserFollowings, getFollowingsByUsername } from "../services/twitter";
+import { toast } from "@/hooks/use-toast";
 
 export function useFollowingsByUsername(username: string) {
     return useQuery({
@@ -30,5 +31,18 @@ export function useTwitterUser(username: string) {
         queryKey: ["twitter-user", username],
         queryFn: () => getTwitterUser(username),
         enabled: !!username && username.trim().length > 0,
+    });
+}
+
+export function getTwitterUserByUsername(username: string) {
+    return useMutation({
+        mutationFn: () => getTwitterUser(username),
+        onError: (error) => {
+            toast({
+                title: "Error",
+                description: error.message,
+                variant: "error",
+            });
+        },
     });
 }

@@ -10,14 +10,14 @@ import type { MediaSubscription } from "@/features/media/interfaces/media-subscr
 import { useEffect, useState } from "react";
 
 interface FollowingListProps {
-  username: string;
+  user: TwitterUser;
   subscriptions: MediaSubscription[];
 }
 
-export function FollowingList({ username, subscriptions }: FollowingListProps) {
+export function FollowingList({ user, subscriptions }: FollowingListProps) {
   const [twitterData, setTwitterData] = useState<TwitterUser[]>([]);
 
-  const { data: followings, isLoading: isLoadingFollowings, isError: isErrorFollowings, error: errorFollowings, refetch: refetchFollowings } = useTwitterFollowings(username);
+  const { data: followings, isLoading: isLoadingFollowings, isError: isErrorFollowings, error: errorFollowings, refetch: refetchFollowings } = useTwitterFollowings(user.id);
 
   useEffect(() => {
     if (!followings?.length) return;
@@ -95,7 +95,7 @@ export function FollowingList({ username, subscriptions }: FollowingListProps) {
           {followings?.length === 0 ? (
             <div className="text-center py-8">
               <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No following found for @{username}</p>
+              <p className="text-muted-foreground">No following found for @{user.screen_name}</p>
             </div>
           ) : (
             <div className="space-y-3">
