@@ -24,15 +24,16 @@ export interface Alert {
     post_ids: string[];
     platform_type: MediaSubscriptionPlatformType;
     account_identifier: string;
+    account_name: string;
 }
 
 export interface AlertQuery {
-    platform_type: MediaSubscriptionPlatformType;
-    account_identifier: string;
-    sentiment: AlertSentiment;
-    severity: AlertSeverity;
-    popularity: number;
-    tickers: string[];
+    platform_type?: MediaSubscriptionPlatformType;
+    account_identifier?: string;
+    sentiment?: AlertSentiment;
+    severity?: AlertSeverity;
+    popularity?: number;
+    tickers?: string[];
 }
 
 export const AlertSentiments = {

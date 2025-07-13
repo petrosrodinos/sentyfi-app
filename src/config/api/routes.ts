@@ -42,5 +42,8 @@ export const ApiRoutes = {
             create: "/tracked-items/create",
             upsert: "/tracked-items/upsert",
         }
+    },
+    user_alerts: {
+        prefix: "user-alerts"
     }
 }
