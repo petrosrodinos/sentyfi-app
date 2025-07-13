@@ -1,28 +1,19 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { AlertFilters } from "./components/alert-filters";
 import { useAlerts } from "@/features/alert/hooks/use-alerts";
 import { AlertList } from "./components/alert-list";
+import type { AlertQuery } from "@/features/alert/interfaces/alert";
 
 export default function Alerts() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [severityFilter, setSeverityFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
+  const [alertFilters, setAlertFilters] = useState<AlertQuery>({
+    page: 1,
+    limit: 10,
+  });
 
-  const { data: alerts = [], isLoading, error } = useAlerts({});
-
-  const filteredAlerts = useMemo(() => {
-    return alerts.filter((alert) => {
-      const matchesSearch = searchQuery === "" || alert.alert.title.toLowerCase().includes(searchQuery.toLowerCase()) || alert.alert.description.toLowerCase().includes(searchQuery.toLowerCase()) || alert.alert.tickers.some((ticker) => ticker.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      const matchesSeverity = severityFilter === "all" || alert.alert.severity === severityFilter;
-      const matchesType = typeFilter === "all" || alert.alert.title.toLowerCase().includes(typeFilter.toLowerCase());
-
-      return matchesSearch && matchesSeverity && matchesType;
-    });
-  }, [alerts, searchQuery, severityFilter, typeFilter]);
+  const { data: alertsResponse, isLoading, error } = useAlerts(alertFilters);
 
   const handleLoadMore = () => {
-    console.log("Load more alerts");
+    setAlertFilters({ ...alertFilters, page: (alertFilters.page || 1) + 1 });
   };
 
   return (
@@ -34,10 +25,10 @@ export default function Alerts() {
         </div>
 
         <div className="mb-6">
-          <AlertFilters searchQuery={searchQuery} onSearchChange={setSearchQuery} severityFilter={severityFilter} onSeverityChange={setSeverityFilter} typeFilter={typeFilter} onTypeChange={setTypeFilter} />
+          <AlertFilters alerts={alertsResponse?.data || []} alertFilters={alertFilters} onAlertFiltersChange={setAlertFilters} />
         </div>
 
-        <AlertList alerts={filteredAlerts} isLoading={isLoading} error={error} onLoadMore={handleLoadMore} hasMore={false} />
+        <AlertList alerts={alertsResponse?.data || []} isLoading={isLoading} error={error} onLoadMore={handleLoadMore} hasMore={alertsResponse?.pagination.hasMore || false} />
       </div>
     </div>
   );

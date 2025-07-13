@@ -2,6 +2,16 @@ import type { MediaSubscriptionPlatformType } from "@/features/media/interfaces/
 import type { NotificationChannelType } from "@/features/notifications/interfaces/notification-channels";
 import type { TrackedItemType } from "@/features/tracking/interfaces/tracked-items";
 
+export interface UserAlertsResponse {
+    data: UserAlert[];
+    pagination: {
+        total: number;
+        page: number;
+        limit: number;
+        hasMore: boolean;
+    }
+}
+
 export interface UserAlert {
     id: number;
     uuid: string;
@@ -38,6 +48,9 @@ export interface AlertQuery {
     severity?: AlertSeverity;
     popularity?: number;
     tickers?: string[];
+    order_by?: 'asc' | 'desc';
+    page?: number;
+    limit?: number;
 }
 
 export const AlertSentiments = {

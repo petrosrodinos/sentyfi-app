@@ -1,55 +1,88 @@
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Filter, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Filter } from "lucide-react";
+import { type AlertQuery, type AlertSentiment, type AlertSeverity } from "@/features/alert/interfaces/alert";
+import { MediaSubscriptionPlatformTypes } from "@/features/media/interfaces/media-subscriptions";
+import type { UserAlert } from "@/features/alert/interfaces/alert";
 
 interface AlertFiltersProps {
-  searchQuery: string;
-  onSearchChange: (value: string) => void;
-  severityFilter: string;
-  onSeverityChange: (value: string) => void;
-  typeFilter: string;
-  onTypeChange: (value: string) => void;
+  alerts: UserAlert[];
+  alertFilters: AlertQuery;
+  onAlertFiltersChange: (filters: AlertQuery) => void;
 }
 
-export function AlertFilters({ searchQuery, onSearchChange, severityFilter, onSeverityChange, typeFilter, onTypeChange }: AlertFiltersProps) {
+export function AlertFilters({ alerts, alertFilters, onAlertFiltersChange }: AlertFiltersProps) {
   return (
-    <Card className="p-4">
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input placeholder="Search alerts..." className="pl-10" value={searchQuery} onChange={(e) => onSearchChange(e.target.value)} />
-          </div>
+    <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-sm">
+      <div className="flex items-center gap-2 mb-6">
+        <Filter className="h-5 w-5 text-blue-600" />
+        <h3 className="font-semibold text-blue-900">Filters</h3>
+      </div>
+
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
+          <Select value={alertFilters.severity || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, severity: value === "all" ? undefined : (value as AlertSeverity) })}>
+            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+              <SelectValue placeholder="Filter by severity" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Severities</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="low">Low</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={alertFilters.sentiment || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, sentiment: value === "all" ? undefined : (value as AlertSentiment) })}>
+            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+              <SelectValue placeholder="Filter by sentiment" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Sentiments</SelectItem>
+              <SelectItem value="positive">Positive</SelectItem>
+              <SelectItem value="negative">Negative</SelectItem>
+              <SelectItem value="neutral">Neutral</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={alertFilters.platform_type || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, platform_type: value === "all" ? undefined : (value as any) })}>
+            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+              <SelectValue placeholder="Filter by platform" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Platforms</SelectItem>
+              <SelectItem value={MediaSubscriptionPlatformTypes.twitter}>Twitter</SelectItem>
+              <SelectItem value={MediaSubscriptionPlatformTypes.youtube}>YouTube</SelectItem>
+              <SelectItem value={MediaSubscriptionPlatformTypes.reddit}>Reddit</SelectItem>
+              <SelectItem value={MediaSubscriptionPlatformTypes.news}>News</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <Select value={severityFilter} onValueChange={onSeverityChange}>
-          <SelectTrigger className="w-full md:w-48">
-            <SelectValue placeholder="Filter by severity" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Severities</SelectItem>
-            <SelectItem value="high">High</SelectItem>
-            <SelectItem value="medium">Medium</SelectItem>
-            <SelectItem value="low">Low</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={typeFilter} onValueChange={onTypeChange}>
-          <SelectTrigger className="w-full md:w-48">
-            <SelectValue placeholder="Filter by type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="sentiment_shift">Sentiment Shift</SelectItem>
-            <SelectItem value="volume_spike">Volume Spike</SelectItem>
-            <SelectItem value="news_impact">News Impact</SelectItem>
-            <SelectItem value="influencer_mention">Influencer Mention</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button variant="outline" className="flex items-center gap-2">
-          <Filter className="h-4 w-4" />
-          More Filters
-        </Button>
+        <div className="flex flex-col md:flex-row gap-4">
+          <Select value={alertFilters.account_identifier || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, account_identifier: value === "all" ? undefined : (value as string) })}>
+            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+              <SelectValue placeholder="Filter by account" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Accounts</SelectItem>
+              {alerts.map((alert) => (
+                <SelectItem key={alert.alert.account_identifier} value={alert.alert.account_identifier}>
+                  {alert.alert.account_name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {/* <Input placeholder="Popularity (min value)" type="number" value={alertFilters.popularity || ""} onChange={(e) => onAlertFiltersChange({ ...alertFilters, popularity: e.target.value ? Number(e.target.value) : undefined })} className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors" /> */}
+          <Input placeholder="Tickers (comma separated)" value={alertFilters.tickers?.join(", ") || ""} onChange={(e) => onAlertFiltersChange({ ...alertFilters, tickers: e.target.value ? e.target.value.split(",").map((t) => t.trim()) : undefined })} className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors" />
+          <Select value={alertFilters.order_by || "desc"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, order_by: value as "asc" | "desc" })}>
+            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+              <SelectValue placeholder="Sort order" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="desc">Newest First</SelectItem>
+              <SelectItem value="asc">Oldest First</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </Card>
   );

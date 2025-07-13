@@ -40,7 +40,7 @@ export function AlertCard({ alert }: AlertCardProps) {
               <div className="flex items-center gap-2">
                 {alert?.alert?.tickers.map((ticker: any) => {
                   return (
-                    <>
+                    <div key={ticker.ticker} className="flex items-center gap-2">
                       <Avatar className="w-6 h-6">
                         {(ticker.item_type === TrackedItemTypes.stock || ticker.item_type === TrackedItemTypes.commodity) && (
                           <>
@@ -60,7 +60,7 @@ export function AlertCard({ alert }: AlertCardProps) {
                           <span className="font-medium">{ticker.ticker}</span>
                         </>
                       )}
-                    </>
+                    </div>
                   );
                 })}
               </div>
