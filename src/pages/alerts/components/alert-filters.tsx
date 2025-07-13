@@ -1,18 +1,19 @@
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Filter } from "lucide-react";
 import { type AlertQuery, type AlertSentiment, type AlertSeverity } from "@/features/alert/interfaces/alert";
 import { MediaSubscriptionPlatformTypes } from "@/features/media/interfaces/media-subscriptions";
 import type { UserAlert } from "@/features/alert/interfaces/alert";
+import type { TrackedItem } from "@/features/tracking/interfaces/tracked-items";
 
 interface AlertFiltersProps {
   alerts: UserAlert[];
+  trackedItems: TrackedItem[];
   alertFilters: AlertQuery;
   onAlertFiltersChange: (filters: AlertQuery) => void;
 }
 
-export function AlertFilters({ alerts, alertFilters, onAlertFiltersChange }: AlertFiltersProps) {
+export function AlertFilters({ alerts, trackedItems, alertFilters, onAlertFiltersChange }: AlertFiltersProps) {
   return (
     <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-sm">
       <div className="flex items-center gap-2 mb-6">
@@ -71,8 +72,19 @@ export function AlertFilters({ alerts, alertFilters, onAlertFiltersChange }: Ale
               ))}
             </SelectContent>
           </Select>
-          {/* <Input placeholder="Popularity (min value)" type="number" value={alertFilters.popularity || ""} onChange={(e) => onAlertFiltersChange({ ...alertFilters, popularity: e.target.value ? Number(e.target.value) : undefined })} className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors" /> */}
-          <Input placeholder="Tickers (comma separated)" value={alertFilters.tickers?.join(", ") || ""} onChange={(e) => onAlertFiltersChange({ ...alertFilters, tickers: e.target.value ? e.target.value.split(",").map((t) => t.trim()) : undefined })} className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors" />
+          <Select value={Array.isArray(alertFilters.tickers) ? alertFilters.tickers[0] || "all" : alertFilters.tickers || "all"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, tickers: value === "all" ? undefined : [value] })}>
+            <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
+              <SelectValue placeholder="Filter by tickers" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Tickers</SelectItem>
+              {trackedItems.map((item) => (
+                <SelectItem key={item.item_identifier} value={item.item_identifier}>
+                  {item.item_identifier}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Select value={alertFilters.order_by || "desc"} onValueChange={(value) => onAlertFiltersChange({ ...alertFilters, order_by: value as "asc" | "desc" })}>
             <SelectTrigger className="w-full md:w-48 border-blue-200 hover:border-blue-300 focus:border-blue-400 transition-colors">
               <SelectValue placeholder="Sort order" />
