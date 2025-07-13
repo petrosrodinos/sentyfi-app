@@ -36,6 +36,7 @@ const sidebarNavItems = [
     title: "Push Notifications",
     icon: <IconBell size={18} />,
     href: Routes.notifications.push,
+    disabled: true,
   },
   {
     title: "WhatsApp",
@@ -47,10 +48,12 @@ const sidebarNavItems = [
     title: "Discord",
     icon: <IconBrandDiscord size={18} />,
     href: Routes.notifications.discord,
+    disabled: true,
   },
   {
     title: "Phone Call",
     icon: <IconPhone size={18} />,
     href: Routes.notifications.phone,
+    disabled: true,
   },
 ];

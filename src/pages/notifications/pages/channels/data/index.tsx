@@ -13,6 +13,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     verified: false,
     setup_status: "not_setup",
     url: Routes.notifications.telegram,
+    disabled: false,
   },
   {
     id: "email",
@@ -24,6 +25,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     verified: false,
     setup_status: "not_setup",
     url: Routes.notifications.email,
+    disabled: false,
   },
   {
     id: "sms",
@@ -35,6 +37,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     verified: false,
     setup_status: "not_setup",
     url: Routes.notifications.sms,
+    disabled: false,
   },
   {
     id: "push",
@@ -46,6 +49,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     verified: false,
     setup_status: "not_setup",
     url: Routes.notifications.push,
+    disabled: true,
   },
   {
     id: "whatsapp",
@@ -57,6 +61,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     verified: false,
     setup_status: "not_setup",
     url: Routes.notifications.whatsapp,
+    disabled: true,
   },
 
   {
@@ -69,6 +74,7 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     verified: false,
     setup_status: "not_setup",
     url: Routes.notifications.discord,
+    disabled: true,
   },
   {
     id: "phone_call",
@@ -80,5 +86,6 @@ export const NotificationChannelsData: NotificationChannelData[] = [
     verified: false,
     setup_status: "not_setup",
     url: Routes.notifications.phone,
+    disabled: true,
   },
 ];

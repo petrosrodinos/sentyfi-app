@@ -85,7 +85,7 @@ export function ChannelCard({ channel }: ChannelCardProps) {
   };
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className={`hover:shadow-md transition-shadow ${channel.disabled ? "opacity-50 cursor-not-allowed" : ""}`}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4 flex-1">
@@ -114,7 +114,7 @@ export function ChannelCard({ channel }: ChannelCardProps) {
               {!channel.verified && <p className="text-xs text-muted-foreground mt-1">Setup required</p>}
             </div>
 
-            <Button variant="outline" size="sm" onClick={handleSetupChannel}>
+            <Button variant="outline" size="sm" onClick={handleSetupChannel} disabled={channel.disabled}>
               <IconSettings size={16} className="mr-2" />
               {channel.verified ? "Configure" : "Setup"}
             </Button>

@@ -74,8 +74,8 @@ export function AlertCard({ alert }: AlertCardProps) {
               <span className="text-sm font-medium">{alert.alert.account_name}</span>
               <span className="text-sm text-gray-600">•</span>
               <span className="text-sm text-gray-600">{alert.alert.title}</span>
-              <Button variant="ghost" size="sm" className="ml-auto">
-                <ExternalLink className="h-4 w-4" onClick={() => window.open(`https://x.com/${alert.alert.account_identifier}`, "_blank")} />
+              <Button variant="ghost" size="sm" className="ml-auto cursor-pointer hover:text-blue-500" onClick={() => window.open(`https://x.com/${alert.alert.account_identifier}`, "_blank")}>
+                <ExternalLink className="h-4 w-4" />
               </Button>
             </div>
 

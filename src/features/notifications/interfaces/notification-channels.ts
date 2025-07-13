@@ -34,6 +34,7 @@ export interface NotificationChannelData {
     verified: boolean;
     setup_status: "not_setup" | "partially_setup" | "fully_setup";
     url: string;
+    disabled: boolean;
 }
 
 export const NotificationChannelTypes = {
