@@ -1,5 +1,6 @@
 import { AlertCard } from "./alert-card";
 import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/ui/pagination";
 import type { UserAlert } from "@/features/alert/interfaces/alert";
 import type { TrackedItem } from "@/features/tracking/interfaces/tracked-items";
 
@@ -8,11 +9,12 @@ interface AlertListProps {
   trackedItems: TrackedItem[];
   isLoading: boolean;
   error: Error | null;
-  onLoadMore: () => void;
-  hasMore: boolean;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
-export function AlertList({ alerts, trackedItems, isLoading, error, onLoadMore, hasMore }: AlertListProps) {
+export function AlertList({ alerts, trackedItems, isLoading, error, currentPage, totalPages, onPageChange }: AlertListProps) {
   if (isLoading && alerts.length === 0) {
     return (
       <div className="space-y-4">
@@ -45,18 +47,14 @@ export function AlertList({ alerts, trackedItems, isLoading, error, onLoadMore, 
   }
 
   return (
-    <div className="space-y-4">
-      {alerts.map((alert) => (
-        <AlertCard key={alert.id} alert={alert} trackedItems={trackedItems} />
-      ))}
+    <div className="space-y-6">
+      <div className="space-y-4">
+        {alerts.map((alert) => (
+          <AlertCard key={alert.id} alert={alert} trackedItems={trackedItems} />
+        ))}
+      </div>
 
-      {hasMore && (
-        <div className="mt-8 text-center">
-          <Button variant="outline" onClick={onLoadMore} disabled={isLoading}>
-            {isLoading ? "Loading..." : "Load More Alerts"}
-          </Button>
-        </div>
-      )}
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} className="mt-8" />
     </div>
   );
 }

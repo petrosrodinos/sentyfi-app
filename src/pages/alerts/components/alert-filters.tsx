@@ -14,7 +14,7 @@ interface AlertFiltersProps {
   onAlertFiltersChange: (filters: AlertQuery) => void;
 }
 
-export function AlertFilters({ alerts, trackedItems, alertFilters, mediaSubscriptions, onAlertFiltersChange }: AlertFiltersProps) {
+export function AlertFilters({ trackedItems, alertFilters, mediaSubscriptions, onAlertFiltersChange }: AlertFiltersProps) {
   return (
     <Card className="p-6 border-border shadow-sm bg-card">
       <div className="flex items-center gap-2 mb-6">

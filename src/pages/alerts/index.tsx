@@ -27,9 +27,11 @@ export default function Alerts() {
 
   const { data: alertsResponse, isLoading, error } = useAlerts(alertFilters);
 
-  const handleLoadMore = () => {
-    setAlertFilters({ ...alertFilters, page: (alertFilters.page || 1) + 1 });
+  const handlePageChange = (page: number) => {
+    setAlertFilters({ ...alertFilters, page });
   };
+
+  const totalPages = alertsResponse?.pagination.total ? Math.ceil(alertsResponse.pagination.total / (alertFilters.limit || 10)) : 1;
 
   return (
     <div className="min-h-screen bg-background">
@@ -43,7 +45,7 @@ export default function Alerts() {
           <AlertFilters alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} mediaSubscriptions={mediaSubscriptions || []} alertFilters={alertFilters} onAlertFiltersChange={setAlertFilters} />
         </div>
 
-        <AlertList alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} isLoading={isLoading} error={error} onLoadMore={handleLoadMore} hasMore={alertsResponse?.pagination.hasMore || false} />
+        <AlertList alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} isLoading={isLoading} error={error} currentPage={alertFilters.page || 1} totalPages={totalPages} onPageChange={handlePageChange} />
       </div>
     </div>
   );
