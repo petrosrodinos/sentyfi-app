@@ -1,4 +1,4 @@
-import { Info, Mail, Bell, MessageSquare, Phone } from "lucide-react";
+import { Info, Mail, Bell, MessageSquare, Phone, CheckCircle, XCircle, HelpCircle } from "lucide-react";
 import { IconBrandX, IconBrandYoutube, IconBrandReddit, IconNews } from "@tabler/icons-react";
 
 export const useAlertUtils = () => {
@@ -90,6 +90,38 @@ export const useAlertUtils = () => {
         return `${Math.floor(diffInMinutes / 1440)}d ago`;
     };
 
+    const getAccuracyIcon = (value: "accurate" | "inaccurate" | "unsure" | null) => {
+        switch (value) {
+            case "accurate":
+                return CheckCircle;
+            case "inaccurate":
+                return XCircle;
+            case "unsure":
+                return HelpCircle;
+            default:
+                return HelpCircle;
+        }
+    };
+
+    const getAccuracyText = (value: "accurate" | "inaccurate" | "unsure" | null) => {
+        switch (value) {
+            case "accurate":
+                return "Accurate";
+            case "inaccurate":
+                return "Inaccurate";
+            case "unsure":
+                return "Unsure";
+            default:
+                return "Rate Accuracy";
+        }
+    };
+
+    const getAccuracyColor = (accuracy: number) => {
+        if (accuracy >= 80) return "text-green-500";
+        if (accuracy >= 60) return "text-yellow-500";
+        return "text-red-500";
+    };
+
     return {
         getPlatformIcon,
         getPlatformColor,
@@ -97,5 +129,8 @@ export const useAlertUtils = () => {
         getSeverityColor,
         getSentimentColor,
         formatTime,
+        getAccuracyIcon,
+        getAccuracyText,
+        getAccuracyColor,
     };
 }; 

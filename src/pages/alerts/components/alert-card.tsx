@@ -1,7 +1,8 @@
+import React from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Bell, ExternalLink, Clock } from "lucide-react";
+import { Bell, ExternalLink, Clock, HelpCircle, TrendingUp } from "lucide-react";
 import type { UserAlert } from "@/features/alert/interfaces/alert";
 import { useDeleteAlert } from "@/features/alert/hooks/use-alerts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -10,6 +11,7 @@ import { MediaSubscriptionPlatformTypes } from "@/features/media/interfaces/medi
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useState } from "react";
 import { TrackedItemTypes, type TrackedItem } from "@/features/tracking/interfaces/tracked-items";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface AlertCardProps {
   alert: UserAlert;
@@ -18,13 +20,20 @@ interface AlertCardProps {
 
 export function AlertCard({ alert, trackedItems }: AlertCardProps) {
   const { mutate: deleteAlert, isPending: isDeleting } = useDeleteAlert();
-  const { getPlatformIcon, getPlatformColor, getChannelIcon, getSeverityColor, getSentimentColor, formatTime } = useAlertUtils();
+  const { getPlatformIcon, getPlatformColor, getChannelIcon, getSeverityColor, getSentimentColor, formatTime, getAccuracyIcon, getAccuracyText, getAccuracyColor } = useAlertUtils();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [accuracy, setAccuracy] = useState<"accurate" | "inaccurate" | "unsure" | null>(null);
 
   const handleDelete = () => {
     deleteAlert(alert.id);
     setShowDeleteDialog(false);
   };
+
+  const handleAccuracySelect = (value: "accurate" | "inaccurate" | "unsure") => {
+    setAccuracy(value);
+  };
+
+  const mockAccuracy = 85;
 
   const PlatformIcon = getPlatformIcon(alert.alert.platform_type || MediaSubscriptionPlatformTypes.twitter);
 
@@ -103,9 +112,37 @@ export function AlertCard({ alert, trackedItems }: AlertCardProps) {
               </div>
               <span>{alert.alert.popularity} mentions</span>
             </div>
+
+            <div className="mt-3 flex items-center gap-3 p-2 bg-muted/30 rounded-md">
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Accuracy</span>
+              <span className={`text-sm font-medium ${getAccuracyColor(mockAccuracy)}`}>{mockAccuracy}%</span>
+            </div>
           </div>
 
           <div className="flex flex-col gap-2 ml-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  {accuracy ? React.createElement(getAccuracyIcon(accuracy), { className: "h-4 w-4" }) : <HelpCircle className="h-4 w-4" />}
+                  <span className="text-xs">{getAccuracyText(accuracy)}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => handleAccuracySelect("accurate")} className="flex items-center gap-2">
+                  {React.createElement(getAccuracyIcon("accurate"), { className: "h-4 w-4 text-green-500" })}
+                  <span>Accurate</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleAccuracySelect("inaccurate")} className="flex items-center gap-2">
+                  {React.createElement(getAccuracyIcon("inaccurate"), { className: "h-4 w-4 text-red-500" })}
+                  <span>Inaccurate</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleAccuracySelect("unsure")} className="flex items-center gap-2">
+                  {React.createElement(getAccuracyIcon("unsure"), { className: "h-4 w-4 text-yellow-500" })}
+                  <span>Unsure</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button variant="ghost" size="sm" onClick={() => setShowDeleteDialog(true)} disabled={isDeleting}>
               Dismiss
             </Button>
