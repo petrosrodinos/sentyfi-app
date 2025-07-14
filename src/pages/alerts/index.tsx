@@ -5,6 +5,7 @@ import { AlertList } from "./components/alert-list";
 import type { AlertQuery } from "@/features/alert/interfaces/alert";
 import { useTrackedItems } from "@/features/tracking/hooks/use-tracked-items";
 import { useAuthStore } from "@/stores/auth";
+import { useMediaSubscriptions } from "@/features/media/hooks/use-media-subscriptions";
 
 export default function Alerts() {
   const { user_uuid } = useAuthStore();
@@ -15,6 +16,11 @@ export default function Alerts() {
   });
 
   const { data: trackedItems } = useTrackedItems({
+    user_uuid: user_uuid!,
+    enabled: true,
+  });
+
+  const { data: mediaSubscriptions } = useMediaSubscriptions({
     user_uuid: user_uuid!,
     enabled: true,
   });
@@ -34,7 +40,7 @@ export default function Alerts() {
         </div>
 
         <div className="mb-6">
-          <AlertFilters alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} alertFilters={alertFilters} onAlertFiltersChange={setAlertFilters} />
+          <AlertFilters alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} mediaSubscriptions={mediaSubscriptions || []} alertFilters={alertFilters} onAlertFiltersChange={setAlertFilters} />
         </div>
 
         <AlertList alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} isLoading={isLoading} error={error} onLoadMore={handleLoadMore} hasMore={alertsResponse?.pagination.hasMore || false} />

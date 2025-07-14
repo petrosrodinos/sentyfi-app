@@ -39,6 +39,7 @@ export interface Alert {
     platform_type: MediaSubscriptionPlatformType;
     account_identifier: string;
     account_name: string;
+    screen_name: string;
 }
 
 export interface AlertQuery {

@@ -86,7 +86,7 @@ export function AlertCard({ alert, trackedItems }: AlertCardProps) {
               <span className="text-sm font-medium text-foreground">{alert.alert.account_name}</span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">{alert.alert.title}</span>
-              <Button variant="ghost" size="sm" className="ml-auto cursor-pointer hover:text-primary" onClick={() => window.open(`https://x.com/${alert.alert.account_identifier}`, "_blank")}>
+              <Button variant="ghost" size="sm" className="ml-auto cursor-pointer hover:text-primary" onClick={() => alert?.alert?.screen_name && window.open(`https://x.com/${alert.alert.screen_name}`, "_blank")}>
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </div>
