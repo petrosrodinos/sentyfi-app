@@ -1,11 +1,11 @@
 import { signIn } from "../services/auth";
-import { type AuthUser, type SignInUser } from "../interfaces/auth.interface";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../services/auth";
-import type { SignUpUser } from "../interfaces/auth.interface";
 import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import type { User } from "@/features/user/interfaces/user";
+import type { SignInUser, SignUpUser } from "../interfaces/auth.interface";
 
 
 export function useSignin() {
@@ -14,7 +14,7 @@ export function useSignin() {
 
     return useMutation({
         mutationFn: (data: SignInUser) => signIn(data),
-        onSuccess: (data: AuthUser) => {
+        onSuccess: (data: User) => {
             if (data.isNewUser) {
                 login({
                     ...data,

@@ -1,6 +1,9 @@
 export const API_URL = import.meta.env.VITE_API_URL;
 
 export const ApiRoutes = {
+    users: {
+        me: "/users/me",
+    },
     auth: {
         twitter: {
             create_url: "/auth/twitter/login/url",

@@ -1,6 +1,6 @@
 import axiosInstance from "@/config/api/axios";
-import type { TickerQuery, Ticker } from "../interfaces/tickers";
 import { ApiRoutes } from "@/config/api/routes";
+import type { TickerQuery, Ticker } from "../interfaces/tickers";
 
 export const getTickers = async (query: TickerQuery): Promise<Ticker[]> => {
     try {
