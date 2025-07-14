@@ -47,7 +47,7 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
       if (checked && subscriptionsLength >= Privileges[plan_subscription.plan]?.media_subscriptions) {
         toast({
           title: "Free plan limit reached",
-          description: "You have reached the limit of your free plan. Please upgrade to a paid plan to continue.",
+          description: "You have reached the limit of your free plan. Please upgrade to a paid plan to add more users.",
           variant: "error",
         });
         return;

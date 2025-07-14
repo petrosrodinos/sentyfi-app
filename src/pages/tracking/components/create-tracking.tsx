@@ -28,7 +28,7 @@ export function CreateTracking({ trackedItems, onBack, market = TrackedItemTypes
     refetch,
   } = useTickers({
     market,
-    ticker: searchQuery.trim().toUpperCase(),
+    search: searchQuery.trim().toUpperCase(),
   });
 
   const debouncedSearch = useMemo(() => {
@@ -150,7 +150,7 @@ export function CreateTracking({ trackedItems, onBack, market = TrackedItemTypes
             ) : searchResults && searchResults?.length > 0 ? (
               <div className="space-y-3">
                 {tickersData?.map((ticker: Ticker) => (
-                  <TickerCard key={ticker.ticker} ticker={ticker} enabled={ticker.enabled || false} mode="create" />
+                  <TickerCard key={ticker.ticker} ticker={ticker} enabled={ticker.enabled || false} mode="create" trackedItems={trackedItems} />
                 ))}
               </div>
             ) : (
