@@ -90,7 +90,7 @@ export function UserResult({ user, isLoadingUser, errorUser, username, subscript
             </div>
           ) : (
             <>
-              <UserCard user={user!} enabled={isUserEnabled || false} mode="create" subscriptionsLength={subscriptions.length} />
+              <UserCard user={user!} enabled={isUserEnabled || false} mode="create" subscriptions={subscriptions} />
 
               <Button disabled={getFollowings} onClick={handleGetFollowings} variant="outline" className="mt-4">
                 <Users className="w-4 h-4 mr-2" />

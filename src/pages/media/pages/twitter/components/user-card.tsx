@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { useDeleteMediaSubscription, useUpsertMediaSubscription } from "@/features/media/hooks/use-media-subscriptions";
 import { useQueryClient } from "@tanstack/react-query";
 import type { TwitterUser } from "../../../../../features/media/interfaces/twitter";
-import type { CreateMediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
+import type { CreateMediaSubscription, MediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
 import { MediaSubscriptionPlatformTypes } from "../../../../../features/media/interfaces/media-subscriptions";
 import { LoaderCircle, Trash2 } from "lucide-react";
 import { Privileges } from "@/constants/privileges";
 import { useAuthStore } from "@/stores/auth";
 import { toast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface UserCardProps {
@@ -18,10 +18,10 @@ interface UserCardProps {
   enabled: boolean;
   mode?: "create" | "view";
   subscriptionId?: number;
-  subscriptionsLength: number;
+  subscriptions: MediaSubscription[];
 }
 
-export function UserCard({ user, enabled, mode = "view", subscriptionId, subscriptionsLength }: UserCardProps) {
+export function UserCard({ user, enabled, mode = "view", subscriptionId, subscriptions }: UserCardProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { mutate: upsertSubscription, isPending: isUpsertingSubscription } = useUpsertMediaSubscription();
@@ -30,6 +30,8 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
   const queryClient = useQueryClient();
 
   const { plan_subscription } = useAuthStore();
+
+  const subscriptionsLength = useMemo(() => subscriptions?.filter((subscription) => subscription.enabled).length, [subscriptions]);
 
   const handleToggle = async (checked: boolean) => {
     try {

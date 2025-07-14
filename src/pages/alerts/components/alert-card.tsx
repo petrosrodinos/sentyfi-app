@@ -30,7 +30,7 @@ export function AlertCard({ alert, trackedItems }: AlertCardProps) {
 
   return (
     <>
-      <Card className={`p-6 ${!alert.alert ? "border-l-4 border-l-blue-500 bg-blue-50 dark:bg-blue-950/20" : ""}`}>
+      <Card className={`p-6 ${!alert.alert ? "border-l-4 border-l-primary bg-card/50" : ""}`}>
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
@@ -72,12 +72,12 @@ export function AlertCard({ alert, trackedItems }: AlertCardProps) {
 
             <p className="text-foreground mb-3">{alert.alert.description}</p>
 
-            <div className="flex items-center gap-2 mb-3 p-3 bg-muted rounded-lg">
+            <div className="flex items-center gap-2 mb-3 p-3 bg-muted/50 rounded-lg">
               <PlatformIcon className={`h-4 w-4 ${getPlatformColor(alert.alert.platform_type)}`} />
               <span className="text-sm font-medium text-foreground">{alert.alert.account_name}</span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">{alert.alert.title}</span>
-              <Button variant="ghost" size="sm" className="ml-auto cursor-pointer hover:text-blue-500 dark:hover:text-blue-400" onClick={() => window.open(`https://x.com/${alert.alert.account_identifier}`, "_blank")}>
+              <Button variant="ghost" size="sm" className="ml-auto cursor-pointer hover:text-primary" onClick={() => window.open(`https://x.com/${alert.alert.account_identifier}`, "_blank")}>
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </div>

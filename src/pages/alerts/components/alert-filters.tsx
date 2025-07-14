@@ -15,7 +15,7 @@ interface AlertFiltersProps {
 
 export function AlertFilters({ alerts, trackedItems, alertFilters, onAlertFiltersChange }: AlertFiltersProps) {
   return (
-    <Card className="p-6 border-border shadow-sm bg-blue-50 dark:bg-blue-950/20">
+    <Card className="p-6 border-border shadow-sm bg-card">
       <div className="flex items-center gap-2 mb-6">
         <Filter className="h-5 w-5 text-muted-foreground" />
         <h3 className="font-semibold text-foreground">Filters</h3>

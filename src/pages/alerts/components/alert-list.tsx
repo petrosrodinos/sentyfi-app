@@ -18,7 +18,7 @@ export function AlertList({ alerts, trackedItems, isLoading, error, onLoadMore, 
       <div className="space-y-4">
         {Array.from({ length: 3 }).map((_, index) => (
           <div key={index} className="animate-pulse">
-            <div className="h-32 bg-gray-200 rounded-lg"></div>
+            <div className="h-32 bg-muted rounded-lg"></div>
           </div>
         ))}
       </div>
@@ -28,7 +28,7 @@ export function AlertList({ alerts, trackedItems, isLoading, error, onLoadMore, 
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-600">Error loading alerts: {error.message}</p>
+        <p className="text-destructive">Error loading alerts: {error.message}</p>
         <Button onClick={() => window.location.reload()} className="mt-4">
           Retry
         </Button>
@@ -39,7 +39,7 @@ export function AlertList({ alerts, trackedItems, isLoading, error, onLoadMore, 
   if (alerts.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">No alerts found</p>
+        <p className="text-muted-foreground">No alerts found</p>
       </div>
     );
   }
