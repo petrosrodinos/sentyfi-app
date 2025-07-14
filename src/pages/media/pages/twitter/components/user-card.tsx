@@ -12,6 +12,7 @@ import { useAuthStore } from "@/stores/auth";
 import { toast } from "@/hooks/use-toast";
 import { useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { PlanTypes } from "@/constants/subscription";
 
 interface UserCardProps {
   user: TwitterUser;
@@ -44,7 +45,7 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
         },
       };
 
-      if (checked && subscriptionsLength >= Privileges[plan_subscription.plan]?.media_subscriptions) {
+      if (checked && subscriptionsLength >= Privileges[plan_subscription?.plan ?? PlanTypes.free]?.media_subscriptions) {
         toast({
           title: "Free plan limit reached",
           description: "You have reached the limit of your free plan. Please upgrade to a paid plan to add more users.",

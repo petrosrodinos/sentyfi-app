@@ -12,7 +12,7 @@ export function TeamSwitcher({
     logo: React.ElementType;
   }[];
 }) {
-  const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+  const [activeTeam] = React.useState(teams[0]);
   const navigate = useNavigate();
   return (
     <SidebarMenu>

@@ -35,37 +35,35 @@ export const signUp = async ({ email, password }: SignUpUser): Promise<User> => 
     }
 };
 
-export const forgotPassword = async (email: string) => {
-    try {
+// export const forgotPassword = async (email: string) => {
+//     try {
 
-    } catch (error) {
-        console.error("Error sending reset password email:", error);
-        throw error;
-    }
-};
+//     } catch (error) {
+//         console.error("Error sending reset password email:", error);
+//         throw error;
+//     }
+// };
 
-export const resetPassword = async (password: string) => {
-    try {
+// export const resetPassword = async (password: string) => {
+//     try {
 
-    } catch (error) {
-        console.error("Error resetting password:", error);
-        throw error;
-    }
-};
+//     } catch (error) {
+//         console.error("Error resetting password:", error);
+//         throw error;
+//     }
+// };
 
-export const updatePassword = async (
-    email: string,
-    old_password: string,
-    password: string,
-) => {
-    try {
+// export const updatePassword = async (
+//     email: string,
+//     old_password: string,
+//     password: string,
+// ) => {
+//     try {
 
-    } catch (error) {
-        console.error("Error updating password:", error);
-        throw error;
-    }
-};
+//     } catch (error) {
+//         console.error("Error updating password:", error);
+//         throw error;
+//     }
+// };
 
-export const signOut = async () => {
 
-};

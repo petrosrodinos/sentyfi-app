@@ -4,7 +4,7 @@ export interface User {
     user_uuid: string | null;
     email: string | null;
     role: RoleType | null;
-    plan_subscription?: PlanSubscription | null;
+    plan_subscription?: PlanSubscription;
     identities?: Identity[] | null;
     access_token: string | null;
     expires_in: number | null;

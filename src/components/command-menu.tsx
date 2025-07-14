@@ -1,21 +1,16 @@
-import React, { useState } from "react";
-import { IconArrowRightDashed, IconDeviceLaptop, IconMoon, IconSun } from "@tabler/icons-react";
+import { IconArrowRightDashed } from "@tabler/icons-react";
 import { useSearch } from "@/context/search-context";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
 import { sidebarData } from "./layout/data/sidebar-data";
 import { ScrollArea } from "./ui/scroll-area";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 export function CommandMenu() {
   const router = useNavigate();
   const { open, setOpen } = useSearch();
-  const [theme, setTheme] = useState<string>("light");
 
-  const handleSetTheme = (theme: string) => {
-    setTheme(theme);
-  };
-
-  const runCommand = React.useCallback(
+  const runCommand = useCallback(
     (command: () => unknown) => {
       setOpen(false);
       command();
@@ -66,19 +61,6 @@ export function CommandMenu() {
             </CommandGroup>
           ))}
           <CommandSeparator />
-          <CommandGroup heading="Theme">
-            <CommandItem onSelect={() => runCommand(() => handleSetTheme("light"))}>
-              <IconSun /> <span>Light</span>
-            </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => handleSetTheme("dark"))}>
-              <IconMoon className="scale-90" />
-              <span>Dark</span>
-            </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => handleSetTheme("system"))}>
-              <IconDeviceLaptop />
-              <span>System</span>
-            </CommandItem>
-          </CommandGroup>
         </ScrollArea>
       </CommandList>
     </CommandDialog>

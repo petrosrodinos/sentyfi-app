@@ -12,6 +12,7 @@ import { useMemo, useState } from "react";
 import { Privileges } from "@/constants/privileges";
 import { toast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/stores/auth";
+import { PlanTypes } from "@/constants/subscription";
 
 interface TickerCardProps {
   ticker: Ticker;
@@ -45,7 +46,7 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
         },
       };
 
-      if (checked && trackedItemsLength >= Privileges[plan_subscription.plan]?.tracked_items) {
+      if (checked && trackedItemsLength >= Privileges[plan_subscription?.plan ?? PlanTypes.free]?.tracked_items) {
         toast({
           title: "Free plan limit reached",
           description: "You have reached the limit of your free plan. Please upgrade to a paid plan to add more tickers.",

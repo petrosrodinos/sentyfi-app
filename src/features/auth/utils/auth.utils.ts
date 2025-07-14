@@ -17,7 +17,7 @@ export const formatAuthUser = (data: any): User => {
         avatar: data?.user?.avatar?.url ?? null,
         full_name: data?.user?.full_name ?? data?.user?.email?.split("@")[0] ?? "A/N",
         role: data?.user?.role ?? null,
-        // plan_subscription: data?.user?.plan_subscription ?? null,
+        plan_subscription: data?.user?.plan_subscription ?? null,
         identities: data?.user?.identities ?? null,
     };
 };
