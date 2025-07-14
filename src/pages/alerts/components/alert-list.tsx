@@ -11,10 +11,11 @@ interface AlertListProps {
   error: Error | null;
   currentPage: number;
   totalPages: number;
+  refresh: () => void;
   onPageChange: (page: number) => void;
 }
 
-export function AlertList({ alerts, trackedItems, isLoading, error, currentPage, totalPages, onPageChange }: AlertListProps) {
+export function AlertList({ alerts, trackedItems, isLoading, error, currentPage, totalPages, refresh, onPageChange }: AlertListProps) {
   if (isLoading && alerts.length === 0) {
     return (
       <div className="space-y-4">
@@ -27,21 +28,19 @@ export function AlertList({ alerts, trackedItems, isLoading, error, currentPage,
     );
   }
 
-  if (error) {
+  if (alerts.length === 0 || error) {
     return (
-      <div className="text-center py-8">
-        <p className="text-destructive">Error loading alerts: {error.message}</p>
-        <Button onClick={() => window.location.reload()} className="mt-4">
-          Retry
+      <div className="flex flex-col items-center justify-center py-12 px-4">
+        <div className="h-24 w-24 text-muted-foreground mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-semibold mb-2">No Alerts Yet</h3>
+        <p className="text-muted-foreground text-center max-w-sm mb-6">{error ? "An error occurred while fetching alerts" : "Start tracking assets to receive relevant market alerts"}</p>
+        <Button variant="outline" onClick={refresh}>
+          Refresh
         </Button>
-      </div>
-    );
-  }
-
-  if (alerts.length === 0) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-muted-foreground">No alerts found</p>
       </div>
     );
   }

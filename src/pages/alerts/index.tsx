@@ -25,7 +25,7 @@ export default function Alerts() {
     enabled: true,
   });
 
-  const { data: alertsResponse, isLoading, error } = useAlerts(alertFilters);
+  const { data: alertsResponse, isLoading, error, refetch } = useAlerts(alertFilters);
 
   const handlePageChange = (page: number) => {
     setAlertFilters({ ...alertFilters, page });
@@ -45,7 +45,7 @@ export default function Alerts() {
           <AlertFilters alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} mediaSubscriptions={mediaSubscriptions || []} alertFilters={alertFilters} onAlertFiltersChange={setAlertFilters} />
         </div>
 
-        <AlertList alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} isLoading={isLoading} error={error} currentPage={alertFilters.page || 1} totalPages={totalPages} onPageChange={handlePageChange} />
+        <AlertList alerts={alertsResponse?.data || []} trackedItems={trackedItems || []} isLoading={isLoading} error={error} currentPage={alertFilters.page || 1} totalPages={totalPages} onPageChange={handlePageChange} refresh={refetch} />
       </div>
     </div>
   );
