@@ -43,12 +43,21 @@ export default function BotSetupCard({ user_uuid, telegramChannel, botConnected,
     getNotificationChannels(
       { user_uuid, channel: NotificationChannelTypes.telegram },
       {
-        onSuccess: () => {
-          toast({
-            title: "Bot connected",
-            description: "You have successfully connected the bot",
-          });
-          queryClient.invalidateQueries({ queryKey: ["notification-channels", NotificationChannelTypes.telegram] });
+        onSuccess: (data) => {
+          if (data?.length === 0) {
+            toast({
+              title: "Could not connect bot",
+              description: "Please try again",
+              duration: 3000,
+              variant: "error",
+            });
+          } else {
+            toast({
+              title: "Bot connected",
+              description: "You have successfully connected the bot",
+            });
+            queryClient.invalidateQueries({ queryKey: ["notification-channels", NotificationChannelTypes.telegram] });
+          }
         },
         onError: () => {
           toast({
