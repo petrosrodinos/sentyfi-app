@@ -52,13 +52,23 @@ export function useSignup() {
     return useMutation({
         mutationFn: (data: SignUpUser) => signUp(data),
         onSuccess: (data) => {
-            login(data);
-            toast({
-                title: "Register successful",
-                description: "You have successfully registered in",
-                duration: 2000,
-            });
-            navigate("/dashboard");
+            if (data.isNewUser) {
+                login({
+                    ...data,
+                });
+                navigate("/dashboard");
+            } else {
+                login({
+                    ...data,
+                    isLoggedIn: true,
+                });
+                toast({
+                    title: "Register successful",
+                    description: "You have successfully registered in",
+                    duration: 2000,
+                });
+                navigate("/dashboard");
+            }
         },
         onError: (error) => {
             toast({
