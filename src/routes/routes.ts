@@ -12,14 +12,12 @@ export const Routes = {
     dashboard: "/dashboard",
     alerts: "/dashboard/alerts",
     media: {
-        root: "/dashboard/media",
         twitter: "/dashboard/media/twitter",
         youtube: "/dashboard/media/youtube",
         reddit: "/dashboard/media/reddit",
         news: "/dashboard/media/news",
     },
     tracking: {
-        root: "/dashboard/tracking",
         stocks: "/dashboard/tracking/stocks",
         crypto: "/dashboard/tracking/crypto",
         keywords: "/dashboard/tracking/keywords",

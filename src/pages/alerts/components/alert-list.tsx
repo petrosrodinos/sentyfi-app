@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import type { UserAlert } from "@/features/alert/interfaces/alert";
 import type { TrackedItem } from "@/features/tracking/interfaces/tracked-items";
+import { Routes } from "@/routes/routes";
+import { Link } from "react-router-dom";
 
 interface AlertListProps {
   alerts: UserAlert[];
@@ -38,9 +40,14 @@ export function AlertList({ alerts, trackedItems, isLoading, error, currentPage,
         </div>
         <h3 className="text-lg font-semibold mb-2">No Alerts Yet</h3>
         <p className="text-muted-foreground text-center max-w-sm mb-6">{error ? "An error occurred while fetching alerts" : "Start tracking assets to receive relevant market alerts"}</p>
-        <Button variant="outline" onClick={refresh}>
-          Refresh
-        </Button>
+        <div className="flex gap-4">
+          <Button variant="outline" onClick={refresh}>
+            Refresh
+          </Button>
+          <Button variant="default" asChild>
+            <Link to={Routes.tracking.stocks}>Start Tracking</Link>
+          </Button>
+        </div>
       </div>
     );
   }

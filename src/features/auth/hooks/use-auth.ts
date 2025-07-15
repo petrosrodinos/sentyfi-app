@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import type { User } from "@/features/user/interfaces/user";
 import type { SignInUser, SignUpUser } from "../interfaces/auth.interface";
+import { Routes } from "@/routes/routes";
 
 
 export function useSignin() {
@@ -19,7 +20,7 @@ export function useSignin() {
                 login({
                     ...data,
                 });
-                navigate("/dashboard");
+                navigate(Routes.dashboard);
             } else {
                 login({
                     ...data,
@@ -30,7 +31,7 @@ export function useSignin() {
                     description: "You have successfully logged in",
                     duration: 2000,
                 });
-                navigate("/dashboard");
+                navigate(Routes.dashboard);
             }
         },
         onError: (error: any) => {
