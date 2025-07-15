@@ -16,6 +16,8 @@ axiosInstance.interceptors.request.use((config) => {
 
     if (authState?.expires_in && isTokenExpired(authState.expires_in)) {
         authState.logout();
+
+        return config;
     }
 
     if (authState.access_token) {
