@@ -1,31 +1,20 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import KeywordCard from "./keyword-card";
 import type { TrackedItem } from "@/features/tracking/interfaces/tracked-items";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Loader from "@/components/ui/loader";
 
 interface KeywordsListProps {
   keywords: TrackedItem[];
+  keywordsLength: number;
   isLoading: boolean;
   onAddNew: (open: boolean) => void;
 }
 
-export default function KeywordsList({ keywords, isLoading, onAddNew }: KeywordsListProps) {
+export default function KeywordsList({ keywords, keywordsLength, isLoading, onAddNew }: KeywordsListProps) {
   if (isLoading) {
-    return (
-      <div className="grid gap-4">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <div key={index} className="flex items-center space-x-4">
-            <Skeleton className="h-12 w-12 rounded-full" />
-            <div className="space-y-2 flex-1">
-              <Skeleton className="h-4 w-[200px]" />
-              <Skeleton className="h-3 w-[100px]" />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+    return <Loader length={4} />;
   }
 
   if (!keywords.length) {
@@ -47,7 +36,7 @@ export default function KeywordsList({ keywords, isLoading, onAddNew }: Keywords
   return (
     <div className="grid gap-4">
       {keywords.map((keyword) => (
-        <KeywordCard key={keyword.id} keyword={keyword} />
+        <KeywordCard key={keyword.id} keyword={keyword} keywordsLength={keywordsLength} />
       ))}
     </div>
   );

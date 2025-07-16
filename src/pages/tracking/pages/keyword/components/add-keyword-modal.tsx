@@ -7,22 +7,37 @@ import { Plus } from "lucide-react";
 import { useCreateTrackedItem } from "@/features/tracking/hooks/use-tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
 import { TrackedItemTypes } from "@/features/tracking/interfaces/tracked-items";
+import { toast } from "@/hooks/use-toast";
+import { PlanTypes } from "@/constants/subscription";
+import { Privileges } from "@/constants/privileges";
+import { useAuthStore } from "@/stores/auth";
 
 interface AddKeywordModalProps {
   children?: React.ReactNode;
   open: boolean;
   setOpen: (open: boolean) => void;
+  keywordsLength: number;
 }
 
-export default function AddKeywordModal({ children, open, setOpen }: AddKeywordModalProps) {
+export default function AddKeywordModal({ children, open, setOpen, keywordsLength }: AddKeywordModalProps) {
   const queryClient = useQueryClient();
   const { mutateAsync: createTrackedItem, isPending } = useCreateTrackedItem();
   const [keyword, setKeyword] = useState("");
+  const { plan_subscription } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!keyword.trim()) {
+      return;
+    }
+
+    if (keywordsLength >= Privileges[plan_subscription?.plan || PlanTypes.free].tracked_items) {
+      toast({
+        title: "Free plan limit reached",
+        description: "You have reached the limit of your free plan. Please upgrade to a paid plan to add more keywords.",
+        variant: "error",
+      });
       return;
     }
 

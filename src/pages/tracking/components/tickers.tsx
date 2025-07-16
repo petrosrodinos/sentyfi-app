@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { groupBy } from "lodash";
 
 import { useAuthStore } from "@/stores/auth";
 import type { TrackedItemType } from "../../../features/tracking/interfaces/tracked-items";
@@ -19,9 +20,21 @@ export default function Tickers({ market }: TrackingProps) {
     isLoading,
     error,
   } = useTrackedItems({
-    item_type: market,
     user_uuid: user_uuid!,
   });
+
+  const groupedTrackedItems = useMemo(() => {
+    if (!trackedItems) return {};
+    return groupBy(trackedItems, "item_type");
+  }, [trackedItems]);
+
+  const marketTrackedItems = useMemo(() => {
+    return groupedTrackedItems[market] || [];
+  }, [groupedTrackedItems, market]);
+
+  const enabledTrackedItemsLength = useMemo(() => {
+    return trackedItems?.filter((item) => item.enabled).length || 0;
+  }, [trackedItems]);
 
   const handleAddNew = () => {
     setIsCreating(true);
@@ -31,5 +44,5 @@ export default function Tickers({ market }: TrackingProps) {
     setIsCreating(false);
   };
 
-  return <>{isCreating ? <CreateTracking trackedItems={trackedItems || []} onBack={handleBack} market={market} /> : <TrackingList trackedItems={trackedItems || []} isLoading={isLoading} error={error} onAddNew={handleAddNew} market={market} />}</>;
+  return <>{isCreating ? <CreateTracking trackedItems={marketTrackedItems} trackedItemsLength={enabledTrackedItemsLength} onBack={handleBack} market={market} /> : <TrackingList trackedItems={marketTrackedItems} isLoading={isLoading} error={error} onAddNew={handleAddNew} market={market} trackedItemsLength={enabledTrackedItemsLength} />}</>;
 }

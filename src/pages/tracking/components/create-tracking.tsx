@@ -12,11 +12,12 @@ import { MarketLabels } from "../constants";
 
 interface CreateTrackingProps {
   trackedItems: TrackedItem[];
+  trackedItemsLength: number;
   onBack?: () => void;
   market: TrackedItemType;
 }
 
-export function CreateTracking({ trackedItems, onBack, market = TrackedItemTypes.stock }: CreateTrackingProps) {
+export function CreateTracking({ trackedItems, trackedItemsLength, onBack, market = TrackedItemTypes.stock }: CreateTrackingProps) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -150,7 +151,7 @@ export function CreateTracking({ trackedItems, onBack, market = TrackedItemTypes
             ) : searchResults && searchResults?.length > 0 ? (
               <div className="space-y-3">
                 {tickersData?.map((ticker: Ticker) => (
-                  <TickerCard key={ticker.ticker} ticker={ticker} enabled={ticker.enabled || false} mode="create" trackedItems={trackedItems} />
+                  <TickerCard key={ticker.ticker} ticker={ticker} enabled={ticker.enabled || false} mode="create" trackedItemsLength={trackedItemsLength} />
                 ))}
               </div>
             ) : (

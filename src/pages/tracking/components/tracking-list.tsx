@@ -11,11 +11,12 @@ interface TrackingListProps {
   trackedItems: TrackedItem[];
   isLoading: boolean;
   error: Error | null;
-  onAddNew: () => void;
   market: TrackedItemType;
+  trackedItemsLength: number;
+  onAddNew: () => void;
 }
 
-export default function TrackingList({ trackedItems, isLoading, onAddNew, market }: TrackingListProps) {
+export default function TrackingList({ trackedItems, isLoading, onAddNew, market, trackedItemsLength }: TrackingListProps) {
   if (isLoading) {
     return <Loader length={8} />;
   }
@@ -59,7 +60,7 @@ export default function TrackingList({ trackedItems, isLoading, onAddNew, market
             <div className="space-y-3">
               <div className="space-y-4 w-full">
                 {trackedItems?.map((ticker: TrackedItem) => (
-                  <TickerCard key={ticker.uuid} ticker={ticker.meta as Ticker} enabled={ticker.enabled} trackedItemId={ticker.id} mode="view" trackedItems={trackedItems} />
+                  <TickerCard key={ticker.uuid} ticker={ticker.meta as Ticker} enabled={ticker.enabled} trackedItemId={ticker.id} mode="view" trackedItemsLength={trackedItemsLength} />
                 ))}
               </div>
             </div>

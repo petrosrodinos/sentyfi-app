@@ -3,12 +3,12 @@ import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { Ticker } from "../../../features/tracking/interfaces/tickers";
-import { TrackedItemTypes, type CreateTrackedItem, type TrackedItem } from "../../../features/tracking/interfaces/tracked-items";
+import { TrackedItemTypes, type CreateTrackedItem } from "../../../features/tracking/interfaces/tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteTrackedItem, useUpsertTrackedItem } from "@/features/tracking/hooks/use-tracked-items";
 import { LoaderCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Privileges } from "@/constants/privileges";
 import { toast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/stores/auth";
@@ -19,17 +19,15 @@ interface TickerCardProps {
   enabled: boolean;
   mode?: "create" | "view";
   trackedItemId?: number;
-  trackedItems: TrackedItem[];
+  trackedItemsLength: number;
 }
 
-export default function TickerCard({ ticker, enabled, mode = "view", trackedItemId, trackedItems }: TickerCardProps) {
+export default function TickerCard({ ticker, enabled, mode = "view", trackedItemId, trackedItemsLength }: TickerCardProps) {
   const queryClient = useQueryClient();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const { mutate: upsertTrackedItem, isPending: isUpsertingTrackedItem } = useUpsertTrackedItem();
   const { mutate: deleteTrackedItem, isPending: isDeletingTrackedItem } = useDeleteTrackedItem();
   const { plan_subscription } = useAuthStore();
-
-  const trackedItemsLength = useMemo(() => trackedItems?.filter((item) => item.enabled).length, [trackedItems]);
 
   const getTickerFallback = () => {
     return ticker.ticker.substring(0, 2).toUpperCase();
@@ -46,8 +44,6 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
         },
       };
 
-      console.log(trackedItemsLength, Privileges[plan_subscription?.plan ?? PlanTypes.free]?.tracked_items);
-
       if (checked && trackedItemsLength >= Privileges[plan_subscription?.plan ?? PlanTypes.free]?.tracked_items) {
         toast({
           title: "Free plan limit reached",
@@ -59,7 +55,7 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
 
       upsertTrackedItem(trackedItem_data, {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["tracked-items", ticker.market] });
+          queryClient.invalidateQueries({ queryKey: ["tracked-items"] });
         },
       });
     } catch (error) {
@@ -71,7 +67,7 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
     if (!trackedItemId) return;
     deleteTrackedItem(trackedItemId, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["tracked-items", ticker.market] });
+        queryClient.invalidateQueries({ queryKey: ["tracked-items"] });
         setShowDeleteConfirm(false);
       },
     });
