@@ -24,7 +24,6 @@ export default function Alerts() {
   });
 
   const { data: mediaSubscriptions } = useMediaSubscriptions({
-    user_uuid: user_uuid!,
     enabled: true,
   });
 
