@@ -46,6 +46,8 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
         },
       };
 
+      console.log(trackedItemsLength, Privileges[plan_subscription?.plan ?? PlanTypes.free]?.tracked_items);
+
       if (checked && trackedItemsLength >= Privileges[plan_subscription?.plan ?? PlanTypes.free]?.tracked_items) {
         toast({
           title: "Free plan limit reached",

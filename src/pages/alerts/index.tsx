@@ -6,6 +6,8 @@ import type { AlertQuery } from "@/features/alert/interfaces/alert";
 import { useTrackedItems } from "@/features/tracking/hooks/use-tracked-items";
 import { useAuthStore } from "@/stores/auth";
 import { useMediaSubscriptions } from "@/features/media/hooks/use-media-subscriptions";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
 
 export default function Alerts() {
   const { user_uuid } = useAuthStore();
@@ -13,6 +15,7 @@ export default function Alerts() {
   const [alertFilters, setAlertFilters] = useState<AlertQuery>({
     page: 1,
     limit: 10,
+    order_by: "desc",
   });
 
   const { data: trackedItems } = useTrackedItems({
@@ -37,8 +40,16 @@ export default function Alerts() {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Alerts</h1>
-          <p className="text-muted-foreground mt-2">Monitor all your portfolio alerts and notifications</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Alerts</h1>
+              <p className="text-muted-foreground mt-2">Monitor all your portfolio alerts and notifications</p>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading} className="flex items-center gap-2">
+              <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+          </div>
         </div>
 
         <div className="mb-6">

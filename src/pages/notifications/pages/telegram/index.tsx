@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { BotSetupCard, AlertTypesCard, BotCommandsCard, MessageFrequencyCard, BenefitsCard, DangerZoneCard } from "./components";
+import { BotSetupCard, AlertTypesCard, MessageFrequencyCard, DangerZoneCard } from "./components";
 import Loader from "@/components/ui/loader";
 import { useTelegramNotifications } from "./hooks/use-telegram-notifications";
 
@@ -24,12 +24,9 @@ export default function TelegramNotifications() {
       {telegramConnected && (
         <>
           <AlertTypesCard telegramEnabled={telegramEnabled} />
-          <BotCommandsCard />
           <MessageFrequencyCard telegramEnabled={telegramEnabled} />
         </>
       )}
-
-      <BenefitsCard />
 
       {telegramConnected && <DangerZoneCard telegramChannel={telegramChannel} />}
     </div>
