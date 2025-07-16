@@ -86,6 +86,7 @@ export default function PhoneSetupCard({ smsChannel, smsEnabled, phoneVerified }
           toast({
             title: "Failed to send verification SMS",
             description: "Please try again",
+            variant: "error",
           });
         },
       }
