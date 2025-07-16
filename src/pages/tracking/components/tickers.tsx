@@ -1,7 +1,5 @@
 import { useState, useMemo } from "react";
 import { groupBy } from "lodash";
-
-import { useAuthStore } from "@/stores/auth";
 import type { TrackedItemType } from "../../../features/tracking/interfaces/tracked-items";
 import { useTrackedItems } from "@/features/tracking/hooks/use-tracked-items";
 import TrackingList from "./tracking-list";
@@ -13,15 +11,8 @@ interface TrackingProps {
 
 export default function Tickers({ market }: TrackingProps) {
   const [isCreating, setIsCreating] = useState(false);
-  const { user_uuid } = useAuthStore();
 
-  const {
-    data: trackedItems,
-    isLoading,
-    error,
-  } = useTrackedItems({
-    user_uuid: user_uuid!,
-  });
+  const { data: trackedItems, isLoading, error } = useTrackedItems({});
 
   const groupedTrackedItems = useMemo(() => {
     if (!trackedItems) return {};

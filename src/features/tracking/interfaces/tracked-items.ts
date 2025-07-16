@@ -20,7 +20,6 @@ export interface UpdateTrackedItem {
 }
 
 export interface TrackedItemQuery {
-    user_uuid?: string;
     item_type?: TrackedItemType;
     item_identifier?: string;
     enabled?: boolean;
