@@ -18,11 +18,14 @@ interface UserCardProps {
   user: TwitterUser;
   enabled: boolean;
   mode?: "create" | "view";
+  checkbox_visible?: boolean;
   subscriptionId?: number;
   subscriptions: MediaSubscription[];
+
+  onSelect?: (e: any, user: TwitterUser) => void;
 }
 
-export function UserCard({ user, enabled, mode = "view", subscriptionId, subscriptions }: UserCardProps) {
+export function UserCard({ user, enabled, mode = "view", subscriptionId, subscriptions, checkbox_visible = true, onSelect }: UserCardProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const queryClient = useQueryClient();
   const { plan_subscription } = useAuthStore();
@@ -77,7 +80,7 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
   };
 
   return (
-    <Card className="hover:shadow-md transition-shadow group">
+    <Card className="hover:shadow-md transition-shadow group" onClick={(e) => onSelect?.(e, user)}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
           <div className="flex items-start space-x-3 flex-1">
@@ -101,7 +104,13 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
               <LoaderCircle className="w-4 h-4 animate-spin" />
             ) : (
               <>
-                <Switch checked={enabled} onCheckedChange={handleToggle} />
+                {checkbox_visible ? (
+                  <Switch checked={enabled} onCheckedChange={handleToggle} />
+                ) : (
+                  <Button variant="outline" size="sm" className="text-xs px-2 py-1" onClick={(e) => onSelect?.(e, user)}>
+                    Select
+                  </Button>
+                )}
                 {mode === "view" && subscriptionId && (
                   <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setShowDeleteConfirm(true)}>
                     <Trash2 className="w-4 h-4" />

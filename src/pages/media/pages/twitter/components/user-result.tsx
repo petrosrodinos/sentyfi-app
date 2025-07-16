@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users } from "lucide-react";
 import { UserCard } from "./user-card";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FollowingList } from "./following-list";
 import type { MediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
 import type { TwitterUser } from "@/features/media/interfaces/twitter";
@@ -27,9 +27,14 @@ export function UserResult({ users, isLoadingUsers, errorUsers, username, subscr
     setGetFollowings(true);
   };
 
-  const handleUserSelect = (user: TwitterUser) => {
+  const handleUserSelect = (e: any, user: TwitterUser) => {
+    e.stopPropagation();
     setSelectedUser(user);
   };
+
+  const isUserSelected = useMemo(() => {
+    return selectedUser && subscriptions.find((subscription) => subscription.account_identifier === selectedUser?.id)?.enabled;
+  }, [selectedUser, subscriptions]);
 
   if (isLoadingUsers) {
     return (
@@ -80,14 +85,14 @@ export function UserResult({ users, isLoadingUsers, errorUsers, username, subscr
             <div className="space-y-4">
               {!selectedUser &&
                 twitterUsers.map((user) => (
-                  <div key={user.id} className={`cursor-pointer transition-colors`} onClick={() => handleUserSelect(user)}>
-                    <UserCard user={user} enabled={user.enabled || false} mode="create" subscriptions={subscriptions} />
+                  <div key={user.id} className={`cursor-pointer transition-colors`}>
+                    <UserCard user={user} enabled={user.enabled || false} checkbox_visible={false} mode="create" subscriptions={subscriptions} onSelect={handleUserSelect} />
                   </div>
                 ))}
 
               {selectedUser && (
                 <>
-                  <UserCard user={selectedUser} enabled={selectedUser.enabled || false} mode="create" subscriptions={subscriptions} />
+                  <UserCard user={selectedUser} enabled={isUserSelected || false} mode="create" subscriptions={subscriptions} />
 
                   <Button disabled={getFollowings} onClick={handleGetFollowings} variant="outline" className="mt-4 w-full">
                     <Users className="w-4 h-4 mr-2" />
