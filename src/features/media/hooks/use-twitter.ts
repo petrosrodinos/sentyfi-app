@@ -18,6 +18,19 @@ export function useSearchTwitterUsers(username: string) {
     });
 }
 
+export function searchTwitterUserByUsername(username: string) {
+    return useMutation({
+        mutationFn: () => searchTwitterUsers(username),
+        onError: (error) => {
+            toast({
+                title: "Error",
+                description: error.message,
+                variant: "error",
+            });
+        },
+    });
+}
+
 export function useTwitterFollowings(user_id: string) {
     return useQuery({
         queryKey: ["twitter-following", user_id],

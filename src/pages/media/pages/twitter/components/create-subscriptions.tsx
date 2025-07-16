@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, ArrowLeft } from "lucide-react";
 import { UserResult } from "./user-result";
 import type { MediaSubscription } from "@/features/media/interfaces/media-subscriptions";
-import { getTwitterUserByUsername } from "@/features/media/hooks/use-twitter";
+import { searchTwitterUserByUsername } from "@/features/media/hooks/use-twitter";
 
 interface CreateSubscriptionsProps {
   subscriptions: MediaSubscription[];
@@ -16,9 +16,7 @@ export function CreateSubscriptions({ subscriptions, onBack }: CreateSubscriptio
   const [username, setUsername] = useState("");
   const [is_searching, setIsSearching] = useState(false);
 
-  // const { data: user, isLoading: isLoadingUser, error: errorUser, refetch: refetchUser } = useTwitterUser(username);
-
-  const { mutate: getTwitterUser, data: user, isPending: isLoadingUser, error: errorUser } = getTwitterUserByUsername(username);
+  const { mutate: getTwitterUser, data: users, isPending: isLoadingUser, error: errorUser } = searchTwitterUserByUsername(username);
 
   const handleSearch = () => {
     if (username.trim()) {
@@ -75,7 +73,7 @@ export function CreateSubscriptions({ subscriptions, onBack }: CreateSubscriptio
         </CardContent>
       </Card>
 
-      {is_searching && username && <UserResult user={user!} isLoadingUser={isLoadingUser} errorUser={errorUser!} username={username} subscriptions={subscriptions} />}
+      {is_searching && username && <UserResult users={users!} isLoadingUsers={isLoadingUser} errorUsers={errorUser!} username={username} subscriptions={subscriptions} />}
 
       {!is_searching && (
         <Card className="w-full">

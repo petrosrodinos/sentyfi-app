@@ -24,13 +24,11 @@ interface UserCardProps {
 
 export function UserCard({ user, enabled, mode = "view", subscriptionId, subscriptions }: UserCardProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const queryClient = useQueryClient();
+  const { plan_subscription } = useAuthStore();
 
   const { mutate: upsertSubscription, isPending: isUpsertingSubscription } = useUpsertMediaSubscription();
   const { mutate: deleteSubscription, isPending: isDeletingSubscription } = useDeleteMediaSubscription();
-
-  const queryClient = useQueryClient();
-
-  const { plan_subscription } = useAuthStore();
 
   const subscriptionsLength = useMemo(() => subscriptions?.filter((subscription) => subscription.enabled).length, [subscriptions]);
 

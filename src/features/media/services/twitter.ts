@@ -44,7 +44,7 @@ export const getTwitterUser = async (user_name: string): Promise<TwitterUser> =>
 export const searchTwitterUsers = async (username: string): Promise<TwitterUser[]> => {
     try {
         const response = await axiosInstance.get(`${ApiRoutes.media.twitter.search}/${username}`);
-        return response.data.users;
+        return response.data;
     } catch (error) {
         throw new Error("Failed to search users. Please try again.");
     }

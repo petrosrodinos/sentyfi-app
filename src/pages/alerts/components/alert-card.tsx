@@ -108,7 +108,7 @@ export function AlertCard({ alert, trackedItems }: AlertCardProps) {
                 <Clock className="h-4 w-4" />
                 {formatTime(alert.created_at)}
               </div>
-              <span>{alert.alert.popularity} mentions</span>
+              {/* <span>{alert.alert.popularity} mentions</span> */}
             </div>
 
             {/* <div className="mt-3 flex items-center gap-3 p-2 bg-muted/30 rounded-md">

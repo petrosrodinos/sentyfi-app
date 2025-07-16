@@ -15,7 +15,6 @@ export interface CreateMediaSubscription {
 }
 
 export interface MediaSubscriptionQuery {
-    user_uuid?: string;
     platform_type?: MediaSubscriptionPlatformType;
     account_identifier?: string;
     enabled?: boolean;
