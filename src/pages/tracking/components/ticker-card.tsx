@@ -76,37 +76,37 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
   return (
     <>
       <Card className="hover:shadow-md transition-shadow">
-        <CardContent className="p-4">
-          <div className="flex items-start justify-between">
-            <div className="flex items-start space-x-3 flex-1">
-              <div className="relative">
-                <Avatar className="w-12 h-12">
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
+              <div className="relative flex-shrink-0">
+                <Avatar className="w-10 h-10 sm:w-12 sm:h-12">
                   {ticker.market === TrackedItemTypes.stock ? (
                     <>
                       <AvatarImage src={`https://assets.parqet.com/logos/symbol/${ticker.ticker}`} alt={ticker.ticker} />
-                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">{getTickerFallback()}</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold text-xs sm:text-sm">{getTickerFallback()}</AvatarFallback>
                     </>
                   ) : (
                     <>
                       <AvatarImage src={`/node_modules/cryptocurrency-icons/svg/color/${ticker.ticker.toLowerCase()}.svg`} alt={ticker.ticker} />
-                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">{getTickerFallback()}</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold text-xs sm:text-sm">{getTickerFallback()}</AvatarFallback>
                     </>
                   )}
                 </Avatar>
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-2">{ticker.name}</p>
-                <p className="text-sm text-muted-foreground">{ticker.ticker}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2 truncate">{ticker.name}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground font-medium">{ticker.ticker}</p>
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 ml-4">
+            <div className="flex items-center space-x-2 flex-shrink-0">
               <>
                 {isUpsertingTrackedItem || isDeletingTrackedItem ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Switch checked={enabled} onCheckedChange={handleToggle} />}
                 {mode === "view" && trackedItemId && (
-                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive group-hover:opacity-100 transition-opacity" onClick={() => setShowDeleteConfirm(true)}>
-                    <Trash2 className="w-4 h-4" />
+                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive p-2 h-8 w-8" onClick={() => setShowDeleteConfirm(true)}>
+                    <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                   </Button>
                 )}
               </>

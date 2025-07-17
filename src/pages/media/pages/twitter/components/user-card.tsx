@@ -81,11 +81,11 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
 
   return (
     <Card className="hover:shadow-md transition-shadow group" onClick={(e) => onSelect?.(e, user)}>
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start space-x-3 flex-1">
-            <div className="relative">
-              <img src={user.profile_image_url} alt={user.name} className="w-12 h-12 rounded-full object-cover" />
+      <CardContent className="p-3 sm:p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
+            <div className="relative flex-shrink-0">
+              <img src={user.profile_image_url} alt={user.name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover" />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -93,13 +93,13 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
                 <h3 className="font-semibold text-sm truncate">{user.name}</h3>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-2">@{user.screen_name}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-2">@{user.screen_name}</p>
 
-              {user.description && <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{user.description}</p>}
+              {user.description && <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2">{user.description}</p>}
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 ml-4">
+          <div className="flex items-center space-x-2 ml-2 sm:ml-4 flex-shrink-0">
             {isUpsertingSubscription || isDeletingSubscription ? (
               <LoaderCircle className="w-4 h-4 animate-spin" />
             ) : (
@@ -112,8 +112,8 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
                   </Button>
                 )}
                 {mode === "view" && subscriptionId && (
-                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setShowDeleteConfirm(true)}>
-                    <Trash2 className="w-4 h-4" />
+                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity p-1 sm:p-2" onClick={() => setShowDeleteConfirm(true)}>
+                    <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                   </Button>
                 )}
               </>

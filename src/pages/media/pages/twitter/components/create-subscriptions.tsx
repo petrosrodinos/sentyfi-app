@@ -37,38 +37,40 @@ export function CreateSubscriptions({ subscriptions, onBack }: CreateSubscriptio
   };
 
   return (
-    <div className="container mx-auto p-3 space-y-3 w-full">
-      <div className="flex items-center space-x-4">
+    <div className="container mx-auto p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 w-full max-w-4xl">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
         {onBack && (
-          <Button onClick={onBack} variant="outline" size="sm" className="flex items-center space-x-2">
+          <Button onClick={onBack} variant="outline" size="sm" className="flex items-center space-x-2 w-fit">
             <ArrowLeft className="w-4 h-4" />
-            <span>Back</span>
+            <span className="hidden sm:inline">Back</span>
           </Button>
         )}
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Add Twitter Subscription</h1>
-          <p className="text-muted-foreground">Enter a Twitter username to view their profile and add them to your subscriptions</p>
+        <div className="space-y-2 flex-1">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">Add Twitter Subscription</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Enter a Twitter username to view their profile and add them to your subscriptions</p>
         </div>
       </div>
 
       <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center space-x-2 text-lg sm:text-xl">
             <Search className="w-5 h-5" />
             <span>Enter Twitter Username</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex space-x-2">
-            <Input placeholder="Twitter username (without @)" value={username} onChange={(e) => setUsername(e.target.value)} onKeyPress={handleKeyPress} className="flex-1" />
-            <Button onClick={handleSearch} disabled={!username.trim()}>
-              Search
-            </Button>
-            {is_searching && (
-              <Button onClick={handleClear} variant="outline">
-                Clear
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+            <Input placeholder="Twitter username (without @)" value={username} onChange={(e) => setUsername(e.target.value)} onKeyPress={handleKeyPress} className="flex-1 text-sm sm:text-base" />
+            <div className="flex gap-2 sm:gap-3">
+              <Button onClick={handleSearch} disabled={!username.trim()} className="flex-1 sm:flex-none text-sm sm:text-base">
+                Search
               </Button>
-            )}
+              {is_searching && (
+                <Button onClick={handleClear} variant="outline" className="flex-1 sm:flex-none text-sm sm:text-base">
+                  Clear
+                </Button>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -77,10 +79,10 @@ export function CreateSubscriptions({ subscriptions, onBack }: CreateSubscriptio
 
       {!is_searching && (
         <Card className="w-full">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Search className="w-16 h-16 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Ready to explore?</h3>
-            <p className="text-muted-foreground text-center max-w-md">Enter a Twitter username above to view their profile, explore their following list, and add them to your subscriptions.</p>
+          <CardContent className="flex flex-col items-center justify-center py-8 sm:py-12 px-4 sm:px-6">
+            <Search className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mb-4" />
+            <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-2 text-center">Ready to explore?</h3>
+            <p className="text-sm sm:text-base text-muted-foreground text-center max-w-md">Enter a Twitter username above to view their profile, explore their following list, and add them to your subscriptions.</p>
           </CardContent>
         </Card>
       )}

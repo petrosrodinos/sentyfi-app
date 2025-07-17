@@ -13,13 +13,13 @@ interface SubscriptionsListProps {
 
 export function SubscriptionsList({ subscriptions, isLoading, onAddNew }: SubscriptionsListProps) {
   return (
-    <div className="container mx-auto p-3 space-y-3 w-full">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto p-2 sm:p-3 lg:p-4 space-y-3 w-full max-w-7xl">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Twitter Subscriptions</h1>
-          <p className="text-muted-foreground">Manage your Twitter user subscriptions and track their activities</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Twitter Subscriptions</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Manage your Twitter user subscriptions and track their activities</p>
         </div>
-        <Button onClick={onAddNew} className="flex items-center space-x-2">
+        <Button onClick={onAddNew} className="flex items-center space-x-2 w-full sm:w-auto">
           <Plus className="w-4 h-4" />
           <span>Add Subscription</span>
         </Button>
@@ -29,11 +29,11 @@ export function SubscriptionsList({ subscriptions, isLoading, onAddNew }: Subscr
 
       {!subscriptions.length && !isLoading ? (
         <Card className="w-full">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Users className="w-16 h-16 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No subscriptions yet</h3>
-            <p className="text-muted-foreground text-center max-w-md mb-4">You haven't added any Twitter users to track yet. Click the button above to start adding subscriptions.</p>
-            <Button onClick={onAddNew} className="flex items-center space-x-2">
+          <CardContent className="flex flex-col items-center justify-center py-8 sm:py-12 px-4 sm:px-6">
+            <Users className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mb-4" />
+            <h3 className="text-base sm:text-lg font-semibold mb-2 text-center">No subscriptions yet</h3>
+            <p className="text-sm sm:text-base text-muted-foreground text-center max-w-md mb-4">You haven't added any Twitter users to track yet. Click the button above to start adding subscriptions.</p>
+            <Button onClick={onAddNew} className="flex items-center space-x-2 w-full sm:w-auto">
               <Plus className="w-4 h-4" />
               <span>Add Your First Subscription</span>
             </Button>
@@ -41,13 +41,13 @@ export function SubscriptionsList({ subscriptions, isLoading, onAddNew }: Subscr
         </Card>
       ) : (
         <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Users className="w-5 h-5" />
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="flex items-center space-x-2 text-base sm:text-lg">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Your Subscriptions ({subscriptions.length})</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6">
             <div className="space-y-3">
               {subscriptions.map((subscription) => {
                 const user_data = {
