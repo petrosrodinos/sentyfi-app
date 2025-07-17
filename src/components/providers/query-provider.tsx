@@ -1,4 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ApolloProvider } from "@apollo/client";
+import apolloClient from "@/config/graphql/apollo";
 import { type FC, useState } from "react";
 
 interface QueryProviderProps {
@@ -16,7 +18,11 @@ const QueryProvider: FC<QueryProviderProps> = ({ children }) => {
         },
       })
   );
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <ApolloProvider client={apolloClient}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </ApolloProvider>
+  );
 };
 
 export default QueryProvider;

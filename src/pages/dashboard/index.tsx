@@ -2,6 +2,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, TrendingDown, Activity, Bell, BarChart3, Twitter, DollarSign, AlertTriangle } from "lucide-react";
+import { useApolloQuery } from "@/features/user/hooks/use-user";
+import { GET_USERS } from "@/features/user/queries/user.queries";
+import { useAuthStore } from "@/stores/auth";
 
 export default function Dashboard() {
   const sentiment_data = {
@@ -10,6 +13,17 @@ export default function Dashboard() {
     neutral: 10,
     total_mentions: 1247,
   };
+
+  const { user_uuid } = useAuthStore();
+
+  const { data, isLoading, error } = useApolloQuery(GET_USERS, {
+    enabled: !!user_uuid,
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  console.log(data);
 
   const tracked_assets = [
     { symbol: "BTC", name: "Bitcoin", sentiment: "positive", change: "+5.2%", mentions: 234 },
