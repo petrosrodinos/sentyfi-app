@@ -4,14 +4,11 @@ import { useAlerts } from "@/features/alert/hooks/use-alerts";
 import { AlertList } from "./components/alert-list";
 import type { AlertQuery } from "@/features/alert/interfaces/alert";
 import { useTrackedItems } from "@/features/tracking/hooks/use-tracked-items";
-import { useAuthStore } from "@/stores/auth";
 import { useMediaSubscriptions } from "@/features/media/hooks/use-media-subscriptions";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 
 export default function Alerts() {
-  const { user_uuid } = useAuthStore();
-
   const [alertFilters, setAlertFilters] = useState<AlertQuery>({
     page: 1,
     limit: 10,
@@ -19,7 +16,6 @@ export default function Alerts() {
   });
 
   const { data: trackedItems } = useTrackedItems({
-    user_uuid: user_uuid!,
     enabled: true,
   });
 

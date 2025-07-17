@@ -1,13 +1,11 @@
 import { useTrackedItems } from "@/features/tracking/hooks/use-tracked-items";
 import { TrackedItemTypes } from "@/features/tracking/interfaces/tracked-items";
 import { KeywordsList, AddKeywordModal } from "./components";
-import { useAuthStore } from "@/stores/auth";
 import { useMemo, useState } from "react";
 
 export default function Keywords() {
   const [open, setOpen] = useState(false);
-  const { user_uuid } = useAuthStore();
-  const { data: trackedItems, isLoading } = useTrackedItems({ item_type: TrackedItemTypes.keyword, user_uuid: user_uuid || "" });
+  const { data: trackedItems, isLoading } = useTrackedItems({ item_type: TrackedItemTypes.keyword });
 
   const enabledkeywords = useMemo(() => {
     return trackedItems?.filter((keyword) => keyword.enabled) || [];
