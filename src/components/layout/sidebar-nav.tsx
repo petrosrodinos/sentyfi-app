@@ -57,7 +57,7 @@ export default function SidebarNav({ className, items, ...props }: SidebarNavPro
             }
 
             return (
-              <Link key={item.href} to={item.href} className={cn(buttonVariants({ variant: "ghost" }), location.pathname === item.href ? "bg-muted hover:bg-muted" : "hover:bg-transparent hover:underline", "justify-start")}>
+              <Link key={item.href} to={item.href} className={cn(buttonVariants({ variant: "ghost" }), location.pathname === item.href ? "bg-muted hover:bg-muted" : "hover:bg-muted hover:text-foreground", "justify-start")}>
                 <span className="mr-2">{item.icon}</span>
                 {item.title}
               </Link>

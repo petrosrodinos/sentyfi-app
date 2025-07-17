@@ -105,9 +105,9 @@ export default function BotSetupCard({ user_uuid, telegramChannel, botConnected,
       <CardContent className="space-y-4">
         {!botConnected ? (
           <div className="space-y-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-medium text-blue-800 mb-2">How to connect:</h4>
-              <ol className="text-sm text-blue-700 space-y-1">
+            <div className="bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+              <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">How to connect:</h4>
+              <ol className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
                 <li>1. Click "Generate Code" below</li>
                 <li>2. Copy the generated code</li>
                 <li>3. Open Telegram and search for @SentyfiBot</li>
@@ -167,7 +167,7 @@ export default function BotSetupCard({ user_uuid, telegramChannel, botConnected,
               <span className="text-sm font-medium">Telegram notifications</span>
               {isUpdatingNotificationChannel ? <Loader2 className="h-4 w-4 animate-spin" /> : <Switch checked={telegramEnabled} onCheckedChange={(enabled) => updateNotificationChannel(enabled)} />}
             </div>
-            <div className="inline-flex items-center space-x-1 px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-sm">
+            <div className="inline-flex items-center space-x-1 px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 text-sm">
               <IconCheck size={12} />
               <span>Bot connected</span>
             </div>
