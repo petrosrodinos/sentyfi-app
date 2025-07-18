@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_USERS = gql`
+export const GET_USER = gql`
   query {
     user{
       id
@@ -19,4 +19,21 @@ export const GET_USERS = gql`
       }
     }
   }
-`; 
+`;
+
+export const GET_USER_DASHBOARD = gql`
+  query {
+    user{
+      notification_channels {
+        id
+        user_uuid
+        channel
+        client_identifier
+        verified
+      }
+      tracked_items {
+        
+      }
+    }
+  }
+`;
