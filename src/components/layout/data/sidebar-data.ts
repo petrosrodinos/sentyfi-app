@@ -6,10 +6,10 @@ import {
   IconLayoutDashboard,
   IconLockPassword,
   IconPalette,
-  IconPhoto,
   IconUserCircle,
   IconUserCog,
   IconAlertTriangle,
+  IconSearch,
 } from "@tabler/icons-react";
 import { Command, CreditCard } from "lucide-react";
 import { type SidebarData } from "../types";
@@ -47,7 +47,7 @@ export const sidebarData: SidebarData = {
         {
           title: "Media",
           url: Routes.media.twitter,
-          icon: IconPhoto,
+          icon: IconSearch,
         },
         {
           title: "Tracking",
