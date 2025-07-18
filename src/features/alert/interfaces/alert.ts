@@ -1,26 +1,32 @@
-import type { MediaSubscriptionPlatformType } from "@/features/media/interfaces/media-subscriptions";
+import type { MediaSubscription, MediaSubscriptionPlatformType } from "@/features/media/interfaces/media-subscriptions";
 import type { NotificationChannelType } from "@/features/notifications/interfaces/notification-channels";
-import type { TrackedItemType } from "@/features/tracking/interfaces/tracked-items";
+import type { TrackedItem, TrackedItemType } from "@/features/tracking/interfaces/tracked-items";
 
 export interface UserAlertsResponse {
-    data: UserAlert[];
-    pagination: {
-        total: number;
-        page: number;
-        limit: number;
-        hasMore: boolean;
-    }
+    user: {
+        user_alerts: {
+            data: UserAlert[];
+            pagination: AlertPagination;
+        };
+        tracked_items: TrackedItem[];
+        media_subscriptions: MediaSubscription[];
+    };
 }
+
+// export interface UserAlertsResponse {
+//     data: UserAlert[];
+//     pagination: AlertPagination
+// }
 
 export interface UserAlert {
     id: number;
-    uuid: string;
-    user_uuid: string;
-    alert_uuid: string;
+    uuid?: string;
+    user_uuid?: string;
+    alert_uuid?: string;
     alert: Alert;
     notification_channels: NotificationChannelType[];
     created_at: string;
-    updated_at: string;
+    updated_at?: string;
 }
 
 export interface Alert {
@@ -65,6 +71,13 @@ export const AlertSeverities = {
     medium: 'medium',
     high: 'high',
 } as const;
+
+export interface AlertPagination {
+    total: number;
+    page: number;
+    limit: number;
+    hasMore: boolean;
+}
 
 export type AlertSentiment = (typeof AlertSentiments)[keyof typeof AlertSentiments];
 export type AlertSeverity = (typeof AlertSeverities)[keyof typeof AlertSeverities];

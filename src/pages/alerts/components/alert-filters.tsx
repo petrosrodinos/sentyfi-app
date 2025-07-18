@@ -68,7 +68,7 @@ export function AlertFilters({ trackedItems, alertFilters, mediaSubscriptions, o
               <SelectItem value="all">All Accounts</SelectItem>
               {mediaSubscriptions.map((subscription) => (
                 <SelectItem key={subscription.account_identifier} value={subscription.account_identifier}>
-                  {subscription.meta?.screen_name}
+                  {subscription.screen_name}
                 </SelectItem>
               ))}
             </SelectContent>

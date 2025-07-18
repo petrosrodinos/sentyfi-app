@@ -2,6 +2,7 @@ export interface MediaSubscription extends CreateMediaSubscription {
     id: number;
     uuid: string;
     user_uuid: string;
+    screen_name?: string;
 }
 
 
