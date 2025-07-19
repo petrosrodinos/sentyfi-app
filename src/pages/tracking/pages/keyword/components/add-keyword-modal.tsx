@@ -25,10 +25,26 @@ export default function AddKeywordModal({ children, open, setOpen, keywordsLengt
   const [keyword, setKeyword] = useState("");
   const { plan_subscription } = useAuthStore();
 
+  const validateKeyword = (value: string) => {
+    const specialCharsRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/;
+    return !specialCharsRegex.test(value);
+  };
+
+  const isKeywordValid = keyword.trim() === "" || validateKeyword(keyword.trim());
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!keyword.trim()) {
+      return;
+    }
+
+    if (!validateKeyword(keyword.trim())) {
+      toast({
+        title: "Invalid keyword",
+        description: "Keywords cannot contain special characters. Please use only letters, numbers, and spaces.",
+        variant: "error",
+      });
       return;
     }
 
@@ -87,14 +103,15 @@ export default function AddKeywordModal({ children, open, setOpen, keywordsLengt
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="keyword">Keyword</Label>
-              <Input id="keyword" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Enter keyword (e.g., Trump, AI)" disabled={isPending} autoFocus />
+              <Input id="keyword" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Enter keyword (e.g., Trump, AI)" disabled={isPending} autoFocus className={!isKeywordValid ? "border-red-500 focus:border-red-500" : ""} />
+              {!isKeywordValid && <p className="text-sm text-red-500">Keywords cannot contain special characters. Use only letters, numbers, and spaces.</p>}
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={isPending}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!keyword.trim() || isPending} loading={isPending}>
+            <Button type="submit" disabled={!keyword.trim() || !isKeywordValid || isPending} loading={isPending}>
               {isPending ? "Adding..." : "Add Keyword"}
             </Button>
           </DialogFooter>
