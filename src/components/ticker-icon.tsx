@@ -28,7 +28,7 @@ export default function TickerIcon({ ticker, market, width = 10, height = 10, cl
         </>
       ) : (
         <>
-          <AvatarImage src={`/crypto-icons/${ticker.toLowerCase()}.svg`} alt={ticker} />
+          <img src={`/crypto-icons/${ticker.toLowerCase()}.svg`} alt={ticker} />
           <AvatarFallback className="bg-primary/10 text-primary font-semibold text-xs sm:text-sm">{getTickerFallback()}</AvatarFallback>
         </>
       )}
