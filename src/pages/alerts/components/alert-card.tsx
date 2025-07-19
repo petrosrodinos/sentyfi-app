@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Bell, ExternalLink, Clock } from "lucide-react";
 import type { UserAlert } from "@/features/alert/interfaces/alert";
 import { useDeleteAlert } from "@/features/alert/hooks/use-alerts";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAlertUtils } from "../hooks/use-alert-utils";
 import { MediaSubscriptionPlatformTypes } from "@/features/media/interfaces/media-subscriptions";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useState } from "react";
-import { TrackedItemTypes, type TrackedItem } from "@/features/tracking/interfaces/tracked-items";
+import { type TrackedItem } from "@/features/tracking/interfaces/tracked-items";
+import TickerIcon from "@/components/ticker-icon";
 
 interface AlertCardProps {
   alert: UserAlert;
@@ -51,25 +51,7 @@ export function AlertCard({ alert, trackedItems }: AlertCardProps) {
                   .map((ticker: any) => {
                     return (
                       <div key={ticker.ticker} className="flex items-center gap-2">
-                        <Avatar className="w-6 h-6">
-                          {(ticker.item_type === TrackedItemTypes.stock || ticker.item_type === TrackedItemTypes.commodity) && (
-                            <>
-                              <AvatarImage src={`https://assets.parqet.com/logos/symbol/${ticker.ticker}`} alt={ticker.ticker} />
-                              <AvatarFallback className="bg-primary/10 text-primary font-semibold">{ticker.ticker}</AvatarFallback>
-                            </>
-                          )}
-                          {ticker.item_type === TrackedItemTypes.crypto && (
-                            <>
-                              <AvatarImage src={`/node_modules/cryptocurrency-icons/svg/color/${ticker.ticker.toLowerCase()}.svg`} alt={ticker.ticker} />
-                              <AvatarFallback className="bg-primary/10 text-primary font-semibold">{ticker.ticker}</AvatarFallback>
-                            </>
-                          )}
-                        </Avatar>
-                        {ticker.item_type === TrackedItemTypes.keyword && (
-                          <>
-                            <span className="font-medium">{ticker.ticker}</span>
-                          </>
-                        )}
+                        <TickerIcon ticker={ticker.ticker} market={ticker.item_type!} width={6} height={6} />
                       </div>
                     );
                   })}

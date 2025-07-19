@@ -53,6 +53,7 @@ export const GET_USER_ALERTS = gql`
       tracked_items {
         uuid
         item_identifier
+        item_type
       }
       media_subscriptions {
         uuid

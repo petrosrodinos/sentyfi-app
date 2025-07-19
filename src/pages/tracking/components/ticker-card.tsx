@@ -1,9 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { Ticker } from "../../../features/tracking/interfaces/tickers";
-import { TrackedItemTypes, type CreateTrackedItem } from "../../../features/tracking/interfaces/tracked-items";
+import { type CreateTrackedItem } from "../../../features/tracking/interfaces/tracked-items";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteTrackedItem, useUpsertTrackedItem } from "@/features/tracking/hooks/use-tracked-items";
 import { LoaderCircle, Trash2 } from "lucide-react";
@@ -13,6 +12,7 @@ import { Privileges } from "@/constants/privileges";
 import { toast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/stores/auth";
 import { PlanTypes } from "@/constants/subscription";
+import TickerIcon from "@/components/ticker-icon";
 
 interface TickerCardProps {
   ticker: Ticker;
@@ -28,10 +28,6 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
   const { mutate: upsertTrackedItem, isPending: isUpsertingTrackedItem } = useUpsertTrackedItem();
   const { mutate: deleteTrackedItem, isPending: isDeletingTrackedItem } = useDeleteTrackedItem();
   const { plan_subscription } = useAuthStore();
-
-  const getTickerFallback = () => {
-    return ticker.ticker.substring(0, 2).toUpperCase();
-  };
 
   const handleToggle = async (checked: boolean) => {
     try {
@@ -80,19 +76,7 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
               <div className="relative flex-shrink-0">
-                <Avatar className="w-10 h-10 sm:w-12 sm:h-12">
-                  {ticker.market === TrackedItemTypes.stock ? (
-                    <>
-                      <AvatarImage src={`https://assets.parqet.com/logos/symbol/${ticker.ticker}`} alt={ticker.ticker} />
-                      <AvatarFallback className="bg-primary/10 text-primary font-semibold text-xs sm:text-sm">{getTickerFallback()}</AvatarFallback>
-                    </>
-                  ) : (
-                    <>
-                      <AvatarImage src={`/node_modules/cryptocurrency-icons/svg/color/${ticker.ticker.toLowerCase()}.svg`} alt={ticker.ticker} />
-                      <AvatarFallback className="bg-primary/10 text-primary font-semibold text-xs sm:text-sm">{getTickerFallback()}</AvatarFallback>
-                    </>
-                  )}
-                </Avatar>
+                <TickerIcon ticker={ticker.ticker} market={ticker.market!} />
               </div>
 
               <div className="flex-1 min-w-0">

@@ -1,11 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Routes } from "@/routes/routes";
-import { TrackedItemTypes } from "@/features/tracking/interfaces/tracked-items";
+import { type TrackedItemType } from "@/features/tracking/interfaces/tracked-items";
+import TickerIcon from "@/components/ticker-icon";
 
 interface TrackedAsset {
   ticker: string;
@@ -35,27 +35,9 @@ export function TrackedAssets({ trackedAssets }: TrackedAssetsProps) {
             {trackedAssets.map((asset, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg mb-2">
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center mr-3">
+                  <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center mr-3">
                     <div className="flex items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        {(asset.type === TrackedItemTypes.stock || asset.type === TrackedItemTypes.commodity) && (
-                          <>
-                            <AvatarImage src={`https://assets.parqet.com/logos/symbol/${asset.ticker}`} alt={asset.ticker} />
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">{asset.ticker}</AvatarFallback>
-                          </>
-                        )}
-                        {asset.type === TrackedItemTypes.crypto && (
-                          <>
-                            <AvatarImage src={`/node_modules/cryptocurrency-icons/svg/color/${asset.ticker.toLowerCase()}.svg`} alt={asset.ticker} />
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">{asset.ticker}</AvatarFallback>
-                          </>
-                        )}
-                      </Avatar>
-                      {asset.type === TrackedItemTypes.keyword && (
-                        <>
-                          <span className="font-medium">{asset.ticker}</span>
-                        </>
-                      )}
+                      <TickerIcon ticker={asset.ticker} market={asset.type as TrackedItemType} width={8} height={8} />
                     </div>
                   </div>
                   <div className="flex-1">
