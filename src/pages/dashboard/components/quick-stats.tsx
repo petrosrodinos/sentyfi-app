@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
-import { Search, DollarSign, Bell, Twitter } from "lucide-react";
+import { IconAlertTriangle, IconChartLine } from "@tabler/icons-react";
+import { Search, Bell } from "lucide-react";
 
 interface QuickStatsProps {
   mediaSubscriptionsCount: number;
@@ -11,6 +12,11 @@ interface QuickStatsProps {
 export function QuickStats({ mediaSubscriptionsCount, trackedItemsCount, notificationChannelsCount, totalAlertsCount }: QuickStatsProps) {
   const quickStats = [
     {
+      title: "Total Alerts",
+      value: totalAlertsCount.toString(),
+      icon: IconAlertTriangle,
+    },
+    {
       title: "Active Subscriptions",
       value: mediaSubscriptionsCount.toString(),
       icon: Search,
@@ -18,17 +24,12 @@ export function QuickStats({ mediaSubscriptionsCount, trackedItemsCount, notific
     {
       title: "Tracked Assets",
       value: trackedItemsCount.toString(),
-      icon: DollarSign,
+      icon: IconChartLine,
     },
     {
       title: "Notification Channels",
       value: notificationChannelsCount.toString(),
       icon: Bell,
-    },
-    {
-      title: "Total Alerts",
-      value: totalAlertsCount.toString(),
-      icon: Twitter,
     },
   ];
 
