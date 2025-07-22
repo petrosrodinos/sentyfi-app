@@ -13,6 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/stores/auth";
 import { PlanTypes } from "@/constants/subscription";
 import TickerIcon from "@/components/ticker-icon";
+import { RoleTypes } from "@/features/user/interfaces/user";
 
 interface TickerCardProps {
   ticker: Ticker;
@@ -27,7 +28,7 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const { mutate: upsertTrackedItem, isPending: isUpsertingTrackedItem } = useUpsertTrackedItem();
   const { mutate: deleteTrackedItem, isPending: isDeletingTrackedItem } = useDeleteTrackedItem();
-  const { plan_subscription } = useAuthStore();
+  const { plan_subscription, role } = useAuthStore();
 
   const handleToggle = async (checked: boolean) => {
     try {
@@ -40,7 +41,7 @@ export default function TickerCard({ ticker, enabled, mode = "view", trackedItem
         },
       };
 
-      if (checked && trackedItemsLength >= Privileges[plan_subscription?.plan ?? PlanTypes.free]?.tracked_items) {
+      if (role !== RoleTypes.admin && checked && trackedItemsLength >= Privileges[plan_subscription?.plan ?? PlanTypes.free]?.tracked_items) {
         toast({
           title: "Free plan limit reached",
           description: "You have reached the limit of your free plan. Please upgrade to a paid plan to add more tickers.",

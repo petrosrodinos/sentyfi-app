@@ -13,6 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { PlanTypes } from "@/constants/subscription";
+import { RoleTypes } from "@/features/user/interfaces/user";
 
 interface UserCardProps {
   user: TwitterUser;
@@ -28,7 +29,7 @@ interface UserCardProps {
 export function UserCard({ user, enabled, mode = "view", subscriptionId, subscriptions, checkbox_visible = true, onSelect }: UserCardProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const queryClient = useQueryClient();
-  const { plan_subscription } = useAuthStore();
+  const { plan_subscription, role } = useAuthStore();
 
   const { mutate: upsertSubscription, isPending: isUpsertingSubscription } = useUpsertMediaSubscription();
   const { mutate: deleteSubscription, isPending: isDeletingSubscription } = useDeleteMediaSubscription();
@@ -46,7 +47,7 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
         },
       };
 
-      if (checked && subscriptionsLength >= Privileges[plan_subscription?.plan ?? PlanTypes.free]?.media_subscriptions) {
+      if (role !== RoleTypes.admin && checked && subscriptionsLength >= Privileges[plan_subscription?.plan ?? PlanTypes.free]?.media_subscriptions) {
         toast({
           title: "Free plan limit reached",
           description: "You have reached the limit of your free plan. Please upgrade to a paid plan to add more users.",
