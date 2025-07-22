@@ -2,11 +2,11 @@ import { formatAuthUser } from "../utils/auth.utils";
 import axiosInstance from "@/config/api/axios";
 import type { SignInUser, SignUpUser } from "../interfaces/auth.interface";
 import { ApiRoutes } from "@/config/api/routes";
-import type { User } from "@/features/user/interfaces/user";
+import type { LoggedInUser } from "@/features/user/interfaces/user";
 
 export const signIn = async (
     { email, password }: SignInUser,
-): Promise<User> => {
+): Promise<LoggedInUser> => {
     try {
         const response = await axiosInstance.post(ApiRoutes.auth.email.login, {
             email,
@@ -21,7 +21,7 @@ export const signIn = async (
     }
 };
 
-export const signUp = async ({ email, password }: SignUpUser): Promise<User> => {
+export const signUp = async ({ email, password }: SignUpUser): Promise<LoggedInUser> => {
     try {
         const response = await axiosInstance.post(ApiRoutes.auth.email.register, {
             email,

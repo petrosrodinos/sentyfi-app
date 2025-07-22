@@ -10,6 +10,7 @@ import {
   IconUserCog,
   IconAlertTriangle,
   IconSearch,
+  IconUser,
 } from "@tabler/icons-react";
 import { Command, CreditCard } from "lucide-react";
 import { type SidebarData } from "../types";
@@ -25,7 +26,17 @@ export const sidebarData: SidebarData = {
     },
   ],
   navGroups: [
-
+    {
+      access: "admin",
+      title: "Admin",
+      items: [
+        {
+          title: "Users",
+          url: Routes.admin.users,
+          icon: IconUser,
+        },
+      ],
+    },
     {
       title: "Console",
       items: [

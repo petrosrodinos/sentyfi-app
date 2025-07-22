@@ -1,6 +1,29 @@
+import type { NotificationChannel } from "@/features/notifications/interfaces/notification-channels";
 import type { PlanSubscription } from "@/features/subscriptions/interfaces/subscription";
 
 export interface User {
+    id: string;
+    uuid: string;
+    email: string;
+    role: RoleType;
+    ref_code?: string;
+    identities?: Identity[];
+    notification_channels?: NotificationChannel[];
+    created_at: string;
+    updated_at: string;
+}
+
+export interface UserQuery {
+    id?: string;
+    page?: number;
+    limit?: number;
+    search?: string;
+    order_by?: string;
+    email?: string;
+    ref_code?: string;
+}
+
+export interface LoggedInUser {
     user_uuid: string | null;
     email: string | null;
     role: RoleType | null;

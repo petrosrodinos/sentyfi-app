@@ -4,7 +4,7 @@ import { signUp } from "../services/auth";
 import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import type { User } from "@/features/user/interfaces/user";
+import type { LoggedInUser } from "@/features/user/interfaces/user";
 import type { SignInUser, SignUpUser } from "../interfaces/auth.interface";
 import { Routes } from "@/routes/routes";
 
@@ -15,7 +15,7 @@ export function useSignin() {
 
     return useMutation({
         mutationFn: (data: SignInUser) => signIn(data),
-        onSuccess: (data: User) => {
+        onSuccess: (data: LoggedInUser) => {
             if (data.isNewUser) {
                 login({
                     ...data,

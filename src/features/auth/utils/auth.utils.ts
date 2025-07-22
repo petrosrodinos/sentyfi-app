@@ -1,5 +1,5 @@
 import { PlanTypes } from "@/constants/subscription";
-import type { User } from "@/features/user/interfaces/user";
+import type { LoggedInUser } from "@/features/user/interfaces/user";
 
 
 export const generateInitials = (value: string) => {
@@ -9,7 +9,7 @@ export const generateInitials = (value: string) => {
     return initials;
 };
 
-export const formatAuthUser = (data: any): User => {
+export const formatAuthUser = (data: any): LoggedInUser => {
     return {
         user_uuid: data.user.uuid,
         email: data.user.email,

@@ -1,9 +1,9 @@
 import { PlanTypes } from "@/constants/subscription";
-import type { User } from "@/features/user/interfaces/user";
+import type { LoggedInUser } from "@/features/user/interfaces/user";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-interface UserStore extends User {
+interface UserStore extends LoggedInUser {
     login(user: any): void;
     logout(): void;
     updateUser(user: any): void;
@@ -35,7 +35,7 @@ export const useAuthStore = create<UserStore>()(
         persist(
             (set) => ({
                 ...initialValues,
-                login: (user: User) => {
+                login: (user: LoggedInUser) => {
                     set((state) => ({
                         ...state,
                         ...user,
@@ -46,7 +46,7 @@ export const useAuthStore = create<UserStore>()(
                     localStorage.removeItem(STORE_KEY);
                     window.location.href = "/auth/sign-in";
                 },
-                updateUser: async (user: Partial<User>) => {
+                updateUser: async (user: Partial<LoggedInUser>) => {
                     set((state) => ({ ...state, ...user }));
                 },
             }),

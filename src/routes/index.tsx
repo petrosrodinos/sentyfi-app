@@ -24,6 +24,8 @@ import MediaLayout from "@/pages/media/layout";
 import AuthLayout from "@/pages/auth/layout";
 import Keywords from "@/pages/tracking/pages/keyword";
 import ProtectedRoute from "@/routes/protected-route";
+import Users from "@/pages/admin/users";
+import { RoleTypes } from "@/features/user/interfaces/user";
 
 export default function AppRoutes() {
   return (
@@ -80,6 +82,18 @@ export default function AppRoutes() {
           <Route path="telegram" element={<TelegramNotifications />} />
           <Route path="discord" element={<DiscordNotifications />} />
           <Route path="phone" element={<PhoneCallNotifications />} />
+        </Route>
+
+        {/* Admin routes */}
+        <Route path="admin">
+          <Route
+            path="users"
+            element={
+              <ProtectedRoute loggedIn={true} requiredRoles={[RoleTypes.admin]}>
+                <Users />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         {/* Catch all route */}
