@@ -7,7 +7,6 @@ import type { TwitterUser } from "../../../../../features/media/interfaces/twitt
 import type { CreateMediaSubscription, MediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
 import { MediaSubscriptionPlatformTypes } from "../../../../../features/media/interfaces/media-subscriptions";
 import { LoaderCircle, Trash2 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Privileges } from "@/constants/privileges";
 import { useAuthStore } from "@/stores/auth";
 import { toast } from "@/hooks/use-toast";
