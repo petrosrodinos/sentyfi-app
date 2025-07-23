@@ -11,6 +11,7 @@ export const getTrackedItems = async (query: TrackedItemQuery): Promise<TrackedI
     }
 };
 
+
 export const createTrackedItem = async (trackedItem: CreateTrackedItem): Promise<TrackedItem> => {
     try {
         const response = await axiosInstance.post(ApiRoutes.tracking.tracked_items.create, trackedItem);
@@ -45,4 +46,13 @@ export const deleteTrackedItem = async (id: number): Promise<void> => {
         throw new Error("Failed to delete tracked item. Please try again.");
     }
 };
+
+export const getAdminTrackedItems = async (query: TrackedItemQuery): Promise<TrackedItem[]> => {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.tracking.tracked_items.admin, { params: query });
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to fetch tracked items. Please try again.");
+    }
+}
 

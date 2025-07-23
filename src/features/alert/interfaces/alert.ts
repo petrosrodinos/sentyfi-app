@@ -13,10 +13,10 @@ export interface UserAlertsResponse {
     };
 }
 
-// export interface UserAlertsResponse {
-//     data: UserAlert[];
-//     pagination: AlertPagination
-// }
+export interface AlertsResponse {
+    data: Alert[];
+    pagination: AlertPagination
+}
 
 export interface UserAlert {
     id: number;
@@ -46,6 +46,8 @@ export interface Alert {
     account_identifier: string;
     account_name: string;
     screen_name: string;
+    created_at: string;
+    updated_at?: string;
 }
 
 export interface AlertQuery {

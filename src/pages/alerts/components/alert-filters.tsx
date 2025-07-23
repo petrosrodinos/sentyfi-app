@@ -3,11 +3,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Filter } from "lucide-react";
 import { type AlertQuery, type AlertSentiment, type AlertSeverity } from "@/features/alert/interfaces/alert";
 import { MediaSubscriptionPlatformTypes, type MediaSubscription } from "@/features/media/interfaces/media-subscriptions";
-import type { UserAlert } from "@/features/alert/interfaces/alert";
 import type { TrackedItem } from "@/features/tracking/interfaces/tracked-items";
+import { useMemo } from "react";
 
 interface AlertFiltersProps {
-  alerts: UserAlert[];
   trackedItems: TrackedItem[];
   mediaSubscriptions: MediaSubscription[];
   alertFilters: AlertQuery;
@@ -15,6 +14,13 @@ interface AlertFiltersProps {
 }
 
 export function AlertFilters({ trackedItems, alertFilters, mediaSubscriptions, onAlertFiltersChange }: AlertFiltersProps) {
+  const mediaSubscriptionItems = useMemo(() => {
+    return mediaSubscriptions.map((subscription) => ({
+      label: subscription?.screen_name || subscription?.meta?.screen_name || subscription.account_identifier,
+      value: subscription.account_identifier,
+    }));
+  }, [mediaSubscriptions]);
+
   return (
     <Card className="p-6 border-border shadow-sm bg-card">
       <div className="flex items-center gap-2 mb-6">
@@ -66,9 +72,9 @@ export function AlertFilters({ trackedItems, alertFilters, mediaSubscriptions, o
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Accounts</SelectItem>
-              {mediaSubscriptions.map((subscription) => (
-                <SelectItem key={subscription.account_identifier} value={subscription.account_identifier}>
-                  {subscription.screen_name}
+              {mediaSubscriptionItems.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
                 </SelectItem>
               ))}
             </SelectContent>

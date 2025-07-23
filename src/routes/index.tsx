@@ -26,6 +26,8 @@ import Keywords from "@/pages/tracking/pages/keyword";
 import ProtectedRoute from "@/routes/protected-route";
 import Users from "@/pages/admin/users";
 import { RoleTypes } from "@/features/user/interfaces/user";
+import AdminLayout from "@/pages/admin/layout";
+import AdminAlerts from "@/pages/admin/alerts";
 
 export default function AppRoutes() {
   return (
@@ -85,15 +87,16 @@ export default function AppRoutes() {
         </Route>
 
         {/* Admin routes */}
-        <Route path="admin">
-          <Route
-            path="users"
-            element={
-              <ProtectedRoute loggedIn={true} requiredRoles={[RoleTypes.admin]}>
-                <Users />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="admin"
+          element={
+            <ProtectedRoute loggedIn={true} requiredRoles={[RoleTypes.admin]}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="users" element={<Users />} />
+          <Route path="alerts" element={<AdminAlerts />} />
         </Route>
 
         {/* Catch all route */}

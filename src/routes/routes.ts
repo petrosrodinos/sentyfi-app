@@ -45,7 +45,8 @@ export const Routes = {
         payment: "/dashboard/billing/payment",
     },
     admin: {
-        users: "/dashboard/admin/users"
+        users: "/dashboard/admin/users",
+        alerts: "/dashboard/admin/alerts",
     }
 
 };

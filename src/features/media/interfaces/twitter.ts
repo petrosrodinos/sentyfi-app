@@ -6,6 +6,7 @@ export interface TwitterUser {
     description?: string;
     url?: string;
     enabled?: boolean;
+    verified?: boolean;
 }
 
 

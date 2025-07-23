@@ -7,6 +7,7 @@ import type { TwitterUser } from "../../../../../features/media/interfaces/twitt
 import type { CreateMediaSubscription, MediaSubscription } from "../../../../../features/media/interfaces/media-subscriptions";
 import { MediaSubscriptionPlatformTypes } from "../../../../../features/media/interfaces/media-subscriptions";
 import { LoaderCircle, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Privileges } from "@/constants/privileges";
 import { useAuthStore } from "@/stores/auth";
 import { toast } from "@/hooks/use-toast";
@@ -92,6 +93,11 @@ export function UserCard({ user, enabled, mode = "view", subscriptionId, subscri
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-2 mb-1">
                 <h3 className="font-semibold text-sm truncate">{user.name}</h3>
+                {/* {user.verified && (
+                  <Badge variant="outline" className="text-xs">
+                    Verified
+                  </Badge>
+                )} */}
               </div>
 
               <p className="text-xs sm:text-sm text-muted-foreground mb-2">@{user.screen_name}</p>

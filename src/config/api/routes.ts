@@ -21,6 +21,7 @@ export const ApiRoutes = {
             prefix: "/media-subscriptions",
             create: "/media-subscriptions/create",
             upsert: "/media-subscriptions/upsert",
+            admin: "/media-subscriptions/admin",
         },
         twitter: {
             prefix: "/twitter",
@@ -30,13 +31,6 @@ export const ApiRoutes = {
             search: "/twitter/search",
         }
     },
-    notification_channels: {
-        prefix: "/notification-channels",
-    },
-    verification_tokens: {
-        prefix: "/verification-tokens",
-        verify: "/verification-tokens/verify",
-    },
     tracking: {
         market_data: {
             prefix: "/market-data/tickers",
@@ -45,9 +39,20 @@ export const ApiRoutes = {
             prefix: "/tracked-items",
             create: "/tracked-items/create",
             upsert: "/tracked-items/upsert",
+            admin: "/tracked-items/admin",
         }
     },
+    notification_channels: {
+        prefix: "/notification-channels",
+    },
+    verification_tokens: {
+        prefix: "/verification-tokens",
+        verify: "/verification-tokens/verify",
+    },
+    alerts: {
+        prefix: "/alerts",
+    },
     user_alerts: {
-        prefix: "user-alerts"
+        prefix: "/user-alerts"
     }
 }

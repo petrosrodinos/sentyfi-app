@@ -1,13 +1,14 @@
 import { AlertCard } from "./alert-card";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
-import type { UserAlert } from "@/features/alert/interfaces/alert";
+import type { Alert, UserAlertsResponse } from "@/features/alert/interfaces/alert";
 import type { TrackedItem } from "@/features/tracking/interfaces/tracked-items";
 import { Routes } from "@/routes/routes";
 import { Link } from "react-router-dom";
 
 interface AlertListProps {
-  alerts: UserAlert[];
+  alerts?: Alert[];
+  userAlerts?: UserAlertsResponse;
   trackedItems: TrackedItem[];
   isLoading: boolean;
   error: Error | null;
@@ -17,8 +18,10 @@ interface AlertListProps {
   onPageChange: (page: number) => void;
 }
 
-export function AlertList({ alerts, trackedItems, isLoading, error, currentPage, totalPages, refresh, onPageChange }: AlertListProps) {
-  if (isLoading && alerts.length === 0) {
+export function AlertList({ alerts, userAlerts, trackedItems, isLoading, error, currentPage, totalPages, refresh, onPageChange }: AlertListProps) {
+  const alertsData = alerts?.length ? alerts : userAlerts?.user?.user_alerts?.data?.map((userAlert) => userAlert.alert);
+
+  if (isLoading && alertsData && alertsData?.length === 0) {
     return (
       <div className="space-y-4">
         {Array.from({ length: 3 }).map((_, index) => (
@@ -30,7 +33,7 @@ export function AlertList({ alerts, trackedItems, isLoading, error, currentPage,
     );
   }
 
-  if (alerts.length === 0 || error) {
+  if ((alertsData && alertsData?.length === 0) || error) {
     return (
       <div className="flex flex-col items-center justify-center py-12 px-4">
         <div className="h-24 w-24 text-muted-foreground mb-6">
@@ -55,8 +58,8 @@ export function AlertList({ alerts, trackedItems, isLoading, error, currentPage,
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        {alerts.map((alert) => (
-          <AlertCard key={alert.id} alert={alert} trackedItems={trackedItems} />
+        {alertsData?.map((alert) => (
+          <AlertCard key={alert.id} alert={alert} trackedItems={trackedItems} userAlert={userAlerts?.user?.user_alerts?.data?.find((userAlert) => userAlert.alert.id === alert.id)} />
         ))}
       </div>
 

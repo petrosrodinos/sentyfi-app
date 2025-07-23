@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { createMediaSubscription, createMediaSubscriptions, deleteMediaSubscription, getMediaSubscriptions, upsertMediaSubscription } from "../services/media-subscriptions";
+import { createMediaSubscription, createMediaSubscriptions, deleteMediaSubscription, getAdminMediaSubscriptions, getMediaSubscriptions, upsertMediaSubscription } from "../services/media-subscriptions";
 import type { CreateMediaSubscription, MediaSubscriptionQuery } from "../interfaces/media-subscriptions";
 import { toast } from "@/hooks/use-toast";
 
@@ -95,5 +95,15 @@ export function useDeleteMediaSubscription() {
             });
 
         },
+    });
+}
+
+
+export function useAdminMediaSubscriptions(query: MediaSubscriptionQuery) {
+    return useQuery({
+        queryKey: ["admin-media-subscriptions"],
+        queryFn: () => getAdminMediaSubscriptions(query),
+        enabled: !!query,
+        retry: false,
     });
 }

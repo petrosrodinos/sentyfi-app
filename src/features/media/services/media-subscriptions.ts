@@ -55,3 +55,12 @@ export const upsertMediaSubscription = async (payload: CreateMediaSubscription):
         throw new Error("Failed to upsert media subscription. Please try again.");
     }
 };
+
+export const getAdminMediaSubscriptions = async (query: MediaSubscriptionQuery): Promise<MediaSubscription[]> => {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.media.subscriptions.admin, { params: query });
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to fetch media subscriptions. Please try again.");
+    }
+};

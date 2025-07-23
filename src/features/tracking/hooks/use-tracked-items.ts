@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
-import { createTrackedItem, deleteTrackedItem, getTrackedItems, updateTrackedItem, upsertTrackedItem } from "../services/tracked-items";
-import type { CreateTrackedItem, TrackedItemQuery, UpdateTrackedItem } from "../interfaces/tracked-items";
+import { createTrackedItem, deleteTrackedItem, getAdminTrackedItems, getTrackedItems, upsertTrackedItem } from "../services/tracked-items";
+import type { CreateTrackedItem, TrackedItemQuery } from "../interfaces/tracked-items";
 
 
 export function useTrackedItems(query: TrackedItemQuery) {
@@ -31,24 +31,7 @@ export function useCreateTrackedItem() {
     });
 }
 
-export function useUpdateTrackedItem() {
-    return useMutation({
-        mutationFn: (trackedItem: UpdateTrackedItem) => updateTrackedItem(trackedItem),
-        onSuccess: () => {
-            toast({
-                title: "Tracked item updated successfully",
-                description: "You have successfully updated a tracked item",
-            });
-        },
-        onError: () => {
-            toast({
-                title: "Failed to update tracked item",
-                description: "Please try again",
-                variant: "error",
-            });
-        },
-    });
-}
+
 
 export function useUpsertTrackedItem() {
     return useMutation({
@@ -85,6 +68,14 @@ export function useDeleteTrackedItem() {
                 variant: "error",
             });
         },
+    });
+}
+
+export function useAdminTrackedItems(query: TrackedItemQuery) {
+    return useQuery({
+        queryKey: ["admin-tracked-items", query.item_type],
+        queryFn: () => getAdminTrackedItems(query),
+        retry: false,
     });
 }
 

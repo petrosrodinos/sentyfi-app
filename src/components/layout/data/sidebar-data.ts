@@ -16,6 +16,7 @@ import { Command, CreditCard } from "lucide-react";
 import { type SidebarData } from "../types";
 import { APP_NAME } from "@/constants/index";
 import { Routes } from "@/routes/routes";
+import { RoleTypes } from "@/features/user/interfaces/user";
 
 export const sidebarData: SidebarData = {
   teams: [
@@ -27,13 +28,18 @@ export const sidebarData: SidebarData = {
   ],
   navGroups: [
     {
-      access: "admin",
+      access: RoleTypes.admin,
       title: "Admin",
       items: [
         {
           title: "Users",
           url: Routes.admin.users,
           icon: IconUser,
+        },
+        {
+          title: "Alerts",
+          url: Routes.admin.alerts,
+          icon: IconAlertTriangle,
         },
       ],
     },

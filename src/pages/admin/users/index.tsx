@@ -105,6 +105,7 @@ const Users = () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Id</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Ref Code</TableHead>
                 <TableHead>Created</TableHead>
@@ -122,6 +123,7 @@ const Users = () => {
               ) : (
                 users.map((user: User) => (
                   <TableRow key={user.uuid}>
+                    <TableCell className="font-medium">{user.uuid}</TableCell>
                     <TableCell className="font-medium">{user.email}</TableCell>
                     <TableCell className="text-muted-foreground">{user.ref_code || "N/A"}</TableCell>
                     <TableCell className="text-muted-foreground">{formatDate(user.created_at)}</TableCell>
